@@ -45,7 +45,7 @@ class SoundManager {
     }
 
     func playBackgroundMusic(repeatForever: Bool = true) {
-        guard let url = Bundle.main.url(forResource: "BackgroundMusic", withExtension: "mp3") else {
+        guard let url = Bundle.main.url(forResource: "BackgroundMusic2", withExtension: "mp3") else {
             print("❌ Musik latar tidak ditemukan.")
             return
         }
