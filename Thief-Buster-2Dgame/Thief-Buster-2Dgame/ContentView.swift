@@ -1,21 +1,26 @@
 //
 //  ContentView.swift
-//  Thief-Buster-2Dgame
+//  Trying BishiBashi
 //
-//  Created by Niken Larasati on 10/07/25.
+//  Created by Edward Suwandi on 10/07/25.
 //
 
 import SwiftUI
+import SpriteKit
 
 struct ContentView: View {
+    // Buat scene SpriteKit
+    var scene: SKScene {
+        let scene = GameScene()
+        scene.scaleMode = .resizeFill
+        return scene
+    }
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            SpriteView(scene: scene)
+                .border(Color.black)
         }
-        .padding()
     }
 }
 
