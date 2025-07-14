@@ -6,16 +6,19 @@
 //
 
 import SwiftUI
+import SpriteKit
 
 struct ContentView: View {
+    var scene: SKScene {
+        let scene = GameScene()
+        scene.size = UIScreen.main.bounds.size // Ukuran scene = ukuran layar
+        scene.scaleMode = .aspectFill          // Supaya ikut ukuran device
+        return scene
+    }
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
+        SpriteView(scene: scene)
+            .ignoresSafeArea() // Fullscreen
     }
 }
 
