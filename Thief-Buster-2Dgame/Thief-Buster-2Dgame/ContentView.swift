@@ -17,12 +17,11 @@ struct ContentView: View {
     }
     
     var body: some View {
-        VStack {
-            SpriteView(scene: scene)
-                .border(Color.black)
-        }
+        SpriteView(scene: scene)
+            .ignoresSafeArea()
     }
 }
+
 
 #Preview {
     ContentView()
