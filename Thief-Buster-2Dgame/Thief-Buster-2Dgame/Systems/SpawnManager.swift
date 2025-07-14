@@ -12,8 +12,8 @@ import SpriteKit
 class SpawnManager {
     var scene: SKScene
     
-    private var obstacleSpeed: Double = 200
-    private var obstacleSpawnChance: Double = 1
+    private var obstacleSpeed: Double = 50
+    private var obstacleSpawnChance: Double = 0.3
 
     var calculatedObstacleSpeed: Double {
         max(200, obstacleSpeed)
@@ -28,7 +28,7 @@ class SpawnManager {
     }
 
     var endHeight: Double {
-        scene.size.height * 1
+        scene.size.height * 1.0
     }
 
     var timer: Timer?
@@ -47,7 +47,7 @@ class SpawnManager {
             block: { _ in
 
                 let num: Int = Int.random(in: 1...100)
-                print(num)
+//                print(num)
 
                 if (Double(num) / 100.0) > self.calculatedObstacleSpawnChance {
                     return

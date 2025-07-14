@@ -10,23 +10,26 @@ import SwiftUICore
 
 class GameScene: SKScene {
     
+    lazy var spawnManager : SpawnManager = SpawnManager(scene: self)
+    
     var helper: Cobacoba?   // Declare helper, instantiate later
     
     let player = SKSpriteNode(imageNamed: "1") // Pakai SF Symbol "leaf" sebagai placeholder
-    let enemy = SKSpriteNode(imageNamed: "15")
     
-    let redLine = SKSpriteNode(color: .red, size: CGSize(width: 500, height: 50))
+    let redLine = SKSpriteNode(color: .red, size: CGSize(width: 500, height: 70))
     
     let buttonLeft = SKShapeNode(rectOf: CGSize(width: 70, height: 70), cornerRadius: 30)
     let buttonMid = SKShapeNode(rectOf: CGSize(width: 70, height: 70), cornerRadius: 30)
     let buttonRight = SKShapeNode(rectOf: CGSize(width: 70, height: 70), cornerRadius: 30)
     
-    let targetLeft = SKShapeNode(rectOf: CGSize(width: 50, height: 50), cornerRadius: 30)
-    let targetMid = SKShapeNode(rectOf: CGSize(width: 50, height: 50), cornerRadius: 30)
-    let targetRight = SKShapeNode(rectOf: CGSize(width: 50, height: 50), cornerRadius: 30)
+    let targetLeft = SKShapeNode(rectOf: CGSize(width: 50, height: 70), cornerRadius: 30)
+    let targetMid = SKShapeNode(rectOf: CGSize(width: 50, height: 70), cornerRadius: 30)
+    let targetRight = SKShapeNode(rectOf: CGSize(width: 50, height: 70), cornerRadius: 30)
     
     override func didMove(to view: SKView) {
-        backgroundColor = .white
+        backgroundColor = .black
+        
+        spawnManager.generate()
         
         // Instantiate helper here, now self is ready
         helper = Cobacoba(gamescene: self)
@@ -36,17 +39,10 @@ class GameScene: SKScene {
         player.position = CGPoint(x: size.width / 2, y: size.height - player.size.height / 2 - 20)
         addChild(player)
 
-        enemy.size = CGSize(width: 130, height: 130)
-        enemy.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        addChild(enemy)
-        
         let targetPosition = CGPoint(
             x: player.position.x,
             y: player.position.y - 50
         )
-        
-        let moveUp = SKAction.move(to: targetPosition, duration: 3.0)
-        enemy.run(moveUp)
         
         redLine.position = CGPoint(x: size.width/2, y: size.height/2 + 200)
         redLine.zPosition = -1

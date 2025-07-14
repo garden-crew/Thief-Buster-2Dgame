@@ -13,12 +13,12 @@ class Thief : Obstacle {
     
     override var walkTextures: [SKTexture] {
         (1...3).map { i in
-            SKTexture(imageNamed: "ObstacleWalk1")
+            SKTexture(imageNamed: "EnemyWalk\(i)")
         }
     }
     
     init(width: CGFloat) {
-        super.init(initialTexture: "ObstacleWalk1", width: width)
+        super.init(initialTexture: "EnemyWalk1", width: width)
     }
     
     @MainActor required init?(coder aDecoder: NSCoder) {
