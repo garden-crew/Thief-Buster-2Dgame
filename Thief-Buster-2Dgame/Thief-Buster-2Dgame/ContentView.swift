@@ -12,13 +12,14 @@ struct ContentView: View {
     // Buat scene SpriteKit
     var scene: SKScene {
         let scene = GameScene()
-        scene.scaleMode = .resizeFill
+        scene.size = UIScreen.main.bounds.size // Ukuran scene = ukuran layar
+        scene.scaleMode = .aspectFill          // Supaya ikut ukuran device
         return scene
     }
-    
+
     var body: some View {
         SpriteView(scene: scene)
-            .ignoresSafeArea()
+            .ignoresSafeArea() // Fullscreen
     }
 }
 

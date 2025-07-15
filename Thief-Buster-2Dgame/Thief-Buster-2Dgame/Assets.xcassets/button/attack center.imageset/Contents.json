@@ -1,0 +1,21 @@
+{
+  "images" : [
+    {
+      "filename" : "277050c2-9a3f-4d5f-a02d-9afc5d73bf2f Background Removed.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
