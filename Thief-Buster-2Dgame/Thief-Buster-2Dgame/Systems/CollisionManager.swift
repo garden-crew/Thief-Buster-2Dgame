@@ -24,6 +24,7 @@ class Cobacoba {
     }
 
     func handleTouches(_ touches: Set<UITouch>, with event: UIEvent?) {
+        SoundManager.shared.play(sound: .hitThief)
         guard let touch = touches.first else { return }
         let location = touch.location(in: gamescene)
 
