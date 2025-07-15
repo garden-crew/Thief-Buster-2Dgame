@@ -38,31 +38,29 @@ class Cobacoba {
 
             let obstacles = nodes.filter { node in
                 node.name == "obstacle"
+            } as! [Obstacle]
+            
+            obstacles.forEach { obstacle in
+                let enemyPosition =
+                    obstacle.frame.minY + (obstacle.frame.size.height / 2)
+
+                let distance = abs(enemyPosition - targetCenterY)
+
+                if distance <= perfectThreshold {
+                    print("Perfect! 🎉")
+                    obstacle.die()
+                } else if distance <= goodThreshold {
+                    print("Good!")
+                    obstacle.die()
+                } else {
+                    print("Miss")
+                }
             }
 
-            let obstacle = obstacles.first as! Obstacle?
-
-            if obstacle == nil {
-                return
-            }
-
-            let enemyPosition =
-                obstacle!.frame.minY + (obstacle!.frame.size.height / 2)
-
-            let distance = abs(enemyPosition - targetCenterY)
-
-            if distance <= perfectThreshold {
-                print("Perfect! 🎉")
-                obstacle!.die()
-            } else if distance <= goodThreshold {
-                print("Good!")
-                obstacle!.die()
-            } else {
-                print("Miss")
-            }
+            
         }
 
-        if gamescene.buttonLeft.contains(location) {
+        if gamescene.attackButtonLeft.contains(location) {
 
             checkAlignment(with: gamescene.targetLeft)
             //            gamescene.targetLeft.fillColor = .yellow
@@ -70,7 +68,7 @@ class Cobacoba {
             //                self.gamescene.targetLeft.fillColor = .blue
             //            }
 
-        } else if gamescene.buttonMid.contains(location) {
+        } else if gamescene.attackButtonCenter.contains(location) {
 
             checkAlignment(with: gamescene.targetMid)
             //            gamescene.targetMid.fillColor = .yellow
@@ -78,7 +76,7 @@ class Cobacoba {
             //                self.gamescene.targetMid.fillColor = .blue
             //            }
 
-        } else if gamescene.buttonRight.contains(location) {
+        } else if gamescene.attackButtonRight.contains(location) {
 
             checkAlignment(with: gamescene.targetRight)
             //            gamescene.targetRight.fillColor = .yellow

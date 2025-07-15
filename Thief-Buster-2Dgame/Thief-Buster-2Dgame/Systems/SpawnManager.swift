@@ -12,8 +12,8 @@ import SpriteKit
 class SpawnManager {
     var scene: SKScene
     
-    private var obstacleSpeed: Double = 50
-    private var obstacleSpawnChance: Double = 0.3
+    private var obstacleSpeed: Double = 150
+    private var obstacleSpawnChance: Double = 2
 
     var calculatedObstacleSpeed: Double {
         max(200, obstacleSpeed)
@@ -56,7 +56,7 @@ class SpawnManager {
                 let width = ((self.scene.size.width) - (16 * 4)) / 3
                 
                 var obstacle : Obstacle
-                var randomObstacleTypeNumber: Int = Int.random(in: 1...100)
+                let randomObstacleTypeNumber: Int = Int.random(in: 1...100)
                 
                 if randomObstacleTypeNumber < 5 {
                     obstacle = PowerUp(width: width)
@@ -67,7 +67,8 @@ class SpawnManager {
                 }
                 
                 obstacle.name = "obstacle"
-
+                obstacle.zPosition = 5
+                
                 let lane = Int.random(in: 1...3)
                 let laneX = self.scene.size.width * CGFloat(lane) / 4.0
 

@@ -42,6 +42,7 @@ class Guard: SKSpriteNode {
     }
     
     func transition(to newState: PlayerState) {
+        print("Trans", newState)
         guard state != newState else { return }
         state = newState
 
