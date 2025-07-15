@@ -62,29 +62,19 @@ class GameScene: SKScene {
 
         if player.contains(location) {
             SoundManager.shared.play(sound: .powerUp)
-
-            player.run(SKAction.sequence([
-                SKAction.scale(to: 1.1, duration: 0.05),
-                SKAction.scale(to: 1.0, duration: 0.05)
-            ]))
+            HapticManager.shared.vibratePowerUp()
         }
-
+           
         if maling.contains(location) {
             SoundManager.shared.play(sound: .hitThief)
-
-            maling.run(SKAction.sequence([
-                SKAction.scale(to: 1.1, duration: 0.05),
-                SKAction.scale(to: 1.0, duration: 0.05)
-            ]))
+            HapticManager.shared.vibrateHit()
+          
         }
 
         if gameover.contains(location) {
             SoundManager.shared.play(sound: .gameOver)
+            HapticManager.shared.vibrateMiss()
 
-            gameover.run(SKAction.sequence([
-                SKAction.scale(to: 1.1, duration: 0.05),
-                SKAction.scale(to: 1.0, duration: 0.05)
-            ]))
         }
     }
 }
