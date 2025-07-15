@@ -1,7 +1,15 @@
+//
+//  ContentView.swift
+//  Trying BishiBashi
+//
+//  Created by Edward Suwandi on 10/07/25.
+//
+
 import SwiftUI
 import SpriteKit
 
 struct ContentView: View {
+    // Buat scene SpriteKit
     var scene: SKScene {
         let scene = GameScene()
         scene.size = UIScreen.main.bounds.size // Ukuran scene = ukuran layar
@@ -14,6 +22,7 @@ struct ContentView: View {
             .ignoresSafeArea() // Fullscreen
     }
 }
+
 
 #Preview {
     ContentView()
