@@ -9,11 +9,10 @@ import SwiftUI
 import SpriteKit
 
 struct ContentView: View {
-    // Buat scene SpriteKit
     var scene: SKScene {
         let scene = GameScene()
-        scene.size = UIScreen.main.bounds.size // Ukuran scene = ukuran layar
-        scene.scaleMode = .resizeFill          // Supaya ikut ukuran device
+        scene.size = UIScreen.main.bounds.size
+        scene.scaleMode = .resizeFill          
         return scene
     }
 

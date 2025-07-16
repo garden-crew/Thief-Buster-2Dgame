@@ -9,16 +9,21 @@
 import Foundation
 import SpriteKit
 
+// Manages spawning of game obstacles (Thief, Customer, PowerUp) at random intervals and positions.
 class SpawnManager {
     var scene: SKScene
     
-    private var obstacleSpeed: Double = 150
-    private var obstacleSpawnChance: Double = 2
+    // Base speed of obstacles (pixels per second).
+    private var obstacleSpeed: Double = 50
+    // Base spawn probability (0.0 - 1.0).
+    private var obstacleSpawnChance: Double = 0.5
 
+    // Returns adjusted speed, ensuring a minimum value of 200.
     var calculatedObstacleSpeed: Double {
         max(200, obstacleSpeed)
     }
 
+    // Returns adjusted spawn chance, clamped to max 1.0.
     var calculatedObstacleSpawnChance: Double {
         min(1, obstacleSpawnChance)
     }
@@ -37,12 +42,14 @@ class SpawnManager {
         self.scene = scene
     }
     
+    // Starts spawning obstacles on a timer loop. Called once from GameScene.
     func generate() {
         timer?.invalidate()
         timer = nil
-
+        
+        // Repeat every 0.5 second
         timer = Timer.scheduledTimer(
-            withTimeInterval: 0.2,
+            withTimeInterval: 0.5,
             repeats: true,
             block: { _ in
 
@@ -53,8 +60,10 @@ class SpawnManager {
                     return
                 }
 
-                let width = ((self.scene.size.width) - (16 * 4)) / 3
+                let laneWidth = ((self.scene.size.width) - (16 * 4)) / 3
+                let width = laneWidth * 0.7
                 
+                // Determine obstacle type
                 var obstacle : Obstacle
                 let randomObstacleTypeNumber: Int = Int.random(in: 1...100)
                 

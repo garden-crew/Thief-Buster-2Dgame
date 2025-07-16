@@ -1,11 +1,13 @@
 import AVFoundation
 
+// Defines the available sound effects in the game.
 enum SoundType {
     case hitThief
     case powerUp
     case gameOver
 }
 
+// Singleton class responsible for managing all audio in the game, including sound effects and background music.
 class SoundManager {
     static let shared = SoundManager()
 
@@ -14,6 +16,7 @@ class SoundManager {
 
     private init() {}
 
+    // Plays a predefined sound effect based on the given sound type.
     func play(sound: SoundType) {
         let soundFileName: String
 
@@ -29,9 +32,10 @@ class SoundManager {
         playEffectSound(named: soundFileName)
     }
 
+    // Loads and plays a short sound effect file from the app bundle.
     private func playEffectSound(named soundName: String) {
         guard let url = Bundle.main.url(forResource: soundName, withExtension: "mp3") else {
-            print("❗️File '\(soundName).mp3' tidak ditemukan.")
+            print("❗️File '\(soundName).mp3' is not found.")
             return
         }
 
@@ -40,13 +44,14 @@ class SoundManager {
             effectPlayer?.prepareToPlay()
             effectPlayer?.play()
         } catch {
-            print("❌ Gagal memutar efek suara '\(soundName)': \(error)")
+            print("❌ Failed to play sound effect '\(soundName)': \(error)")
         }
     }
 
+    // Plays background music from a predefined audio file.
     func playBackgroundMusic(repeatForever: Bool = true) {
         guard let url = Bundle.main.url(forResource: "BackgroundMusic2", withExtension: "mp3") else {
-            print("❌ Musik latar tidak ditemukan.")
+            print("❌ Background music is not found.")
             return
         }
 
@@ -57,7 +62,7 @@ class SoundManager {
             backgroundPlayer?.prepareToPlay()
             backgroundPlayer?.play()
         } catch {
-            print("❌ Gagal memutar musik latar: \(error.localizedDescription)")
+            print("❌ Failed to play background music: \(error.localizedDescription)")
         }
     }
 

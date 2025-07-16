@@ -5,12 +5,14 @@
 //  Created by Ilham Wisnu on 14/07/25.
 //
 
-
 import Foundation
 import SpriteKit
 
+// Base class for all obstacle types (Thief, Customer, PowerUp).
 class Obstacle: SKSpriteNode {
 
+    // Textures used for walking animation.
+    // Subclasses should override this to provide their own animation frames.
     var walkTextures: [SKTexture] {
         (1...3).map { SKTexture(imageNamed: "ObstacleWalk\($0)") }
     }

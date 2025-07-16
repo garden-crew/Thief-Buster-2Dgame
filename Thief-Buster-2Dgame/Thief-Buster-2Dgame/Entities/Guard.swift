@@ -4,21 +4,24 @@
 //
 //  Created by Niken Larasati on 10/07/25.
 //
-// Guard.swift – logika FSM dan animasi karakter pemain.
+
 import SpriteKit
 
+// Represents the state of the player (Guard).
 enum PlayerState {
     case idle
     case attack
     case fail
 }
 
+// This class manages texture loading and transitions between player states.
 class Guard: SKSpriteNode {
     var state: PlayerState = .idle
     var idleTexture: SKTexture!
     var attackTextures: [SKTexture] = []
     var failTexture: SKTexture!
     
+    // Initializes the guard with default texture and sets up animations.
     init() {
         let texture = SKTexture(imageNamed: "1") // placeholder
         super.init(texture: texture, color: .clear, size: texture.size())
@@ -28,6 +31,7 @@ class Guard: SKSpriteNode {
         self.setupTextures()
     }
     
+    // Not used. Required by Swift when subclassing SKSpriteNode.
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -41,6 +45,7 @@ class Guard: SKSpriteNode {
         failTexture = SKTexture(imageNamed: "14")
     }
     
+    // Changes the guard's state and updates texture/animation accordingly.
     func transition(to newState: PlayerState) {
         print("Trans", newState)
         guard state != newState else { return }

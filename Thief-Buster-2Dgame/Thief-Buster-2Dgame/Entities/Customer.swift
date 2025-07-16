@@ -11,12 +11,14 @@ import SpriteKit
 
 class Customer : Obstacle {
     
+    // Defines the customer's walking animation textures.
     override var walkTextures: [SKTexture] {
         (1...3).map { i in
             SKTexture(imageNamed: "ObstacleWalk3")
         }
     }
     
+    // Initializes the customer with specific width and default texture.
     init(width: CGFloat) {
         super.init(initialTexture: "ObstacleWalk3", width: width)
     }
