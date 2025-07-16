@@ -34,7 +34,7 @@ class GameScene: SKScene {
     let targetRight = SKShapeNode(rectOf: CGSize(width: 50, height: 70), cornerRadius: 30)
     
     override func didMove(to view: SKView) {
-//        SoundManager.shared.playBackgroundMusic()
+    SoundManager.shared.playBackgroundMusic()
 
         setUpBackground()
         setupGuard()

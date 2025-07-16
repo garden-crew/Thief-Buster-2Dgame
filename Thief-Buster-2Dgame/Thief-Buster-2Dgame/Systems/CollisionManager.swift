@@ -27,8 +27,7 @@ class CollisionManager {
     // Handles player touch input and performs collision check against active obstacles in relevant lane.
     func handleTouches(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        // Play hit sound on every touch
-        SoundManager.shared.play(sound: .hitThief)
+      
         
         guard let touch = touches.first else { return }
         let location = touch.location(in: gamescene)
@@ -59,12 +58,18 @@ class CollisionManager {
 
                 if distance <= perfectThreshold {
                     print("Perfect! 🎉")
+                    // Play hit sound on every touch
+                    SoundManager.shared.play(sound: .hitThief)
                     obstacle.die()
                 } else if distance <= goodThreshold {
                     print("Good!")
+                    // Play hit sound on every touch
+                    SoundManager.shared.play(sound: .hitThief)
                     obstacle.die()
                 } else {
                     print("Miss")
+                    // Play hit sound on every touch
+                    SoundManager.shared.play(sound: .misshit)
                 }
             }
 
