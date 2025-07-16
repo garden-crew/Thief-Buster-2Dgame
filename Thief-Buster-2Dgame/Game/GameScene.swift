@@ -7,9 +7,15 @@
 import AVFoundation
 import GameplayKit
 import SpriteKit
+import SwiftData
 
 // Main game scene handling all rendering and gameplay updates.
 class GameScene: SKScene {
+    
+    // Setting up SwiftData for Highscore
+    var modelContext: ModelContext?
+    var highscoreLabel: SKLabelNode!
+    var highscore: Int = 0
 
     var player: Guard!
     var background: SKSpriteNode!
@@ -48,9 +54,50 @@ class GameScene: SKScene {
     var score: Int = 0 {
         didSet {
             scoreLabel.text = "Score: \(score)"
+            saveHigshcore(score)
         }
     }
 
+    func saveHigshcore(_ score: Int) {
+        guard let modelContext = modelContext else { return }
+        
+        do {
+            let descriptor = FetchDescriptor<Highscore>()
+            let highscores = try modelContext.fetch(descriptor)
+            
+            if let existing = highscores.first {
+                if score > existing.value {
+                    existing.value = score
+                    try modelContext.save()
+                    print("Updated highscore to \(score)")
+                }
+            } else {
+                let newHighscore = Highscore(value: score)
+                modelContext.insert(newHighscore)
+                try modelContext.save()
+                print("Created new highscore: \(score)")
+            }
+        } catch {
+            print("Failed to save highscore: \(error)")
+        }
+    }
+    
+    override func didMove(to view: SKView) {
+        SoundManager.shared.playBackgroundMusic()
+
+        loadHighscore()
+        setUpBackground()
+        setupGuard()
+        setupAttackButtons()
+        setupRedLine()
+        setupTargets()
+        setupScoreLabel()
+        setupHighscoreLabel()
+
+        spawnManager.generate()
+        helper = CollisionManager(gamescene: self)
+    }
+    
     func setupScoreLabel() {
         scoreLabel = SKLabelNode(fontNamed: "AvenirNext-Bold")
         scoreLabel.fontName = "AvenirNext-Bold"
@@ -63,41 +110,35 @@ class GameScene: SKScene {
         scoreLabel.zPosition = 100
         addChild(scoreLabel)
     }
-
-    override func didMove(to view: SKView) {
-        SoundManager.shared.playBackgroundMusic()
-
-        setUpBackground()
-        setupGuard()
-        setupAttackButtons()
-        setupRedLine()
-        setupTargets()
-        setupScoreLabel()
-
-        spawnManager.generate()
-        helper = CollisionManager(gamescene: self)
-
-        //        redLine.position = CGPoint(x: size.width/2, y: size.height/2 + 100)
-        //        redLine.zPosition = 2
-        //        addChild(redLine)
-        //
-        //        func styleTarget(_ target: SKShapeNode){
-        //            target.fillColor = .blue
-        //            target.strokeColor = .white
-        //            target.lineWidth = 4
-        //            target.zPosition = -1
-        //        }
-        //
-        //        styleTarget(targetLeft)
-        //        styleTarget(targetMid)
-        //        styleTarget(targetRight)
-        //
-        //        targetLeft.position = CGPoint(x: attackButtonLeft.position.x, y: redLine.position.y)
-        //        targetMid.position = CGPoint(x: attackButtonCenter.position.x, y: redLine.position.y)
-        //        targetRight.position = CGPoint(x: attackButtonRight.position.x, y: redLine.position.y)
-        //        addChild(targetLeft)
-        //        addChild(targetMid)
-        //        addChild(targetRight)
+    
+    func setupHighscoreLabel() {
+        highscoreLabel = SKLabelNode(fontNamed: "AvenirNext-Bold")
+        highscoreLabel.fontSize = 36
+        highscoreLabel.fontColor = .black
+        highscoreLabel.text = "Highscore: \(highscore)"
+        highscoreLabel.horizontalAlignmentMode = .left
+        highscoreLabel.verticalAlignmentMode = .top
+        highscoreLabel.position = CGPoint(x: 30, y: size.height - 40)
+        highscoreLabel.zPosition = 100
+        addChild(highscoreLabel)
+    }
+    
+    func loadHighscore() {
+        guard let modelContext = modelContext else { return }
+        do {
+            let descriptor = FetchDescriptor<Highscore>()
+            let highscores = try modelContext.fetch(descriptor)
+            if let existing = highscores.first {
+                highscore = existing.value
+            } else {
+                let newHighscore = Highscore(value: 0)
+                modelContext.insert(newHighscore)
+                try modelContext.save()
+                highscore = 0
+            }
+        } catch {
+            print("Failed to load highscore: \(error)")
+        }
     }
 
     func setUpBackground() {
@@ -195,6 +236,7 @@ class GameScene: SKScene {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         helper?.handleTouches(touches, with: event)
 
+        self.isPaused.toggle()
         touches.forEach { touch in
             let location = touch.location(in: self)
             let node = atPoint(location)

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct Thief_Buster_2DgameApp: App {
@@ -13,5 +14,6 @@ struct Thief_Buster_2DgameApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(for: Highscore.self)
     }
 }

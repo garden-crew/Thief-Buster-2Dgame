@@ -7,12 +7,19 @@
 
 import SwiftUI
 import SpriteKit
+import SwiftData
 
 struct ContentView: View {
+    
+    @Environment(\.modelContext) private var modelContext
+    @Query var highscores: [Highscore]
+    
     var scene: SKScene {
         let scene = GameScene()
         scene.size = UIScreen.main.bounds.size
-        scene.scaleMode = .resizeFill          
+        scene.scaleMode = .resizeFill
+        scene.modelContext = modelContext
+        
         return scene
     }
 
