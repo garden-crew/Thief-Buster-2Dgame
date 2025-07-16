@@ -25,4 +25,9 @@ class Customer : Obstacle {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func die() {
+        super.die()
+        self.parent?.isPaused = true
+    }
+    
 }
