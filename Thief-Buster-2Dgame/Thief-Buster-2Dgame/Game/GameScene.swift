@@ -4,25 +4,28 @@
 //  Created by Niken Larasati on 10/07/25.
 //
 
-import SpriteKit
-import GameplayKit
 import AVFoundation
+import GameplayKit
+import SpriteKit
 
 // Main game scene handling all rendering and gameplay updates.
 class GameScene: SKScene {
 
     var player: Guard!
     var background: SKSpriteNode!
-    
+
     // Manages spawning of obstacles (thieves, customers, power-ups).
-    lazy var spawnManager : SpawnManager = SpawnManager(scene: self)
-    
+    lazy var spawnManager: SpawnManager = SpawnManager(scene: self)
+
     // Handles collision detection between player and obstacles.
     var helper: CollisionManager?
-    
+
     // Visual marker for collision zone.
-    let redLine = SKSpriteNode(color: .red, size: CGSize(width: 500, height: 100))
-    
+    let redLine = SKSpriteNode(
+        color: .red,
+        size: CGSize(width: 500, height: 100)
+    )
+
     // Button to attack
     var attackButtonLeft: SKSpriteNode!
     var attackButtonCenter: SKSpriteNode!
@@ -41,41 +44,62 @@ class GameScene: SKScene {
         cornerRadius: 30
     )
 
+    var scoreLabel: SKLabelNode!
+    var score: Int = 0 {
+        didSet {
+            scoreLabel.text = "Score: \(score)"
+        }
+    }
+
+    func setupScoreLabel() {
+        scoreLabel = SKLabelNode(fontNamed: "AvenirNext-Bold")
+        scoreLabel.fontName = "AvenirNext-Bold"
+        scoreLabel.fontSize = 36
+        scoreLabel.fontColor = .black
+        scoreLabel.text = "Score: \(score)"
+        scoreLabel.horizontalAlignmentMode = .right
+        scoreLabel.verticalAlignmentMode = .top
+        scoreLabel.position = CGPoint(x: size.width - 30, y: size.height - 40)
+        scoreLabel.zPosition = 100
+        addChild(scoreLabel)
+    }
+
     override func didMove(to view: SKView) {
-    SoundManager.shared.playBackgroundMusic()
+        SoundManager.shared.playBackgroundMusic()
 
         setUpBackground()
         setupGuard()
         setupAttackButtons()
         setupRedLine()
         setupTargets()
-        
+        setupScoreLabel()
+
         spawnManager.generate()
         helper = CollisionManager(gamescene: self)
-        
-//        redLine.position = CGPoint(x: size.width/2, y: size.height/2 + 100)
-//        redLine.zPosition = 2
-//        addChild(redLine)
-//        
-//        func styleTarget(_ target: SKShapeNode){
-//            target.fillColor = .blue
-//            target.strokeColor = .white
-//            target.lineWidth = 4
-//            target.zPosition = -1
-//        }
-//        
-//        styleTarget(targetLeft)
-//        styleTarget(targetMid)
-//        styleTarget(targetRight)
-//        
-//        targetLeft.position = CGPoint(x: attackButtonLeft.position.x, y: redLine.position.y)
-//        targetMid.position = CGPoint(x: attackButtonCenter.position.x, y: redLine.position.y)
-//        targetRight.position = CGPoint(x: attackButtonRight.position.x, y: redLine.position.y)
-//        addChild(targetLeft)
-//        addChild(targetMid)
-//        addChild(targetRight)
+
+        //        redLine.position = CGPoint(x: size.width/2, y: size.height/2 + 100)
+        //        redLine.zPosition = 2
+        //        addChild(redLine)
+        //
+        //        func styleTarget(_ target: SKShapeNode){
+        //            target.fillColor = .blue
+        //            target.strokeColor = .white
+        //            target.lineWidth = 4
+        //            target.zPosition = -1
+        //        }
+        //
+        //        styleTarget(targetLeft)
+        //        styleTarget(targetMid)
+        //        styleTarget(targetRight)
+        //
+        //        targetLeft.position = CGPoint(x: attackButtonLeft.position.x, y: redLine.position.y)
+        //        targetMid.position = CGPoint(x: attackButtonCenter.position.x, y: redLine.position.y)
+        //        targetRight.position = CGPoint(x: attackButtonRight.position.x, y: redLine.position.y)
+        //        addChild(targetLeft)
+        //        addChild(targetMid)
+        //        addChild(targetRight)
     }
-    
+
     func setUpBackground() {
         background = SKSpriteNode(imageNamed: "25")
         background.size = self.size
@@ -133,13 +157,13 @@ class GameScene: SKScene {
         attackButtonRight.zPosition = 100
         addChild(attackButtonRight)
     }
-    
+
     func setupRedLine() {
         redLine.position = CGPoint(x: size.width / 2, y: size.height / 2 + 100)
         redLine.zPosition = 2
         addChild(redLine)
     }
-    
+
     func styleTarget(_ target: SKShapeNode) {
         target.fillColor = .blue
         target.strokeColor = .white
@@ -150,15 +174,24 @@ class GameScene: SKScene {
     func setupTargets() {
         [targetLeft, targetMid, targetRight].forEach { styleTarget($0) }
 
-        targetLeft.position = CGPoint(x: attackButtonLeft.position.x, y: redLine.position.y)
-        targetMid.position = CGPoint(x: attackButtonCenter.position.x, y: redLine.position.y)
-        targetRight.position = CGPoint(x: attackButtonRight.position.x, y: redLine.position.y)
+        targetLeft.position = CGPoint(
+            x: attackButtonLeft.position.x,
+            y: redLine.position.y
+        )
+        targetMid.position = CGPoint(
+            x: attackButtonCenter.position.x,
+            y: redLine.position.y
+        )
+        targetRight.position = CGPoint(
+            x: attackButtonRight.position.x,
+            y: redLine.position.y
+        )
 
         addChild(targetLeft)
         addChild(targetMid)
         addChild(targetRight)
     }
-    
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         helper?.handleTouches(touches, with: event)
 

@@ -26,14 +26,13 @@ class CollisionManager {
 
     // Handles player touch input and performs collision check against active obstacles in relevant lane.
     func handleTouches(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-      
-        
+
         guard let touch = touches.first else { return }
         let location = touch.location(in: gamescene)
-        
+
         // Thresholds to determine how close the obstacle is to the center of hit zone
-        let perfectThreshold: CGFloat = gamescene.targetMid.frame.size.height / 4
+        let perfectThreshold: CGFloat =
+            gamescene.targetMid.frame.size.height / 4
         let goodThreshold: CGFloat = gamescene.targetMid.frame.size.height / 2
 
         // Helper function to check distance between obstacle and center of target area.
@@ -45,10 +44,11 @@ class CollisionManager {
             let nodes = gamescene.nodes(at: target.position)
 
             // Filter to get obstacles only
-            let obstacles = nodes.filter { node in
-                node.name == "obstacle"
-            } as! [Obstacle]
-            
+            let obstacles =
+                nodes.filter { node in
+                    node.name == "obstacle"
+                } as! [Obstacle]
+
             // Check distance and handle collision
             obstacles.forEach { obstacle in
                 let enemyPosition =
@@ -58,22 +58,17 @@ class CollisionManager {
 
                 if distance <= perfectThreshold {
                     print("Perfect! 🎉")
-                    // Play hit sound on every touch
-                    SoundManager.shared.play(sound: .hitThief)
+                    gamescene.score += 10
                     obstacle.die()
                 } else if distance <= goodThreshold {
                     print("Good!")
-                    // Play hit sound on every touch
-                    SoundManager.shared.play(sound: .hitThief)
+                    gamescene.score += 5
                     obstacle.die()
                 } else {
                     print("Miss")
-                    // Play hit sound on every touch
-                    SoundManager.shared.play(sound: .misshit)
                 }
             }
 
-            
         }
 
         // Determine which attack button was touched and check corresponding lane

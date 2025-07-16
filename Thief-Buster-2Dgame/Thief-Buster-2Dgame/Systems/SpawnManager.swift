@@ -14,7 +14,7 @@ class SpawnManager {
     var scene: SKScene
     
     private var obstacleSpeed: Double = 50
-    private var obstacleSpawnChance: Double = 0.3
+    private var obstacleSpawnChance: Double = 0.5
 
     var calculatedObstacleSpeed: Double {
         max(200, obstacleSpeed)
