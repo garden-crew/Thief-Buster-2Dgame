@@ -27,4 +27,13 @@ class PowerUp : Obstacle {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func die() {
+        super.die()
+        self.parent?.children.forEach { node in
+            if node.name == "obstacle" && node is Thief {
+                node.removeFromParent()
+            }
+        }
+    }
+    
 }

@@ -13,12 +13,9 @@ import SpriteKit
 class SpawnManager {
     var scene: SKScene
     
-    // Base speed of obstacles (pixels per second).
     private var obstacleSpeed: Double = 50
-    // Base spawn probability (0.0 - 1.0).
-    private var obstacleSpawnChance: Double = 0.5
+    private var obstacleSpawnChance: Double = 0.3
 
-    // Returns adjusted speed, ensuring a minimum value of 200.
     var calculatedObstacleSpeed: Double {
         max(200, obstacleSpeed)
     }
@@ -67,12 +64,18 @@ class SpawnManager {
                 var obstacle : Obstacle
                 let randomObstacleTypeNumber: Int = Int.random(in: 1...100)
                 
+                var gameOverAction: SKAction?
+                
                 if randomObstacleTypeNumber < 5 {
                     obstacle = PowerUp(width: width)
                 } else if randomObstacleTypeNumber < 30 {
                     obstacle = Customer(width: width)
                 } else {
                     obstacle = Thief(width: width)
+                    gameOverAction = SKAction.customAction(withDuration: 1, actionBlock: { _, _ in
+                        self.scene.isPaused = true
+                    })
+                    
                 }
                 
                 obstacle.name = "obstacle"
@@ -90,10 +93,13 @@ class SpawnManager {
                     duration: self.obstacleMoveTime
                 )
                 
-
-                let sequenceAction = SKAction.sequence([
-                    moveAction
-                ])
+                var actions = [moveAction]
+                
+                if gameOverAction != nil {
+                    actions.append(gameOverAction!)
+                }
+                
+                let sequenceAction = SKAction.sequence(actions)
 
                 obstacle.run(sequenceAction)
 
