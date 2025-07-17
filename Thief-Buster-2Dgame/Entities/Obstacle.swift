@@ -25,7 +25,7 @@ class Obstacle: SKSpriteNode {
         let originalSize = texture.size()
 
         let aspectRatio = originalSize.height / originalSize.width
-        
+        var pause = true
         let height = width * aspectRatio
 
         let scaledSize = CGSize(width: width, height: height)
