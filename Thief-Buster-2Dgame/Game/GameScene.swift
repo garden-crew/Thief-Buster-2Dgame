@@ -236,7 +236,6 @@ class GameScene: SKScene {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         helper?.handleTouches(touches, with: event)
 
-        self.isPaused.toggle()
         touches.forEach { touch in
             let location = touch.location(in: self)
             let node = atPoint(location)

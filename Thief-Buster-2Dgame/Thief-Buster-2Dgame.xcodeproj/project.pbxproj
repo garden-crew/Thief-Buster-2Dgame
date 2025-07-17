@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		23C482952E28D4A200A5CB41 /* Thief-Buster-2Dgame.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = "Thief-Buster-2Dgame.xcodeproj"; sourceTree = "<group>"; };
 		23E378EB2E1FB11C00E4A124 /* Thief-Buster-2Dgame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Thief-Buster-2Dgame.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -30,13 +29,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		23C482962E28D4A200A5CB41 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		23E378E22E1FB11C00E4A124 = {
 			isa = PBXGroup;
 			children = (
@@ -105,12 +97,6 @@
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 23E378EC2E1FB11C00E4A124 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 23C482962E28D4A200A5CB41 /* Products */;
-					ProjectRef = 23C482952E28D4A200A5CB41 /* Thief-Buster-2Dgame.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				23E378EA2E1FB11C00E4A124 /* Thief-Buster-2Dgame */,
