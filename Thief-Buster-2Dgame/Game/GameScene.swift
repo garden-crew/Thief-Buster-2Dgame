@@ -16,12 +16,17 @@ class GameScene: SKScene {
     var modelContext: ModelContext?
     var highscoreLabel: SKLabelNode!
     var highscore: Int = 0
+    
+    var pauseButton: SKSpriteNode!
+
 
     var player: Guard!
     var background: SKSpriteNode!
 
     // Manages spawning of obstacles (thieves, customers, power-ups).
     lazy var spawnManager: SpawnManager = SpawnManager(scene: self)
+    
+    lazy var gameManager: GameManager = GameManager(scene: self)
 
     // Handles collision detection between player and obstacles.
     var helper: CollisionManager?
@@ -82,6 +87,44 @@ class GameScene: SKScene {
         }
     }
     
+    func restartGame() {
+        // Reset score
+        score = 0
+        
+        // Reset highscore label kalau mau (opsional)
+        highscoreLabel.text = "Highscore: \(highscore)"
+        
+        // Hapus semua obstacle dari scene
+        self.children.forEach { node in
+            if node.name == "obstacle" {
+                node.removeFromParent()
+            }
+        }
+        // Unpause scene
+        isPaused = false
+        
+        // Mulai spawn lagi
+        spawnManager.generate()
+        
+        // Hapus overlay
+        hideGameOverView()
+        
+        print("Game restarted")
+    }
+    
+    func hideGameOverView() {
+        self.childNode(withName: "gameOverOverlay")?.removeFromParent()
+    }
+
+    func goToStartView() {
+//        if let view = self.view {
+//            let startScene = StartView(size: view.bounds.size)
+//            view.presentScene(startScene, transition: SKTransition.fade(withDuration: 0.5))
+//            print("Go to start view")
+//        }
+    }
+
+    
     override func didMove(to view: SKView) {
         SoundManager.shared.playBackgroundMusic()
 
@@ -93,10 +136,22 @@ class GameScene: SKScene {
         setupTargets()
         setupScoreLabel()
         setupHighscoreLabel()
+        setupPauseButton()
+
 
         spawnManager.generate()
         helper = CollisionManager(gamescene: self)
     }
+    
+    func setupPauseButton() {
+        pauseButton = SKSpriteNode(imageNamed: "pause") // pakai nama image asset kamu
+        pauseButton.name = "pauseButton"
+        pauseButton.size = CGSize(width: 40, height: 40)
+        pauseButton.position = CGPoint(x: size.width - 40, y: size.height - 100)
+        pauseButton.zPosition = 100
+        addChild(pauseButton)
+    }
+
     
     func setupScoreLabel() {
         scoreLabel = SKLabelNode(fontNamed: "AvenirNext-Bold")
@@ -236,29 +291,46 @@ class GameScene: SKScene {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         helper?.handleTouches(touches, with: event)
 
-        self.isPaused.toggle()
         touches.forEach { touch in
             let location = touch.location(in: self)
             let node = atPoint(location)
-
+            
             switch node.name {
             case "attackLeft":
                 player.transition(to: .attack)
                 print("Attack left tapped")
-            // Tambahkan logika attack ke lane kiri
+                // Tambahkan logika attack ke lane kiri
             case "attackCenter":
                 player.transition(to: .attack)
-
+                
                 print("Attack center tapped")
-            // Tambahkan logika attack ke lane tengah
+                // Tambahkan logika attack ke lane tengah
             case "attackRight":
                 player.transition(to: .attack)
-
+                
                 print("Attack right tapped")
-            // Tambahkan logika attack ke lane kanan
+                // Tambahkan logika attack ke lane kanan
+                
+            case "restartButton":
+                print("Restart tapped")
+//                gameManager.hideGameOverView()
+                restartGame()
+                
+            case "menuButton":
+                print("Menu tapped")
+//                gameManager.hideGameOverView()
+                goToStartView()
+                
+            case "pauseButton":
+                        print("Pause tapped")
+                        isPaused.toggle()
+                
+                
             default:
                 break
             }
         }
+        
+        
     }
 }

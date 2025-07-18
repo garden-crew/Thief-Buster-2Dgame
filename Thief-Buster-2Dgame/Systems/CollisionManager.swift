@@ -51,22 +51,33 @@ class CollisionManager {
 
             // Check distance and handle collision
             obstacles.forEach { obstacle in
+
                 let enemyPosition =
                     obstacle.frame.minY + (obstacle.frame.size.height / 2)
 
                 let distance = abs(enemyPosition - targetCenterY)
-
-                if distance <= perfectThreshold {
-                    print("Perfect! 🎉")
-                    gamescene.score += 10
-                    obstacle.die()
-                } else if distance <= goodThreshold {
-                    print("Good!")
-                    gamescene.score += 5
-                    obstacle.die()
-                } else {
-                    print("Miss")
+                
+                if distance > goodThreshold {
+                    return
                 }
+                
+                if obstacle is Thief{
+                    var score = 0
+                    
+                    if distance <= perfectThreshold {
+                        score += 5
+                    }
+                    
+                    score += 5
+                    
+                    obstacle.onDie = {
+                        self.gamescene.score += score
+                        
+                    }
+                }
+                
+                print("die")
+                obstacle.die()
             }
 
         }
