@@ -10,7 +10,6 @@ import Foundation
 import SpriteKit
 
 class Customer : Obstacle {
-    
     // Defines the customer's walking animation textures.
     override var walkTextures: [SKTexture] {
         (1...3).map { i in
