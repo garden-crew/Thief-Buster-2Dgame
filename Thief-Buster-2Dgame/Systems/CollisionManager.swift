@@ -66,6 +66,7 @@ class CollisionManager {
                     
                     if distance <= perfectThreshold {
                         score += 5
+                        SoundManager.shared.play(sound: .hitThief)
                         gamescene.run(SKAction.sequence([
                                                     SKAction.wait(forDuration: 0.2),
                                                     SKAction.run {
@@ -91,6 +92,7 @@ class CollisionManager {
                                                     }
                                                 ]))
                     } else {
+                        SoundManager.shared.play(sound: .hitThief)
                         gamescene.run(SKAction.sequence([
                                                     SKAction.wait(forDuration: 0.2),
                                                     SKAction.run {

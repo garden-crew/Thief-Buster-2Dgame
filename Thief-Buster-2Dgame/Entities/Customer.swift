@@ -27,6 +27,7 @@ class Customer : Obstacle {
     }
     
     override func die() {
+        SoundManager.shared.play(sound: .hitCust)
         super.die()
         self.parent?.isPaused = true
     }
