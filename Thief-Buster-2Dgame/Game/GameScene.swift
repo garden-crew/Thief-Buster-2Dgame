@@ -162,6 +162,7 @@ class GameScene: SKScene {
     }
 
     func setupAttackButtons() {
+  
         // Ukuran dan jarak antar tombol
         let buttonSize = CGSize(width: 80, height: 80)
         let spacing: CGFloat = 40
@@ -235,8 +236,7 @@ class GameScene: SKScene {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         helper?.handleTouches(touches, with: event)
-
-        self.isPaused.toggle()
+        //self.isPaused.toggle()
         touches.forEach { touch in
             let location = touch.location(in: self)
             let node = atPoint(location)
