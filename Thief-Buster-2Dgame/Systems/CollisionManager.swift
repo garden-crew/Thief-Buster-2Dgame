@@ -2,14 +2,6 @@
 //  CollisionManager.swift
 //  Thief-Buster-2Dgame
 //
-//  Created by Niken Larasati on 10/07/25.
-//
-// CollisionManager.swift – deteksi tabrakan.
-
-//
-//  Cobacoba.swift
-//  Trying BishiBashi
-//
 //  Created by Edward Suwandi on 11/07/25.
 //
 
@@ -72,11 +64,9 @@ class CollisionManager {
                     
                     obstacle.onDie = {
                         self.gamescene.score += score
-                        
                     }
                 }
                 
-                print("die")
                 obstacle.die()
             }
 
