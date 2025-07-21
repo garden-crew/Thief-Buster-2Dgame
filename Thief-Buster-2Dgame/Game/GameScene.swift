@@ -12,6 +12,8 @@ import SwiftData
 // Main game scene handling all rendering and gameplay updates.
 class GameScene: SKScene {
     
+    var startViewNode: SKNode?
+
     // Setting up SwiftData for Highscore
     var modelContext: ModelContext?
     var highscoreLabel: SKLabelNode!
@@ -88,11 +90,6 @@ class GameScene: SKScene {
     }
     
     func restartGame() {
-        // Reset score
-        score = 0
-        
-        // Reset highscore label kalau mau (opsional)
-        highscoreLabel.text = "Highscore: \(highscore)"
         
         // Hapus semua obstacle dari scene
         self.children.forEach { node in
@@ -100,6 +97,7 @@ class GameScene: SKScene {
                 node.removeFromParent()
             }
         }
+        
         // Unpause scene
         isPaused = false
         
@@ -107,26 +105,27 @@ class GameScene: SKScene {
         spawnManager.generate()
         
         // Hapus overlay
-        hideGameOverView()
+        hideOverlay()
+        
+        // Muat ulang highscore & update label
+        loadHighscore()
+        highscoreLabel.text = "Highscore: \(highscore)"
+        
+        // Reset score
+        score = 0
         
         print("Game restarted")
     }
+
     
-    func hideGameOverView() {
-        self.childNode(withName: "gameOverOverlay")?.removeFromParent()
+    func hideOverlay() {
+        self.childNode(withName: "gameOverlay")?.removeFromParent()
     }
 
-    func goToStartView() {
-//        if let view = self.view {
-//            let startScene = StartView(size: view.bounds.size)
-//            view.presentScene(startScene, transition: SKTransition.fade(withDuration: 0.5))
-//            print("Go to start view")
-//        }
-    }
 
     
     override func didMove(to view: SKView) {
-        SoundManager.shared.playBackgroundMusic()
+//        SoundManager.shared.playBackgroundMusic()
 
         loadHighscore()
         setUpBackground()
@@ -141,13 +140,17 @@ class GameScene: SKScene {
 
         spawnManager.generate()
         helper = CollisionManager(gamescene: self)
+        
+        gameManager.startView()
     }
     
     func setupPauseButton() {
         pauseButton = SKSpriteNode(imageNamed: "pause") // pakai nama image asset kamu
         pauseButton.name = "pauseButton"
         pauseButton.size = CGSize(width: 40, height: 40)
-        pauseButton.position = CGPoint(x: size.width - 40, y: size.height - 100)
+        scoreLabel.horizontalAlignmentMode = .left
+        scoreLabel.verticalAlignmentMode = .top
+        pauseButton.position = CGPoint(x: size.width - 30, y: size.height - 90)
         pauseButton.zPosition = 100
         addChild(pauseButton)
     }
@@ -159,9 +162,9 @@ class GameScene: SKScene {
         scoreLabel.fontSize = 36
         scoreLabel.fontColor = .black
         scoreLabel.text = "Score: \(score)"
-        scoreLabel.horizontalAlignmentMode = .right
+        scoreLabel.horizontalAlignmentMode = .left
         scoreLabel.verticalAlignmentMode = .top
-        scoreLabel.position = CGPoint(x: size.width - 30, y: size.height - 40)
+        scoreLabel.position = CGPoint(x:  30, y: size.height - 40)
         scoreLabel.zPosition = 100
         addChild(scoreLabel)
     }
@@ -173,7 +176,7 @@ class GameScene: SKScene {
         highscoreLabel.text = "Highscore: \(highscore)"
         highscoreLabel.horizontalAlignmentMode = .left
         highscoreLabel.verticalAlignmentMode = .top
-        highscoreLabel.position = CGPoint(x: 30, y: size.height - 40)
+        highscoreLabel.position = CGPoint(x: 30, y: size.height - 80)
         highscoreLabel.zPosition = 100
         addChild(highscoreLabel)
     }
@@ -287,6 +290,19 @@ class GameScene: SKScene {
         addChild(targetMid)
         addChild(targetRight)
     }
+    
+    func resumeGame(){
+        self.isPaused.toggle()
+        attackButtonLeft.isUserInteractionEnabled = true
+        attackButtonCenter.isUserInteractionEnabled = true
+        attackButtonRight.isUserInteractionEnabled = true
+        hideOverlay()
+    }
+    
+    
+
+    
+
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         helper?.handleTouches(touches, with: event)
@@ -319,18 +335,24 @@ class GameScene: SKScene {
             case "menuButton":
                 print("Menu tapped")
 //                gameManager.hideGameOverView()
-                goToStartView()
+                gameManager.startView()
                 
             case "pauseButton":
-                        print("Pause tapped")
-                        isPaused.toggle()
+                gameManager.pauseView()
                 
+            case "resumeButton":
+                resumeGame()
+                
+            case "startButton":
+                gameManager.animateStartAndRemoveOverlay()
+                print("Start tapped")
+                
+            case "quitButton":
+                gameManager.startView()
                 
             default:
                 break
             }
-        }
-        
-        
+        } 
     }
 }

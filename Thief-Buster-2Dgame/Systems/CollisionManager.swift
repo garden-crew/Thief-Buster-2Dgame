@@ -67,12 +67,9 @@ class CollisionManager {
                     if distance <= perfectThreshold {
                         score += 5
                     }
-                    
                     score += 5
-                    
                     obstacle.onDie = {
                         self.gamescene.score += score
-                        
                     }
                 }
                 
