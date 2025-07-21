@@ -10,6 +10,8 @@ import SpriteKit
 
 // Base class for all obstacle types (Thief, Customer, PowerUp).
 class Obstacle: SKSpriteNode {
+    
+    var onDie: (() -> Void)?
 
     // Textures used for walking animation.
     // Subclasses should override this to provide their own animation frames.
@@ -19,7 +21,7 @@ class Obstacle: SKSpriteNode {
 
     var walkTimePerFrame: TimeInterval { 0.2 }
 
-    init(initialTexture: String = "ObstacleWalk1", width: CGFloat) {
+    init(initialTexture: String = "ObstacleWalk1", width: CGFloat, onDie: (() -> Void)? =  nil) {
         let texture = SKTexture(imageNamed: initialTexture)
 
         let originalSize = texture.size()
@@ -44,6 +46,7 @@ class Obstacle: SKSpriteNode {
     }
     
     func die() {
+        onDie?()
         removeAllActions()
         run(SKAction.removeFromParent())
     }

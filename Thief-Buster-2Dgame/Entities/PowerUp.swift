@@ -33,7 +33,7 @@ class PowerUp : Obstacle {
         super.die()
         self.parent?.children.forEach { node in
             if node.name == "obstacle" && node is Thief {
-                node.removeFromParent()
+                (node as! Thief).die()
             }
         }
     }

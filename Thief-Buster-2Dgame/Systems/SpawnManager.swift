@@ -11,7 +11,8 @@ import SpriteKit
 
 // Manages spawning of game obstacles (Thief, Customer, PowerUp) at random intervals and positions.
 class SpawnManager {
-    var scene: SKScene
+    var scene: GameScene
+    
     
     private var obstacleSpeed: Double = 50
     private var obstacleSpawnChance: Double = 0.5
@@ -35,7 +36,7 @@ class SpawnManager {
 
     var timer: Timer?
     
-    init(scene: SKScene) {
+    init(scene: GameScene) {
         self.scene = scene
     }
     
@@ -72,8 +73,11 @@ class SpawnManager {
                     obstacle = Customer(width: width)
                 } else {
                     obstacle = Thief(width: width)
+                    obstacle.onDie = {
+                        self.scene.score += 5
+                    }
                     gameOverAction = SKAction.customAction(withDuration: 1, actionBlock: { _, _ in
-                        self.scene.isPaused = true
+                        self.scene.gameManager.gameOver()
                     })
                     
                 }
