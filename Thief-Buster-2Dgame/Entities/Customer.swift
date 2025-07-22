@@ -10,7 +10,6 @@ import Foundation
 import SpriteKit
 
 class Customer : Obstacle {
-    
     // Defines the customer's walking animation textures.
     override var walkTextures: [SKTexture] {
         (1...3).map { i in
@@ -28,6 +27,7 @@ class Customer : Obstacle {
     }
     
     override func die() {
+        SoundManager.shared.play(sound: .hitCust)
         super.die()
         self.parent?.isPaused = true
     }

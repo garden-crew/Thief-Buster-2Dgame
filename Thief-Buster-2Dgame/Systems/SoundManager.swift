@@ -6,6 +6,7 @@ enum SoundType {
     case powerUp
     case gameOver
     case misshit
+    case hitCust
 }
 
 // Singleton class responsible for managing all audio in the game, including sound effects and background music.
@@ -25,11 +26,17 @@ class SoundManager {
         case .hitThief:
             soundFileName = "Punch"
         case .powerUp:
-            soundFileName = "PowerUp"
+            soundFileName = "RapidPunch"
+            backgroundPlayer?.setVolume(0.2, fadeDuration: 0.2)
+                  DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                      self.backgroundPlayer?.setVolume(0.5, fadeDuration: 0.5)
+                  }
         case .gameOver:
             soundFileName = "GameOver"
         case .misshit:
-            soundFileName = "Misshit"
+            soundFileName = "Whoosh"
+        case .hitCust:
+            soundFileName = "hitCust"
         }
 
         playEffectSound(named: soundFileName)

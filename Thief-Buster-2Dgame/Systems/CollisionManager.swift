@@ -58,6 +58,57 @@ class CollisionManager {
                     
                     if distance <= perfectThreshold {
                         score += 5
+                        SoundManager.shared.play(sound: .hitThief)
+                        gamescene.run(SKAction.sequence([
+                                                    SKAction.wait(forDuration: 0.2),
+                                                    SKAction.run {
+                                                        let perfectNode = GradedTextNode(
+                                                            text: "PERFECT",
+                                                            fontName: "Pixeled",
+                                                            fontSize: 16,
+                                                            gradientColors: [.yellow, .orange, .red]
+                                                        )
+                                                        perfectNode.position = CGPoint(
+                                                            x: obstacle.position.x,
+                                                            y: obstacle.position.y + 100
+                                                        )
+                                                        perfectNode.zPosition = 100
+                                                        self.gamescene.addChild(perfectNode)
+                                                        perfectNode.run(SKAction.sequence([
+                                                            SKAction.fadeIn(withDuration: 0.2),
+                                                            SKAction.scale(to: 1.2, duration: 0.1),
+                                                            SKAction.wait(forDuration: 0.5),
+                                                            SKAction.fadeOut(withDuration: 0.3),
+                                                            SKAction.removeFromParent()
+                                                        ]))
+                                                    }
+                                                ]))
+                    } else {
+                        SoundManager.shared.play(sound: .hitThief)
+                        gamescene.run(SKAction.sequence([
+                                                    SKAction.wait(forDuration: 0.2),
+                                                    SKAction.run {
+                                                        let goodNode = GradedTextNode(
+                                                            text: "GOOD",
+                                                            fontName: "Pixeled",
+                                                            fontSize: 16,
+                                                            gradientColors: [.blue, .cyan, .white]
+                                                        )
+                                                        goodNode.position = CGPoint(
+                                                            x: obstacle.position.x,
+                                                            y: obstacle.position.y + 100
+                                                        )
+                                                        goodNode.zPosition = 100
+                                                        self.gamescene.addChild(goodNode)
+                                                        goodNode.run(SKAction.sequence([
+                                                            SKAction.fadeIn(withDuration: 0.2),
+                                                            SKAction.scale(to: 1.2, duration: 0.1),
+                                                            SKAction.wait(forDuration: 0.5),
+                                                            SKAction.fadeOut(withDuration: 0.3),
+                                                            SKAction.removeFromParent()
+                                                        ]))
+                                                    }
+                                                ]))
                     }
                     
                     score += 5
@@ -74,10 +125,13 @@ class CollisionManager {
 
         // Determine which attack button was touched and check corresponding lane
         if gamescene.attackButtonLeft.contains(location) {
+            SoundManager.shared.play(sound: .misshit)
             checkAlignment(with: gamescene.targetLeft)
         } else if gamescene.attackButtonCenter.contains(location) {
+            SoundManager.shared.play(sound: .misshit)
             checkAlignment(with: gamescene.targetMid)
         } else if gamescene.attackButtonRight.contains(location) {
+            SoundManager.shared.play(sound: .misshit)
             checkAlignment(with: gamescene.targetRight)
         }
     }

@@ -7,12 +7,26 @@
 	objects = {
 
 /* Begin PBXFileReference section */
+		23C482952E28D4A200A5CB41 /* Thief-Buster-2Dgame.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = "Thief-Buster-2Dgame.xcodeproj"; sourceTree = "<group>"; };
 		23E378EB2E1FB11C00E4A124 /* Thief-Buster-2Dgame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Thief-Buster-2Dgame.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		36BB9FBC2E28D8E70053FE9D /* Exceptions for "Thief-Buster-2Dgame" folder in "Thief-Buster-2Dgame" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 23E378EA2E1FB11C00E4A124 /* Thief-Buster-2Dgame */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		23E378ED2E1FB11C00E4A124 /* Thief-Buster-2Dgame */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				36BB9FBC2E28D8E70053FE9D /* Exceptions for "Thief-Buster-2Dgame" folder in "Thief-Buster-2Dgame" target */,
+			);
 			path = "Thief-Buster-2Dgame";
 			sourceTree = "<group>";
 		};
@@ -29,6 +43,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		23C482962E28D4A200A5CB41 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		23E378E22E1FB11C00E4A124 = {
 			isa = PBXGroup;
 			children = (
@@ -97,6 +118,12 @@
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 23E378EC2E1FB11C00E4A124 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 23C482962E28D4A200A5CB41 /* Products */;
+					ProjectRef = 23C482952E28D4A200A5CB41 /* Thief-Buster-2Dgame.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				23E378EA2E1FB11C00E4A124 /* Thief-Buster-2Dgame */,
@@ -253,9 +280,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = R6CU6N8W65;
+				DEVELOPMENT_TEAM = YVXC2627Z7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Thief-Buster-2Dgame/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -282,9 +310,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = R6CU6N8W65;
+				DEVELOPMENT_TEAM = YVXC2627Z7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Thief-Buster-2Dgame/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

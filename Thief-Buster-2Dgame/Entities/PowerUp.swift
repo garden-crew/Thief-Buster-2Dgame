@@ -28,6 +28,8 @@ class PowerUp : Obstacle {
     }
     
     override func die() {
+        SoundManager.shared.play(sound: .powerUp)
+        HapticManager.shared.vibratePowerUp()
         super.die()
         self.parent?.children.forEach { node in
             if node.name == "obstacle" && node is Thief {
