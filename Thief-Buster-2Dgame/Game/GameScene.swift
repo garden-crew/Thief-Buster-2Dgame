@@ -316,15 +316,13 @@ class GameScene: SKScene {
         attackButtonCenter.isUserInteractionEnabled = true
         attackButtonRight.isUserInteractionEnabled = true
         hideOverlay()
+    }
+        
     func togglePause() {
         gamePaused.toggle()
         isPaused = gamePaused
     }
     
-    
-
-    
-
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
        
