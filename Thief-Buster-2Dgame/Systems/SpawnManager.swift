@@ -13,17 +13,27 @@ import SpriteKit
 class SpawnManager {
     var scene: GameScene
     
-    
-    private var obstacleSpeed: Double = 50
-    private var obstacleSpawnChance: Double = 0.5
+    private var baseObstacleSpeed: Double = 50
+    private var baseObstacleSpawnRate: Double = 0.3
 
     var calculatedObstacleSpeed: Double {
-        max(200, obstacleSpeed)
+        let score = Double(scene.score)
+        let speed = baseObstacleSpeed + (score / 10)
+        return max(200, speed)
     }
 
-    // Returns adjusted spawn chance, clamped to max 1.0.
-    var calculatedObstacleSpawnChance: Double {
-        min(1, obstacleSpawnChance)
+    // Returns adjusted spawn rate, clamped to max 1.0.
+    var calculatedObstacleSpawnRate: Double {
+        
+        let score = Double(scene.score)
+        
+        if score < 30 {
+            return 0.2
+        }
+        
+        let spawnRate: Double = baseObstacleSpawnRate + score/1000
+        
+        return min(0.8, spawnRate)
     }
 
     var obstacleMoveTime: Double {
@@ -41,7 +51,7 @@ class SpawnManager {
     }
     
     // Starts spawning obstacles on a timer loop. Called once from GameScene.
-    func generate() {
+    func generate(targetY endY: Double? = nil) {
         timer?.invalidate()
         timer = nil
         
@@ -52,56 +62,56 @@ class SpawnManager {
             block: { _ in
 
                 let num: Int = Int.random(in: 1...100)
-//                print(num)
 
-                if (Double(num) / 100.0) > self.calculatedObstacleSpawnChance {
+                if (Double(num) / 100.0) > self.calculatedObstacleSpawnRate {
                     return
                 }
+                
+                var obstacle : Obstacle
+                var actions : [SKAction] = []
+
+                let lane = Int.random(in: 1...3)
+                let laneX = self.scene.size.width * CGFloat(lane) / 4.0
 
                 let laneWidth = ((self.scene.size.width) - (16 * 4)) / 3
                 let width = laneWidth * 0.7
                 
-                // Determine obstacle type
-                var obstacle : Obstacle
-                let randomObstacleTypeNumber: Int = Int.random(in: 1...100)
                 
-                var gameOverAction: SKAction?
+                let endPoint = CGPoint(x: laneX, y: endY ?? self.endHeight)
+                let moveAction = SKAction.move(
+                    to: endPoint,
+                    duration: self.obstacleMoveTime
+                )
+                actions.append(moveAction)
                 
-                if randomObstacleTypeNumber < 5 {
+                
+                let randomObstacleTypeNumber: Int = Int.random(in: (self.scene.score > 300) ? 1...100 : 6...100)
+                
+                if randomObstacleTypeNumber <= 5 {
                     obstacle = PowerUp(width: width)
+                    actions.append(SKAction.fadeOut(withDuration: 0.3))
+                    actions.append(SKAction.removeFromParent())
                 } else if randomObstacleTypeNumber < 30 {
                     obstacle = Customer(width: width)
+                    actions.append(SKAction.fadeOut(withDuration: 0.3))
+                    actions.append(SKAction.removeFromParent())
                 } else {
                     obstacle = Thief(width: width)
                     obstacle.onDie = {
                         self.scene.score += 5
                     }
-                    gameOverAction = SKAction.customAction(withDuration: 1, actionBlock: { _, _ in
+                    
+                    let gameOverAction = SKAction.customAction(withDuration: 0.0, actionBlock: { _, _ in
                         self.scene.gameManager.gameOver()
                     })
                     
+                    actions.append((obstacle as! Thief).attackAction)
+                    actions.append(gameOverAction)
                 }
                 
                 obstacle.name = "obstacle"
                 obstacle.zPosition = 5
-                
-                let lane = Int.random(in: 1...3)
-                let laneX = self.scene.size.width * CGFloat(lane) / 4.0
-
                 obstacle.position = CGPoint(x: laneX, y: -obstacle.size.height)
-
-                let endPoint = CGPoint(x: laneX, y: self.endHeight)
-
-                let moveAction = SKAction.move(
-                    to: endPoint,
-                    duration: self.obstacleMoveTime
-                )
-                
-                var actions = [moveAction]
-                
-                if gameOverAction != nil {
-                    actions.append(gameOverAction!)
-                }
                 
                 let sequenceAction = SKAction.sequence(actions)
 
