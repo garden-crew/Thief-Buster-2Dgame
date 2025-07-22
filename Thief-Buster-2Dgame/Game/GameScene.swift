@@ -109,14 +109,22 @@ class GameScene: SKScene {
         // Re-spawn
         spawnManager.generate()
         
-        // Delete the overlay
-        hideGameOverView()
+        // Hapus overlay
+        hideOverlay()
+        
+        // Muat ulang highscore & update label
+        loadHighscore()
+        highscoreLabel.text = "Highscore: \(highscore)"
+        
+        // Reset score
+        score = 0
         
         print("Game restarted")
     }
+
     
-    func hideGameOverView() {
-        self.childNode(withName: "gameOverOverlay")?.removeFromParent()
+    func hideOverlay() {
+        self.childNode(withName: "gameOverlay")?.removeFromParent()
     }
 
     func goToStartView() {
@@ -128,7 +136,7 @@ class GameScene: SKScene {
     }
     
     override func didMove(to view: SKView) {
-        SoundManager.shared.playBackgroundMusic()
+//        SoundManager.shared.playBackgroundMusic()
 
         loadHighscore()
         setUpBackground()
@@ -142,6 +150,8 @@ class GameScene: SKScene {
 
         spawnManager.generate()
         helper = CollisionManager(gamescene: self)
+        
+        gameManager.startView()
     }
     
     // Button for pause the game
@@ -149,7 +159,9 @@ class GameScene: SKScene {
         pauseButton = SKSpriteNode(imageNamed: "attack left")
         pauseButton.name = "pauseButton"
         pauseButton.size = CGSize(width: 40, height: 40)
-        pauseButton.position = CGPoint(x: size.width - 40, y: size.height - 100)
+        scoreLabel.horizontalAlignmentMode = .left
+        scoreLabel.verticalAlignmentMode = .top
+        pauseButton.position = CGPoint(x: size.width - 30, y: size.height - 90)
         pauseButton.zPosition = 100
         addChild(pauseButton)
     }
@@ -161,9 +173,9 @@ class GameScene: SKScene {
         scoreLabel.fontSize = 36
         scoreLabel.fontColor = .black
         scoreLabel.text = "Score: \(score)"
-        scoreLabel.horizontalAlignmentMode = .right
+        scoreLabel.horizontalAlignmentMode = .left
         scoreLabel.verticalAlignmentMode = .top
-        scoreLabel.position = CGPoint(x: size.width - 30, y: size.height - 40)
+        scoreLabel.position = CGPoint(x:  30, y: size.height - 40)
         scoreLabel.zPosition = 100
         addChild(scoreLabel)
     }
@@ -176,7 +188,7 @@ class GameScene: SKScene {
         highscoreLabel.text = "Highscore: \(highscore)"
         highscoreLabel.horizontalAlignmentMode = .left
         highscoreLabel.verticalAlignmentMode = .top
-        highscoreLabel.position = CGPoint(x: 30, y: size.height - 40)
+        highscoreLabel.position = CGPoint(x: 30, y: size.height - 80)
         highscoreLabel.zPosition = 100
         addChild(highscoreLabel)
     }
@@ -293,10 +305,21 @@ class GameScene: SKScene {
         addChild(targetRight)
     }
     
+    func resumeGame(){
+        self.isPaused.toggle()
+        attackButtonLeft.isUserInteractionEnabled = true
+        attackButtonCenter.isUserInteractionEnabled = true
+        attackButtonRight.isUserInteractionEnabled = true
+        hideOverlay()
     func togglePause() {
         gamePaused.toggle()
         isPaused = gamePaused
     }
+    
+    
+
+    
+
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
        
@@ -322,16 +345,28 @@ class GameScene: SKScene {
                 print("Restart tapped")
 //                gameManager.hideGameOverView()
                 restartGame()
+                
             case "menuButton":
                 print("Menu tapped")
 //                gameManager.hideGameOverView()
-                goToStartView()
+                gameManager.startView()
+                
             case "pauseButton":
-                print("Pause tapped")
-                togglePause()
+                gameManager.pauseView()
+                
+            case "resumeButton":
+                resumeGame()
+                
+            case "startButton":
+                gameManager.animateStartAndRemoveOverlay()
+                print("Start tapped")
+                
+            case "quitButton":
+                gameManager.startView()
+                
             default:
                 break
             }
-        }
+        } 
     }
 }

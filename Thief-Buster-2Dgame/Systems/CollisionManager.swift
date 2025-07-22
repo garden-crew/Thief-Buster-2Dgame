@@ -118,12 +118,9 @@ class CollisionManager {
                                                     }
                                                 ]))
                     }
-                    
                     score += 5
-                    
                     obstacle.onDie = {
                         self.gamescene.score += score
-                        
                     }
                 }
                 
