@@ -9,6 +9,7 @@ import SpriteKit
 
 // Represents the state of the player (Guard).
 enum PlayerState {
+    case initial
     case idle
     case attack
     case fail
@@ -16,19 +17,19 @@ enum PlayerState {
 
 // This class manages texture loading and transitions between player states.
 class Guard: SKSpriteNode {
-    var state: PlayerState = .idle
-    var idleTexture: SKTexture!
+    var state: PlayerState = .initial
+    var idleTexture: [SKTexture] = []
     var attackTextures: [SKTexture] = []
     var failTexture: SKTexture!
     
     // Initializes the guard with default texture and sets up animations.
     init() {
-        let texture = SKTexture(imageNamed: "1") // placeholder
+        let texture = SKTexture(imageNamed: "GuardIdle1") // placeholder
         super.init(texture: texture, color: .clear, size: texture.size())
-        
         self.name = "guard"
         self.zPosition = 10
         self.setupTextures()
+        self.transition(to: .idle)
     }
     
     // Not used. Required by Swift when subclassing SKSpriteNode.
@@ -37,12 +38,14 @@ class Guard: SKSpriteNode {
     }
     
     private func setupTextures() {
-        idleTexture = SKTexture(imageNamed: "1")
+        idleTexture = [
+            SKTexture(imageNamed: "GuardIdle1"),
+            SKTexture(imageNamed: "GuardIdle2")]
         attackTextures = [
-            SKTexture(imageNamed: "4"),
-            SKTexture(imageNamed: "5")
+            SKTexture(imageNamed: "GuardPunch1"),
+            SKTexture(imageNamed: "GuardPunch2")
         ]
-        failTexture = SKTexture(imageNamed: "14")
+        failTexture = SKTexture(imageNamed: "GuardGameOver")
     }
     
     // Changes the guard's state and updates texture/animation accordingly.
@@ -52,9 +55,15 @@ class Guard: SKSpriteNode {
         state = newState
 
         switch state {
+        case .initial:
+            break
         case .idle:
-            self.texture = idleTexture
             self.removeAllActions()
+               let idleAnimation = SKAction.repeatForever(
+                   SKAction.animate(with: idleTexture, timePerFrame: 0.3)
+               )
+               self.run(idleAnimation)
+            
 
         case .attack:
             let animation = SKAction.animate(with: attackTextures, timePerFrame: 0.1)

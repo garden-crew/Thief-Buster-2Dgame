@@ -215,7 +215,7 @@ class GameScene: SKScene {
 
     func setupGuard() {
         player = Guard()
-        player.setScale(0.2)
+        player.setScale(2.0)
         player.position = CGPoint(x: size.width / 2, y: size.height * 0.8)
         addChild(player)
     }

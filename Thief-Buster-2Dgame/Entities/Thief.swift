@@ -14,13 +14,14 @@ class Thief : Obstacle {
     // Defines the thief's walking animation textures.
     override var walkTextures: [SKTexture] {
         (1...3).map { i in
-            SKTexture(imageNamed: "EnemyWalk\(i)")
+            SKTexture(imageNamed: "ThiefWalk\(i)")
         }
     }
     
     // Initializes the thief with specific width and default texture.
     init(width: CGFloat) {
-        super.init(initialTexture: "EnemyWalk1", width: width)
+        super.init(initialTexture: "ThiefWalk1", width: width)
+        self.setScale(0.75)
     }
     
     @MainActor required init?(coder aDecoder: NSCoder) {
