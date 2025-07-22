@@ -62,6 +62,10 @@ class GameScene: SKScene {
             saveHigshcore(score)
         }
     }
+    
+    var obstacleEndY : CGFloat {
+        self.size.height * 0.7
+    }
 
     // Store high score
     func saveHigshcore(_ score: Int) {
@@ -106,8 +110,9 @@ class GameScene: SKScene {
         // Unpause scene
         isPaused = false
         
+        
         // Re-spawn
-        spawnManager.generate()
+        spawnManager.generate(targetY: obstacleEndY)
         
         // Delete the overlay
         hideGameOverView()
@@ -140,7 +145,7 @@ class GameScene: SKScene {
         setupHighscoreLabel()
         setupPauseButton()
 
-        spawnManager.generate()
+        spawnManager.generate(targetY: obstacleEndY)
         helper = CollisionManager(gamescene: self)
     }
     
@@ -300,7 +305,7 @@ class GameScene: SKScene {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
        
-        if gamePaused { return }
+//        if gamePaused { return }
         
         helper?.handleTouches(touches, with: event)
 
