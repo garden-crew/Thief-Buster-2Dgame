@@ -17,16 +17,23 @@ class Thief : Obstacle {
             SKTexture(imageNamed: "ThiefWalk\(i)")
         }
     }
+    override var dieTextures: [SKTexture] {
+        return [SKTexture(imageNamed: "ThiefCanHit")]
+    }
     
     // Initializes the thief with specific width and default texture.
     init(width: CGFloat) {
         super.init(initialTexture: "ThiefWalk1", width: width)
-        self.setScale(0.75)
+        self.setScale(1.1)
+        
     }
     
     var attackAction: SKAction {
-        SKAction.setTexture(SKTexture(imageNamed: ""))
+        SKAction.setTexture(SKTexture(imageNamed: "ThiefNotHit"))
     }
+    
+  
+    
     
     @MainActor required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

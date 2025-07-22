@@ -315,13 +315,13 @@ class GameScene: SKScene {
             
             switch node.name {
             case "attackLeft":
-                player.transition(to: .attack)
+                player.transition(to: .attackleft)
                 print("Attack left tapped")
             case "attackCenter":
-                player.transition(to: .attack)
+                player.transition(to: .attackcenter)
                 print("Attack center tapped")
             case "attackRight":
-                player.transition(to: .attack)
+                player.transition(to: .attackright)
                 print("Attack right tapped")
             case "restartButton":
                 print("Restart tapped")

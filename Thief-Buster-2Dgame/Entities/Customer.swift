@@ -20,6 +20,7 @@ class Customer : Obstacle {
     // Initializes the customer with specific width and default texture.
     init(width: CGFloat) {
         super.init(initialTexture: "CustomerWalk1", width: width)
+        self.setScale(0.6)
     }
     
     @MainActor required init?(coder aDecoder: NSCoder) {
@@ -27,10 +28,12 @@ class Customer : Obstacle {
     }
     
     override func die() {
-        self.texture = SKTexture(imageNamed: "CustomerHit")
+        //self.texture = SKTexture(imageNamed: "CustomerHit")
         SoundManager.shared.play(sound: .hitCust)
         super.die()
-        self.parent?.isPaused = true
     }
-    
+    override var dieTextures: [SKTexture] {
+        return [SKTexture(imageNamed: "CustomerHit")]
+        
+    }
 }

@@ -65,7 +65,7 @@ class Obstacle: SKSpriteNode {
         removeAllActions()
 
         let dieAnimation = SKAction.animate(
-            with: walkTextures,
+            with: dieTextures,
             timePerFrame: walkTimePerFrame
         )
 
