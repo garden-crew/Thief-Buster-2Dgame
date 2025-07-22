@@ -14,18 +14,26 @@ class Thief : Obstacle {
     // Defines the thief's walking animation textures.
     override var walkTextures: [SKTexture] {
         (1...3).map { i in
-            SKTexture(imageNamed: "EnemyWalk\(i)")
+            SKTexture(imageNamed: "ThiefWalk\(i)")
         }
+    }
+    override var dieTextures: [SKTexture] {
+        return [SKTexture(imageNamed: "ThiefCanHit")]
     }
     
     // Initializes the thief with specific width and default texture.
     init(width: CGFloat) {
-        super.init(initialTexture: "EnemyWalk1", width: width)
+        super.init(initialTexture: "ThiefWalk1", width: width)
+        self.setScale(1.1)
+        
     }
     
     var attackAction: SKAction {
-        SKAction.setTexture(SKTexture(imageNamed: ""))
+        SKAction.setTexture(SKTexture(imageNamed: "ThiefNotHit"))
     }
+    
+  
+    
     
     @MainActor required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

@@ -232,7 +232,7 @@ class GameScene: SKScene {
 
     func setupGuard() {
         player = Guard()
-        player.setScale(0.2)
+        player.setScale(2.0)
         player.position = CGPoint(x: size.width / 2, y: size.height * 0.8)
         addChild(player)
     }
@@ -338,13 +338,13 @@ class GameScene: SKScene {
             
             switch node.name {
             case "attackLeft":
-                player.transition(to: .attack)
+                player.transition(to: .attackleft)
                 print("Attack left tapped")
             case "attackCenter":
-                player.transition(to: .attack)
+                player.transition(to: .attackcenter)
                 print("Attack center tapped")
             case "attackRight":
-                player.transition(to: .attack)
+                player.transition(to: .attackright)
                 print("Attack right tapped")
             case "restartButton":
                 print("Restart tapped")

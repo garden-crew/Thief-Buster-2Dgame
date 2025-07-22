@@ -13,14 +13,15 @@ class PowerUp : Obstacle {
     
     // Defines the power up's walking animation textures.
     override var walkTextures: [SKTexture] {
-        (1...3).map { i in
-            SKTexture(imageNamed: "ObstacleWalk2")
+        (1...2).map { i in
+            SKTexture(imageNamed: "PowerMove\(i)")
         }
     }
     
     // Initializes the power up with specific width and default texture.
     init(width: CGFloat) {
-        super.init(initialTexture: "ObstacleWalk2", width: width)
+        super.init(initialTexture: "PowerMove1", width: width)
+        self.setScale(0.7)
     }
     
     @MainActor required init?(coder aDecoder: NSCoder) {
@@ -36,6 +37,10 @@ class PowerUp : Obstacle {
                 (node as! Thief).die()
             }
         }
+    }
+    
+    override var dieTextures: [SKTexture] {
+        return[SKTexture(imageNamed: "PowerHit")]
     }
     
 }

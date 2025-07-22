@@ -73,8 +73,8 @@ class SpawnManager {
                 let lane = Int.random(in: 1...3)
                 let laneX = self.scene.size.width * CGFloat(lane) / 4.0
 
-                let laneWidth = ((self.scene.size.width) - (16 * 4)) / 3
-                let width = laneWidth * 0.7
+                let laneWidth = ((self.scene.size.width)) / 3
+                let width = laneWidth
                 
                 
                 let endPoint = CGPoint(x: laneX, y: endY ?? self.endHeight)
@@ -85,9 +85,9 @@ class SpawnManager {
                 actions.append(moveAction)
                 
                 
-                let randomObstacleTypeNumber: Int = Int.random(in: (self.scene.score > 300) ? 1...100 : 6...100)
+                let randomObstacleTypeNumber: Int = Int.random(in: (self.scene.score > 10) ? 1...100 : 6...100)
                 
-                if randomObstacleTypeNumber <= 5 {
+                if randomObstacleTypeNumber <= 20 {
                     obstacle = PowerUp(width: width)
                     actions.append(SKAction.fadeOut(withDuration: 0.3))
                     actions.append(SKAction.removeFromParent())
@@ -102,6 +102,7 @@ class SpawnManager {
                     }
                     
                     let gameOverAction = SKAction.customAction(withDuration: 0.0, actionBlock: { _, _ in
+                        self.scene.player.transition(to: .fail)
                         self.scene.gameManager.gameOver()
                     })
                     
