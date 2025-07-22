@@ -23,6 +23,10 @@ class Thief : Obstacle {
         super.init(initialTexture: "EnemyWalk1", width: width)
     }
     
+    var attackAction: SKAction {
+        SKAction.setTexture(SKTexture(imageNamed: ""))
+    }
+    
     @MainActor required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

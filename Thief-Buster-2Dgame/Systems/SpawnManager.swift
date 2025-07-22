@@ -51,7 +51,7 @@ class SpawnManager {
     }
     
     // Starts spawning obstacles on a timer loop. Called once from GameScene.
-    func generate() {
+    func generate(targetY endY: Double? = nil) {
         timer?.invalidate()
         timer = nil
         
@@ -66,51 +66,52 @@ class SpawnManager {
                 if (Double(num) / 100.0) > self.calculatedObstacleSpawnRate {
                     return
                 }
+                
+                var obstacle : Obstacle
+                var actions : [SKAction] = []
+
+                let lane = Int.random(in: 1...3)
+                let laneX = self.scene.size.width * CGFloat(lane) / 4.0
 
                 let laneWidth = ((self.scene.size.width) - (16 * 4)) / 3
                 let width = laneWidth * 0.7
                 
-                // Determine obstacle type
-                var obstacle : Obstacle
+                
+                let endPoint = CGPoint(x: laneX, y: endY ?? self.endHeight)
+                let moveAction = SKAction.move(
+                    to: endPoint,
+                    duration: self.obstacleMoveTime
+                )
+                actions.append(moveAction)
+                
                 
                 let randomObstacleTypeNumber: Int = Int.random(in: (self.scene.score > 300) ? 1...100 : 6...100)
                 
                 if randomObstacleTypeNumber <= 5 {
                     obstacle = PowerUp(width: width)
+                    actions.append(SKAction.fadeOut(withDuration: 0.3))
+                    actions.append(SKAction.removeFromParent())
                 } else if randomObstacleTypeNumber < 30 {
                     obstacle = Customer(width: width)
+                    actions.append(SKAction.fadeOut(withDuration: 0.3))
+                    actions.append(SKAction.removeFromParent())
                 } else {
                     obstacle = Thief(width: width)
                     obstacle.onDie = {
                         self.scene.score += 5
                     }
+                    
+                    let gameOverAction = SKAction.customAction(withDuration: 0.0, actionBlock: { _, _ in
+                        self.scene.gameManager.gameOver()
+                    })
+                    
+                    actions.append((obstacle as! Thief).attackAction)
+                    actions.append(gameOverAction)
                 }
                 
                 obstacle.name = "obstacle"
                 obstacle.zPosition = 5
-                
-                let lane = Int.random(in: 1...3)
-                let laneX = self.scene.size.width * CGFloat(lane) / 4.0
-
                 obstacle.position = CGPoint(x: laneX, y: -obstacle.size.height)
-
-                let endPoint = CGPoint(x: laneX, y: self.endHeight)
-
-                let moveAction = SKAction.move(
-                    to: endPoint,
-                    duration: self.obstacleMoveTime
-                )
-                
-                var actions = [moveAction]
-                
-                if obstacle is Thief {
-                    
-                    let gameOverAction = SKAction.customAction(withDuration: 1, actionBlock: { _, _ in
-                        self.scene.gameManager.gameOver()
-                    })
-                    
-                    actions.append(gameOverAction)
-                }
                 
                 let sequenceAction = SKAction.sequence(actions)
 

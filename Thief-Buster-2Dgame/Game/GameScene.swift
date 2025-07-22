@@ -62,6 +62,10 @@ class GameScene: SKScene {
             saveHigshcore(score)
         }
     }
+    
+    var obstacleEndY : CGFloat {
+        self.size.height * 0.7
+    }
 
     func saveHigshcore(_ score: Int) {
         guard let modelContext = modelContext else { return }
@@ -104,7 +108,7 @@ class GameScene: SKScene {
         isPaused = false
         
         // Mulai spawn lagi
-        spawnManager.generate()
+        spawnManager.generate(targetY: obstacleEndY)
         
         // Hapus overlay
         hideGameOverView()
@@ -139,7 +143,7 @@ class GameScene: SKScene {
         setupPauseButton()
 
 
-        spawnManager.generate()
+        spawnManager.generate(targetY: obstacleEndY)
         helper = CollisionManager(gamescene: self)
     }
     
