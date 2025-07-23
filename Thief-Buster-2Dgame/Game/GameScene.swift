@@ -95,40 +95,7 @@ class GameScene: SKScene {
     }
     
     // Restart the game
-    func restartGame() {
-        SoundManager.shared.playBackgroundMusic()
-        // Reset score
-        score = 0
-    
-        // Reset highscore label (optional)
-        highscoreLabel.text = "Highscore: \(highscore)"
-        
-        // Delete all obstacles from scene
-        self.children.forEach { node in
-            if node.name == "obstacle" {
-                node.removeFromParent()
-            }
-        }
-        
-        // Unpause scene
-        isPaused = false
-        
-        
-        // Re-spawn
-        spawnManager.generate(targetY: obstacleEndY)
-        
-        // Hapus overlay
-        hideOverlay()
-        
-        // Muat ulang highscore & update label
-        loadHighscore()
-        highscoreLabel.text = "Highscore: \(highscore)"
-        
-        // Reset score
-        score = 0
-        
-        print("Game restarted")
-    }
+  
 
     
     func hideOverlay() {
@@ -328,6 +295,7 @@ class GameScene: SKScene {
     
     // Restart the game
     func restartGame() {
+        SoundManager.shared.playBackgroundMusic()
         // Reset score
         score = 0
         

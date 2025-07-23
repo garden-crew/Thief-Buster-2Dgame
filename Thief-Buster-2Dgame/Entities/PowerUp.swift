@@ -38,15 +38,13 @@ class PowerUp : Obstacle {
         HapticManager.shared.vibratePowerUp()
         super.die()
         
-        // Bunuh semua thief
         self.parent?.children.forEach { node in
             if node.name == "obstacle" && node is Thief {
                 (node as! Thief).die()
             }
         }
         
-        // Animasi angin
-        let windAnimation = SKAction.animate(with: WindTextures, timePerFrame: 0.1)
+        let windAnimation = SKAction.animate(with: WindTextures, timePerFrame: 0.15)
         let removeAction = SKAction.removeFromParent()
         
         let windNode = SKSpriteNode(texture: WindTextures.first)

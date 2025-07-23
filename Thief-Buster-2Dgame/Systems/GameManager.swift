@@ -17,6 +17,8 @@ class GameManager {
     }
 
     func gameOver() {
+        SoundManager.shared.play(sound: .gameOver)
+        SoundManager.shared.stopBackgroundMusic()
         scene.isPaused = true
         gameOverView()
     }
