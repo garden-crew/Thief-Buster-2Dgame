@@ -22,10 +22,6 @@ class CollisionManager {
         guard let touch = touches.first else { return }
         let location = touch.location(in: gamescene)
 
-        // Thresholds to determine how close the obstacle is to the center of hit zone
-        let perfectThreshold: CGFloat =
-            gamescene.targetMid.frame.size.height / 4
-        let goodThreshold: CGFloat = gamescene.targetMid.frame.size.height / 2
 
         // Helper function to check distance between obstacle and center of target area.
         // If within threshold, it's a hit (Perfect or Good). Otherwise, Miss.
@@ -33,6 +29,9 @@ class CollisionManager {
         func checkAlignment(with target: SKShapeNode) {
 
             let targetCenterY = target.position.y
+            let targetHalfHeight = target.frame.size.height
+            let perfectThreshold: CGFloat = 40.0
+
             let nodes = gamescene.nodes(at: target.position)
 
             // Filter to get obstacles only
@@ -44,81 +43,109 @@ class CollisionManager {
             // Check distance and handle collision
             obstacles.forEach { obstacle in
 
-                let enemyPosition =
-                    obstacle.frame.minY + (obstacle.frame.size.height / 2)
+                let enemyPosition = obstacle.position.y
 
                 let distance = abs(enemyPosition - targetCenterY)
-                
-                if distance > goodThreshold {
+
+                if distance <= perfectThreshold {
+                    if obstacle is Thief {
+                        obstacle.onDie = {
+                            self.gamescene.score += 10
+                            SoundManager.shared.play(sound: .hitThief)
+                            self.gamescene.run(
+                                SKAction.sequence([
+                                    SKAction.wait(forDuration: 0.2),
+                                    SKAction.run {
+                                        let perfectNode = GradedTextNode(
+                                            text: "PERFECT",
+                                            fontName: "Pixeled",
+                                            fontSize: 16,
+                                            gradientColors: [
+                                                .yellow, .orange, .red,
+                                            ]
+                                        )
+                                        perfectNode.position = CGPoint(
+                                            x: obstacle.position.x,
+                                            y: obstacle.position.y + 100
+                                        )
+                                        perfectNode.zPosition = ZPosition.inGameUI.rawValue
+                                        self.gamescene.addChild(perfectNode)
+                                        perfectNode.run(
+                                            SKAction.sequence([
+                                                SKAction.fadeIn(
+                                                    withDuration: 0.2
+                                                ),
+                                                SKAction.scale(
+                                                    to: 1.2,
+                                                    duration: 0.1
+                                                ),
+                                                SKAction.wait(forDuration: 0.5),
+                                                SKAction.fadeOut(
+                                                    withDuration: 0.3
+                                                ),
+                                                SKAction.removeFromParent(),
+                                            ])
+                                        )
+                                    },
+                                ])
+                            )
+                        }
+                    }
+                    obstacle.die()
+
                     return
                 }
-                
-                if obstacle is Thief{
-                    var score = 0
-                    
-                    if distance <= perfectThreshold {
-                        score += 5
-                        SoundManager.shared.play(sound: .hitThief)
-                        gamescene.run(SKAction.sequence([
-                            SKAction.wait(forDuration: 0.2),
-                            SKAction.run {
-                                let perfectNode = GradedTextNode(
-                                    text: "PERFECT",
-                                    fontName: "Pixeled",
-                                    fontSize: 16,
-                                    gradientColors: [.yellow, .orange, .red]
-                                )
-                                perfectNode.position = CGPoint(
-                                    x: obstacle.position.x,
-                                    y: obstacle.position.y + 100
-                                )
-                                perfectNode.zPosition = 100
-                                self.gamescene.addChild(perfectNode)
-                                perfectNode.run(SKAction.sequence([
-                                    SKAction.fadeIn(withDuration: 0.2),
-                                    SKAction.scale(to: 1.2, duration: 0.1),
-                                    SKAction.wait(forDuration: 0.5),
-                                    SKAction.fadeOut(withDuration: 0.3),
-                                    SKAction.removeFromParent()
-                                ]))
-                            }
-                        ]))
-                    } else {
-                        SoundManager.shared.play(sound: .hitThief)
-                        gamescene.run(SKAction.sequence([
-                            SKAction.wait(forDuration: 0.2),
-                            SKAction.run {
-                                let goodNode = GradedTextNode(
-                                    text: "GOOD",
-                                    fontName: "Pixeled",
-                                    fontSize: 16,
-                                    gradientColors: [.blue, .cyan, .white]
-                                )
-                                goodNode.position = CGPoint(
-                                    x: obstacle.position.x,
-                                    y: obstacle.position.y + 100
-                                )
-                                goodNode.zPosition = 100
-                                self.gamescene.addChild(goodNode)
-                                goodNode.run(SKAction.sequence([
-                                    SKAction.fadeIn(withDuration: 0.2),
-                                    SKAction.scale(to: 1.2, duration: 0.1),
-                                    SKAction.wait(forDuration: 0.5),
-                                    SKAction.fadeOut(withDuration: 0.3),
-                                    SKAction.removeFromParent()
-                                ]))
-                            }
-                        ]))
+
+                if distance <= targetHalfHeight {
+                    if obstacle is Thief {
+                        obstacle.onDie = {
+                            self.gamescene.score += 5
+                            SoundManager.shared.play(sound: .hitThief)
+                            self.gamescene.run(
+                                SKAction.sequence([
+                                    SKAction.wait(forDuration: 0.2),
+                                    SKAction.run {
+                                        let goodNode = GradedTextNode(
+                                            text: "GOOD",
+                                            fontName: "Pixeled",
+                                            fontSize: 16,
+                                            gradientColors: [
+                                                .blue, .cyan, .white,
+                                            ]
+                                        )
+                                        goodNode.position = CGPoint(
+                                            x: obstacle.position.x,
+                                            y: obstacle.position.y + 100
+                                        )
+                                        goodNode.zPosition = ZPosition.inGameUI.rawValue
+                                        self.gamescene.addChild(goodNode)
+                                        goodNode.run(
+                                            SKAction.sequence([
+                                                SKAction.fadeIn(
+                                                    withDuration: 0.2
+                                                ),
+                                                SKAction.scale(
+                                                    to: 1.2,
+                                                    duration: 0.1
+                                                ),
+                                                SKAction.wait(forDuration: 0.5),
+                                                SKAction.fadeOut(
+                                                    withDuration: 0.3
+                                                ),
+                                                SKAction.removeFromParent(),
+                                            ])
+                                        )
+                                    },
+                                ])
+                            )
+                        }
                     }
-                    score += 5
-                    obstacle.onDie = {
-                        self.gamescene.score += score
-                    }
+                    obstacle.die()
+
+                    return
                 }
-                
-                obstacle.die()
             }
-            
+
         }
 
         // Determine which attack button was touched and check corresponding lane
