@@ -11,9 +11,9 @@ import SpriteKit
 enum PlayerState {
     case initial
     case idle
-    case attackleft
-    case attackcenter
-    case attackright
+    case attackLeft
+    case attackCenter
+    case attackRight
     case fail
 }
 
@@ -21,9 +21,9 @@ enum PlayerState {
 class Guard: SKSpriteNode {
     var state: PlayerState = .initial
     var idleTexture: [SKTexture] = []
-    var attackleftTextures: [SKTexture] = []
-    var attackcenterTextures: [SKTexture] = []
-    var attackrightTextures: [SKTexture] = []
+    var attackLeftTextures: [SKTexture] = []
+    var attackCenterTextures: [SKTexture] = []
+    var attackRightTextures: [SKTexture] = []
     var failTexture: SKTexture!
     
     // Initializes the guard with default texture and sets up animations.
@@ -46,15 +46,15 @@ class Guard: SKSpriteNode {
             SKTexture(imageNamed: "GuardIdle1"),
             SKTexture(imageNamed: "GuardIdle2")
         ]
-        attackleftTextures = [
+        attackLeftTextures = [
             SKTexture(imageNamed: "GuardKick1"),
             SKTexture(imageNamed: "GuardKick2")
             ]
-        attackcenterTextures = [
+        attackCenterTextures = [
             SKTexture(imageNamed: "GuardPunch1"),
             SKTexture(imageNamed: "GuardPunch2")
         ]
-        attackrightTextures = [
+        attackRightTextures = [
             SKTexture(imageNamed: "GuardPunch3"),
             SKTexture(imageNamed: "GuardPunch4")
         ]
@@ -76,22 +76,22 @@ class Guard: SKSpriteNode {
                    SKAction.animate(with: idleTexture, timePerFrame: 0.3)
                )
                self.run(idleAnimation)
-        case .attackleft:
-            let animation = SKAction.animate(with: attackleftTextures, timePerFrame: 0.1)
+        case .attackLeft:
+            let animation = SKAction.animate(with: attackLeftTextures, timePerFrame: 0.1)
             let sequence = SKAction.sequence([
                 animation,
                 SKAction.run { [weak self] in self?.transition(to: .idle) }
             ])
             self.run(sequence)
-        case .attackcenter:
-            let animation = SKAction.animate(with: attackcenterTextures, timePerFrame: 0.1)
+        case .attackCenter:
+            let animation = SKAction.animate(with: attackCenterTextures, timePerFrame: 0.1)
             let sequence = SKAction.sequence([
                 animation,
                 SKAction.run { [weak self] in self?.transition(to: .idle) }
             ])
             self.run(sequence)
-        case .attackright:
-            let animation = SKAction.animate(with: attackrightTextures, timePerFrame: 0.1)
+        case .attackRight:
+            let animation = SKAction.animate(with: attackRightTextures, timePerFrame: 0.1)
             let sequence = SKAction.sequence([
                 animation,
                 SKAction.run { [weak self] in self?.transition(to: .idle) }

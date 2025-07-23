@@ -18,6 +18,11 @@ class PowerUp : Obstacle {
         }
     }
     
+    override var WindTextures: [SKTexture] {
+        (1...6).map { i in
+            SKTexture(imageNamed: "WindAnimation\(i)")
+        }
+    }
     // Initializes the power up with specific width and default texture.
     init(width: CGFloat) {
         super.init(initialTexture: "PowerMove1", width: width)
@@ -32,15 +37,29 @@ class PowerUp : Obstacle {
         SoundManager.shared.play(sound: .powerUp)
         HapticManager.shared.vibratePowerUp()
         super.die()
+        
         self.parent?.children.forEach { node in
             if node.name == "obstacle" && node is Thief {
                 (node as! Thief).die()
             }
         }
+        
+        let windAnimation = SKAction.animate(with: WindTextures, timePerFrame: 0.15)
+        let removeAction = SKAction.removeFromParent()
+        
+        let windNode = SKSpriteNode(texture: WindTextures.first)
+        if let scene = self.scene {
+            windNode.position = CGPoint(x: scene.size.width / 2, y: self.position.y)
+        }
+        windNode.zPosition = self.zPosition + 1
+        
+        self.parent?.addChild(windNode)
+        windNode.run(SKAction.sequence([windAnimation, removeAction]))
     }
     
     override var dieTextures: [SKTexture] {
         return[SKTexture(imageNamed: "PowerHit")]
     }
     
+   
 }

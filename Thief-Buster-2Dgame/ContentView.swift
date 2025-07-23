@@ -1,4 +1,4 @@
-// 
+//
 //  ContentView.swift
 //  Trying BishiBashi
 //
@@ -16,16 +16,17 @@ struct ContentView: View {
 
     var scene: SKScene {
         let screenSize = UIScreen.main.bounds.size
-        
+
         let canvasSize: CGSize = .init(
             width: screenSize.width,
             height: screenSize.height * 1.5
         )
 
         let scene = GameScene(
-            viewSize: screenSize, canvasSize: canvasSize
+            viewSize: screenSize,
+            canvasSize: canvasSize
         )
-        
+
         scene.scaleMode = .aspectFill
         scene.modelContext = modelContext
 

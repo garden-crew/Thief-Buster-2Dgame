@@ -20,6 +20,11 @@ class CollisionManager {
     func handleTouches(_ touches: Set<UITouch>, with event: UIEvent?) {
 
         guard let touch = touches.first else { return }
+        
+        if gamescene.isOverlayShown {
+            return
+        }
+        
         let location = touch.location(in: gamescene)
 
 
