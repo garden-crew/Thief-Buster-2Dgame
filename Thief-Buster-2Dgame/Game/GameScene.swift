@@ -19,6 +19,8 @@ class GameScene: SKScene {
     
     var pauseButton: SKSpriteNode!
     var gamePaused: Bool = false
+    var isGameOver = false
+    var isOverlayShown = false
 
     var player: Guard!
     var background: SKSpriteNode!
@@ -312,11 +314,11 @@ class GameScene: SKScene {
     }
     
     func resumeGame(){
-        self.isPaused.toggle()
-        attackButtonLeft.isUserInteractionEnabled = true
-        attackButtonCenter.isUserInteractionEnabled = true
-        attackButtonRight.isUserInteractionEnabled = true
-        hideOverlay()
+        isPaused = false
+//        attackButtonLeft.isUserInteractionEnabled = true
+//        attackButtonCenter.isUserInteractionEnabled = true
+//        attackButtonRight.isUserInteractionEnabled = true
+        hidePauseOverlay()
     }
         
     func togglePause() {
@@ -324,42 +326,92 @@ class GameScene: SKScene {
         isPaused = gamePaused
     }
     
+    // Restart the game
+    func restartGame() {
+        // Reset score
+        score = 0
+        
+        // Reset highscore label (optional)
+        highscoreLabel.text = "Highscore: \(highscore)"
+        
+        // Delete all obstacles from scene
+        self.children.forEach { node in
+            if node.name == "obstacle" {
+                node.removeFromParent()
+            }
+        }
+        
+        // Unpause scene
+        isPaused = false
+        isGameOver = false
+        isOverlayShown = false
+        
+        // Re-spawn
+        spawnManager.generate(targetY: obstacleEndY)
+        
+        // Hapus overlay
+        hideGameOverlay()
+        hidePauseOverlay()
+        
+        // Muat ulang highscore & update label
+        loadHighscore()
+        highscoreLabel.text = "Highscore: \(highscore)"
+        
+        // Reset score
+        score = 0
+        
+        print("Game restarted")
+    }
+
+    
+    func hideGameOverlay() {
+        self.childNode(withName: "gameOverlay")?.removeFromParent()
+    }
+    
+    func hidePauseOverlay() {
+        self.childNode(withName: "pauseOverlay")?.removeFromParent()
+    }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-       
-//        if gamePaused { return }
-        
         helper?.handleTouches(touches, with: event)
-
+        
         touches.forEach { touch in
             let location = touch.location(in: self)
             let node = atPoint(location)
             
             switch node.name {
+            // Serangan hanya bisa dilakukan jika belum game over dan overlay tidak ditampilkan
             case "attackLeft":
-                player.transition(to: .attackleft)
-                print("Attack left tapped")
+                guard !isGameOver && !isOverlayShown else { return }
+                player.transition(to: .attackLeft)
+                print("\(node.name ?? "") tapped")
+            
             case "attackCenter":
-                player.transition(to: .attackcenter)
-                print("Attack center tapped")
+                guard !isGameOver && !isOverlayShown else { return }
+                player.transition(to: .attackCenter)
+                print("\(node.name ?? "") tapped")
+                
             case "attackRight":
-                player.transition(to: .attackright)
-                print("Attack right tapped")
+                guard !isGameOver && !isOverlayShown else { return }
+                player.transition(to: .attackRight)
+                print("\(node.name ?? "") tapped")
+                
+            // Tombol-tombol lain tetap bisa digunakan saat game over
             case "restartButton":
                 print("Restart tapped")
-//                gameManager.hideGameOverView()
                 restartGame()
                 
             case "menuButton":
                 print("Menu tapped")
-//                gameManager.hideGameOverView()
                 gameManager.startView()
                 
             case "pauseButton":
                 gameManager.pauseView()
+                isOverlayShown = true
                 
             case "resumeButton":
                 resumeGame()
+                isOverlayShown = false
                 
             case "startButton":
                 gameManager.animateStartAndRemoveOverlay()
@@ -367,10 +419,13 @@ class GameScene: SKScene {
                 
             case "quitButton":
                 gameManager.startView()
+                isOverlayShown = true
+                hidePauseOverlay()
                 
             default:
                 break
             }
-        } 
+        }
     }
+
 }
