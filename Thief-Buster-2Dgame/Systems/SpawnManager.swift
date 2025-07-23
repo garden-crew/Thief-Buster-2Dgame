@@ -93,6 +93,15 @@ class SpawnManager {
                     actions.append(SKAction.removeFromParent())
                 } else if randomObstacleTypeNumber < 30 {
                     obstacle = Customer(width: width)
+                    obstacle.onDie = {
+                        self.scene.run(SKAction.sequence([
+                            
+                            SKAction.wait(forDuration: 0.2),
+                            SKAction.run {
+                                self.scene.gameManager.gameOver()
+                            }
+                        ]))
+                    }
                     actions.append(SKAction.fadeOut(withDuration: 0.3))
                     actions.append(SKAction.removeFromParent())
                 } else {
