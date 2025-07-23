@@ -43,7 +43,6 @@ class GameManager {
             }
         }
 
-        scene.spawnManager.generate()
         scene.loadHighscore()
         scene.highscoreLabel.text = "Highscore: \(scene.highscore)"
     }
@@ -52,11 +51,19 @@ class GameManager {
         scene.isPaused = false
         guard let overlay = startOverlay else { return }
         
+        scene.spawnManager.generate(targetY: scene.obstacleEndY)
+        
         scene.isOverlayShown = false
         
-        let moveUp = SKAction.moveBy(x: 0, y: scene.size.height, duration: 1.0)
-        moveUp.timingMode = .easeIn
-        overlay.run(.sequence([moveUp, .removeFromParent()]))
+        let fadeOut = SKAction.fadeOut(withDuration: 1)
+        fadeOut.timingMode = .easeIn
+        
+        let showGameUI = SKAction.customAction(withDuration: 0) { _, _ in
+            self.scene.scoreLabel.fontColor = .white
+            self.scene.highscoreLabel.fontColor = .white
+        }
+        
+        overlay.run(.sequence([fadeOut, showGameUI, .removeFromParent()]))
     }
 
     private func gameOverView() {

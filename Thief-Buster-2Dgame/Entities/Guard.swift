@@ -31,7 +31,7 @@ class Guard: SKSpriteNode {
         let texture = SKTexture(imageNamed: "GuardIdle1") // placeholder
         super.init(texture: texture, color: .clear, size: texture.size())
         self.name = "guard"
-        self.zPosition = 10
+        self.zPosition = ZPosition.player.rawValue
         self.setupTextures()
         self.transition(to: .idle)
     }

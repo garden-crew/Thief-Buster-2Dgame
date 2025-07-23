@@ -11,7 +11,7 @@ struct PauseView {
     static func show(on scene: SKScene) {
         let overlay = SKSpriteNode(color: UIColor.black.withAlphaComponent(0.6), size: scene.size)
         overlay.position = CGPoint(x: scene.size.width / 2, y: scene.size.height / 2)
-        overlay.zPosition = 300
+        overlay.zPosition = ZPosition.overlay.rawValue
         overlay.name = "pauseOverlay"
 
         let pauseLabel = SKLabelNode(text: "Paused")

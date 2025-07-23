@@ -13,13 +13,13 @@ import SpriteKit
 class SpawnManager {
     var scene: GameScene
     
-    private var baseObstacleSpeed: Double = 50
+    private var baseObstacleSpeed: Double = 250
     private var baseObstacleSpawnRate: Double = 0.3
 
     var calculatedObstacleSpeed: Double {
         let score = Double(scene.score)
-        let speed = baseObstacleSpeed + (score / 10)
-        return max(200, speed)
+        let speed = baseObstacleSpeed + (score / 2)
+        return min(400, speed)
     }
 
     // Returns adjusted spawn rate, clamped to max 1.0.
@@ -27,13 +27,13 @@ class SpawnManager {
         
         let score = Double(scene.score)
         
-        if score < 30 {
+        if score < 20 {
             return 0.2
         }
         
-        let spawnRate: Double = baseObstacleSpawnRate + score/1000
+        let spawnRate: Double = baseObstacleSpawnRate + score/100
         
-        return min(0.8, spawnRate)
+        return min(0.9, spawnRate)
     }
 
     var obstacleMoveTime: Double {
@@ -50,6 +50,11 @@ class SpawnManager {
         self.scene = scene
     }
     
+    func stop() {
+        timer?.invalidate()
+        timer = nil
+    }
+    
     // Starts spawning obstacles on a timer loop. Called once from GameScene.
     func generate(targetY endY: Double? = nil) {
         timer?.invalidate()
@@ -57,11 +62,14 @@ class SpawnManager {
         
         // Repeat every 0.5 second
         timer = Timer.scheduledTimer(
-            withTimeInterval: 0.5,
+            withTimeInterval: 0.8,
             repeats: true,
             block: { _ in
+                
 
                 let num: Int = Int.random(in: 1...100)
+                
+                print(num)
 
                 if (Double(num) / 100.0) > self.calculatedObstacleSpawnRate {
                     return
@@ -85,9 +93,9 @@ class SpawnManager {
                 actions.append(moveAction)
                 
                 
-                let randomObstacleTypeNumber: Int = Int.random(in: (self.scene.score > 10) ? 1...100 : 6...100)
+                let randomObstacleTypeNumber: Int = Int.random(in: (self.scene.score > 100) ? 1...100 : 6...100)
                 
-                if randomObstacleTypeNumber <= 20 {
+                if randomObstacleTypeNumber <= 5 {
                     obstacle = PowerUp(width: width)
                     actions.append(SKAction.fadeOut(withDuration: 0.3))
                     actions.append(SKAction.removeFromParent())
@@ -120,8 +128,9 @@ class SpawnManager {
                     actions.append(gameOverAction)
                 }
                 
+                obstacle.anchorPoint = CGPoint(x: 0.5, y: 0)
                 obstacle.name = "obstacle"
-                obstacle.zPosition = 5
+                obstacle.zPosition = ZPosition.obstacle.rawValue
                 obstacle.position = CGPoint(x: laneX, y: -obstacle.size.height)
                 
                 let sequenceAction = SKAction.sequence(actions)
