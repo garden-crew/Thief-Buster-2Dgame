@@ -25,10 +25,10 @@ class GameManager {
     
     
     func gameOverView(){
-        
+        SoundManager.shared.stopBackgroundMusic()
+        SoundManager.shared.play(sound: .gameOver)
         let finalScore = scene.score
         let highestScore = scene.highscore
-        
         let overlay = SKSpriteNode(color: UIColor.black.withAlphaComponent(0.6), size: scene.size)
         overlay.position = CGPoint(x: scene.size.width / 2, y: scene.size.height / 2)
         overlay.zPosition = 300
@@ -126,7 +126,7 @@ class GameManager {
     }
     
     func startView() {
-        
+        SoundManager.shared.playBackgroundMusic()
         scene.childNode(withName: "gameOverlay")?.removeFromParent()
         
         scene.score = 0

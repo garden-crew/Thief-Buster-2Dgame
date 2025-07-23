@@ -94,9 +94,10 @@ class GameScene: SKScene {
     
     // Restart the game
     func restartGame() {
+        SoundManager.shared.playBackgroundMusic()
         // Reset score
         score = 0
-        
+    
         // Reset highscore label (optional)
         highscoreLabel.text = "Highscore: \(highscore)"
         
@@ -141,7 +142,7 @@ class GameScene: SKScene {
     }
     
     override func didMove(to view: SKView) {
-//        SoundManager.shared.playBackgroundMusic()
+       SoundManager.shared.playBackgroundMusic()
 
         loadHighscore()
         setUpBackground()

@@ -26,7 +26,7 @@ class SoundManager {
         case .hitThief:
             soundFileName = "Punch"
         case .powerUp:
-            soundFileName = "RapidPunch"
+            soundFileName = "PowerUp"
             backgroundPlayer?.setVolume(0.2, fadeDuration: 0.2)
                   DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                       self.backgroundPlayer?.setVolume(0.5, fadeDuration: 0.5)

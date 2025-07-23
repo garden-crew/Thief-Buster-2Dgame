@@ -30,6 +30,7 @@ class Thief : Obstacle {
     
     var attackAction: SKAction {
         SKAction.setTexture(SKTexture(imageNamed: "ThiefNotHit"))
+        
     }
     
   

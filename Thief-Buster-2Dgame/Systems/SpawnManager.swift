@@ -104,6 +104,7 @@ class SpawnManager {
                     let gameOverAction = SKAction.customAction(withDuration: 0.0, actionBlock: { _, _ in
                         self.scene.player.transition(to: .fail)
                         self.scene.gameManager.gameOver()
+                       
                     })
                     
                     actions.append((obstacle as! Thief).attackAction)
