@@ -17,7 +17,8 @@ class GameManager {
     }
 
     func gameOver() {
-        SoundManager.shared.play(sound: .gameOver)
+
+        scene.run(SKAction.playSoundFileNamed("GameOver.mp3", waitForCompletion: false))
         SoundManager.shared.stopBackgroundMusic()
         scene.isPaused = true
         gameOverView()
@@ -30,7 +31,7 @@ class GameManager {
     }
 
     func startView() {
-        SoundManager.shared.playBackgroundMusic()
+       SoundManager.shared.playBackgroundMusic()
         scene.childNode(withName: "gameOverlay")?.removeFromParent()
         scene.score = 0
         let overlay = StartView.build(on: scene)
@@ -47,6 +48,22 @@ class GameManager {
         scene.loadHighscore()
         scene.highscoreLabel.text = "Highscore: \(scene.highscore)"
     }
+    
+    func animateButtonTap(nodeName: String, tappedTexture: String, normalTexture: String, duration: TimeInterval = 0.2) {
+        // Cari node dengan nama
+        if let button = scene.childNode(withName: "//\(nodeName)") as? SKSpriteNode {
+            let changeToTap = SKAction.run {
+                button.texture = SKTexture(imageNamed: tappedTexture)
+            }
+            let wait = SKAction.wait(forDuration: duration)
+            let changeBack = SKAction.run {
+                button.texture = SKTexture(imageNamed: normalTexture)
+            }
+            let sequence = SKAction.sequence([changeToTap, wait, changeBack])
+            button.run(sequence)
+        }
+    }
+
 
     func animateStartAndRemoveOverlay() {
         scene.isPaused = false

@@ -114,9 +114,14 @@ class SpawnManager {
                     obstacle = Customer(width: width)
                     obstacle.onDie = {
                         self.scene.run(
+                            SKAction.playSoundFileNamed(
+                                "hitCust.mp3",
+                                waitForCompletion: false
+                            )
+                        )
+                        self.scene.run(
                             SKAction.sequence([
-
-                                SKAction.wait(forDuration: 0.2),
+                                SKAction.wait(forDuration: 0.5),
                                 SKAction.run {
                                     self.scene.gameManager.gameOver()
                                 },
@@ -135,7 +140,11 @@ class SpawnManager {
                     actions.append(SKAction.fadeOut(withDuration: 0.3))
                     actions.append(SKAction.removeFromParent())
                 } else {
-                    obstacle = Thief(width: width)
+
+                    let thief = Thief(width: width)
+                    thief.lane = lane
+                    obstacle = thief
+
                     obstacle.onDie = {
                         self.scene.score += 5
                     }
@@ -144,7 +153,15 @@ class SpawnManager {
                         withDuration: 0.0,
                         actionBlock: { _, _ in
                             self.scene.player.transition(to: .fail)
-                            self.scene.gameManager.gameOver()
+                            self.scene.run(
+                                SKAction.sequence([
+
+                                    SKAction.wait(forDuration: 0.2),
+                                    SKAction.run {
+                                        self.scene.gameManager.gameOver()
+                                    },
+                                ])
+                            )
 
                         }
                     )

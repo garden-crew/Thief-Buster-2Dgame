@@ -85,6 +85,10 @@ class PowerUp: Obstacle {
         windNode.zPosition = ZPosition.obstacle.rawValue + 1
 
         self.parent?.addChild(windNode)
+        
+        self.run(SKAction.playSoundFileNamed("PowerUp.mp3", waitForCompletion: false))
+        HapticManager.shared.vibratePowerUp()
+
         windNode.run(SKAction.sequence([windAnimation, fade, removeAction]))
     }
 
