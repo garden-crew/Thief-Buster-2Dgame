@@ -34,14 +34,15 @@ class PowerUp : Obstacle {
     }
     
     override func die() {
-        SoundManager.shared.play(sound: .powerUp)
-        HapticManager.shared.vibratePowerUp()
-        super.die()
+       
         
+        super.die()
         self.parent?.children.forEach { node in
             if node.name == "obstacle" && node is Thief {
                 (node as! Thief).die()
             }
+            self.run(SKAction.playSoundFileNamed("PowerUp.mp3", waitForCompletion: false))
+            HapticManager.shared.vibratePowerUp()
         }
         
         let windAnimation = SKAction.animate(with: WindTextures, timePerFrame: 0.15)
@@ -49,7 +50,7 @@ class PowerUp : Obstacle {
         
         let windNode = SKSpriteNode(texture: WindTextures.first)
         if let scene = self.scene {
-            windNode.position = CGPoint(x: scene.size.width / 2, y: self.position.y)
+            windNode.position = CGPoint(x: scene.size.width / 2, y: self.position.y-100)
         }
         windNode.zPosition = self.zPosition + 1
         

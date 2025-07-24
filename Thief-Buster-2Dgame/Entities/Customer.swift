@@ -29,10 +29,12 @@ class Customer : Obstacle {
     
     override func die() {
         
+        
         if !active { return }
         
-        SoundManager.shared.play(sound: .hitCust)
+        self.run(SKAction.playSoundFileNamed("hitCust.mp3", waitForCompletion: false))
         
+
         super.die()
     }
     override var dieTextures: [SKTexture] {

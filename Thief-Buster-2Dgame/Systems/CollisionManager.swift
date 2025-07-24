@@ -56,7 +56,7 @@ class CollisionManager {
                     if obstacle is Thief {
                         obstacle.onDie = {
                             self.gamescene.score += 10
-                            SoundManager.shared.play(sound: .hitThief)
+                            self.gamescene.run(SKAction.playSoundFileNamed("Punch.mp3", waitForCompletion: false))
                             self.gamescene.run(
                                 SKAction.sequence([
                                     SKAction.wait(forDuration: 0.2),
@@ -105,7 +105,7 @@ class CollisionManager {
                     if obstacle is Thief {
                         obstacle.onDie = {
                             self.gamescene.score += 5
-                            SoundManager.shared.play(sound: .hitThief)
+                            self.gamescene.run(SKAction.playSoundFileNamed("Punch.mp3", waitForCompletion: false))
                             self.gamescene.run(
                                 SKAction.sequence([
                                     SKAction.wait(forDuration: 0.2),
@@ -155,13 +155,13 @@ class CollisionManager {
 
         // Determine which attack button was touched and check corresponding lane
         if gamescene.attackButtonLeft.contains(location) {
-            SoundManager.shared.play(sound: .misshit)
+            self.gamescene.run(SKAction.playSoundFileNamed("Whoosh.mp3", waitForCompletion: false))
             checkAlignment(with: gamescene.targetLeft)
         } else if gamescene.attackButtonCenter.contains(location) {
-            SoundManager.shared.play(sound: .misshit)
+            self.gamescene.run(SKAction.playSoundFileNamed("Whoosh.mp3", waitForCompletion: false))
             checkAlignment(with: gamescene.targetMid)
         } else if gamescene.attackButtonRight.contains(location) {
-            SoundManager.shared.play(sound: .misshit)
+            self.gamescene.run(SKAction.playSoundFileNamed("Whoosh.mp3", waitForCompletion: false))
             checkAlignment(with: gamescene.targetRight)
         }
     }
