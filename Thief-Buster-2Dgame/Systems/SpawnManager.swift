@@ -93,9 +93,9 @@ class SpawnManager {
                 actions.append(moveAction)
                 
                 
-                let randomObstacleTypeNumber: Int = Int.random(in: (self.scene.score > 10) ? 1...100 : 6...100)
+                let randomObstacleTypeNumber: Int = Int.random(in: (self.scene.score > 100) ? 1...100 : 6...100)
                 
-                if randomObstacleTypeNumber <= 20 {
+                if randomObstacleTypeNumber <= 5 {
                     obstacle = PowerUp(width: width)
                     actions.append(SKAction.fadeOut(withDuration: 0.3))
                     actions.append(SKAction.removeFromParent())
