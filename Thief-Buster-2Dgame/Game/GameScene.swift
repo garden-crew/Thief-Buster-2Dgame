@@ -498,6 +498,8 @@ class GameScene: SKScene {
                    let rootVC = window.rootViewController {
                     
                     let tutorialView = UIHostingController(rootView: TutorialView())
+                    tutorialView.modalPresentationStyle = .fullScreen
+                    
                     rootVC.present(tutorialView, animated: true, completion: nil)
                 }
 

@@ -11,51 +11,60 @@ struct TutorialView: View {
     @State private var currentPage = 0
 
     let images = ["Tutorial1", "Tutorial2", "Tutorial3"]
+    
+    let caption = ["Hit the thief!", "Don't hit customer!", "Hit star to clear lane!"]
 
     var body: some View {
         ZStack {
+            Color("custom gray")
+            
             VStack(spacing: 0) {
                 // Header
                 HStack {
                     Button(action: {
                         dismiss()
                     }) {
-                        Image(systemName: "chevron.left")
-                            .font(.title2)
-                            .padding(12)
-                            .background(Color.gray.opacity(0.2))
-                            .clipShape(Circle())
+                        Image("BackButton")
+                            .resizable()
+                            .frame(width: 60, height: 60)
                     }
                     .padding(.leading)
 
                     Spacer()
 
-                    Text("How to Play")
-                        .font(.title2)
+                    Text("HOW TO PLAY")
+                        .font(.custom("Pixellari", size: 36))
                         .fontWeight(.semibold)
-                        .padding(.trailing)
 
                     Spacer()
                     Spacer()
                 }
-                .padding(.top, 50)
 
-                Spacer(minLength: 10)
+                Spacer()
 
                 // Tutorial images carousel
                 TabView(selection: $currentPage) {
                     ForEach(0..<images.count, id: \.self) { index in
-                        Image(images[index])
-                            .resizable()
-                            .scaledToFit()
+                            VStack {
+                                Image(images[index])
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(maxHeight: 400)
+
+                                Text(caption[index])
+                                    .font(.custom("Pixellari", size: 28))
+                                    .fontWeight(.medium)
+                                    .multilineTextAlignment(.center)
+
+                                    .padding(.top, 8)
+                            }
                             .tag(index)
-                            .padding()
-                    }
+                        }
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                 .frame(height: 400)
                 
-                Spacer(minLength: 10)
+                Spacer()
 
                 // Page indicator
                 HStack(spacing: 8) {
@@ -65,9 +74,7 @@ struct TutorialView: View {
                             .frame(width: 10, height: 10)
                     }
                 }
-                .padding(.top, 12)
-
-                Spacer()
+                
             }
             
             HStack {
@@ -78,11 +85,10 @@ struct TutorialView: View {
                        }
                    }
                }) {
-                   Image(systemName: "chevron.left")
-                       .font(.title)
-                       .padding()
-                       .background(Color.gray.opacity(0.2))
-                       .clipShape(Circle())
+                   Image("TapLeft")
+                       .resizable()
+                       .frame(width: 40, height: 40)
+                       .padding(10)
                }
                .disabled(currentPage == 0)
                .opacity(currentPage == 0 ? 0.0 : 1)
@@ -96,11 +102,10 @@ struct TutorialView: View {
                        }
                    }
                }) {
-                   Image(systemName: "chevron.right")
-                       .font(.title)
-                       .padding()
-                       .background(Color.gray.opacity(0.2))
-                       .clipShape(Circle())
+                   Image("TapRight")
+                       .resizable()
+                       .frame(width: 40, height: 40)
+                       .padding(10)
                }
                .disabled(currentPage == images.count - 1)
                .opacity(currentPage == images.count - 1 ? 0.0 : 1)
