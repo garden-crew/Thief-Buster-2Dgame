@@ -15,7 +15,7 @@ struct PauseView {
         overlay.name = "pauseOverlay"
 
         let pauseLabel = SKLabelNode(text: "Paused")
-        pauseLabel.fontName = "Arial-BoldMT"
+        pauseLabel.fontName = "Pixellari"
         pauseLabel.fontSize = 50
         pauseLabel.fontColor = .white
         pauseLabel.position = CGPoint(x: 0, y: 100)
@@ -32,9 +32,15 @@ struct PauseView {
         restartLabel.size = CGSize(width: 150, height: 50)
         restartLabel.name = "restartButton"
         overlay.addChild(restartLabel)
+        
+        let musicButton = SKSpriteNode(imageNamed: "MusicButton")
+        musicButton.size = CGSize(width: 60, height: 60)
+        musicButton.position = CGPoint(x: 150, y: 110)
+        musicButton.name = "musicButton"
+        overlay.addChild(musicButton)
 
         let quitLabel = SKSpriteNode(imageNamed: "QuitButton")
-        quitLabel.position = CGPoint(x: 0, y: -140)
+        quitLabel.position = CGPoint(x: 0, y: -170)
         quitLabel.size = CGSize(width: 150, height: 50)
         quitLabel.name = "quitButton"
         overlay.addChild(quitLabel)

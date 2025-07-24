@@ -17,7 +17,7 @@ struct StartView {
         overlay.name = "startOverlay"
 
         let highscoreLabel = SKLabelNode(text: "Highscore: \(UserDefaults.standard.integer(forKey: "highscore"))")
-        highscoreLabel.fontName = "Arial-BoldMT"
+        highscoreLabel.fontName = "Pixellari"
         highscoreLabel.fontSize = 28
         highscoreLabel.fontColor = .white
         highscoreLabel.horizontalAlignmentMode = .left
@@ -38,7 +38,7 @@ struct StartView {
         overlay.addChild(musicButton)
 
         let titleLabel = SKLabelNode(text: "Thief\nBuster")
-        titleLabel.fontName = "Arial-BoldMT"
+        titleLabel.fontName = "Pixellari"
         titleLabel.fontSize = 60
         titleLabel.numberOfLines = 2
         titleLabel.horizontalAlignmentMode = .center

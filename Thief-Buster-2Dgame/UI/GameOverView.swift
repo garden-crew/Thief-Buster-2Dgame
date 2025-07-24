@@ -16,21 +16,21 @@ struct GameOverView {
         overlay.name = "gameOverlay"
 
         let gameOverLabel = SKLabelNode(text: "Game Over")
-        gameOverLabel.fontName = "Arial-BoldMT"
+        gameOverLabel.fontName = "Pixellari"
         gameOverLabel.fontSize = 50
         gameOverLabel.fontColor = .white
         gameOverLabel.position = CGPoint(x: 0, y: 100)
         overlay.addChild(gameOverLabel)
 
         let scoreLabel = SKLabelNode(text: "Score: \(score)")
-        scoreLabel.fontName = "Arial-BoldMT"
+        scoreLabel.fontName = "Pixellari"
         scoreLabel.fontSize = 40
         scoreLabel.fontColor = .white
         scoreLabel.position = CGPoint(x: 0, y: 0)
         overlay.addChild(scoreLabel)
 
         let highestScoreLabel = SKLabelNode(text: "Highest: \(highscore)")
-        highestScoreLabel.fontName = "Arial-BoldMT"
+        highestScoreLabel.fontName = "Pixellari"
         highestScoreLabel.fontSize = 40
         highestScoreLabel.fontColor = .white
         highestScoreLabel.position = CGPoint(x: 0, y: -60)
