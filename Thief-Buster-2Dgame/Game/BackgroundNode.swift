@@ -87,7 +87,7 @@ class BackgroundNode: SKNode {
         let tileWidth = sceneSize.width / CGFloat(columns)
         let rows = Int(stairBottomY / tileWidth) + 1
 
-        let texture = SKTexture(imageNamed: "TileB")
+        let texture = SKTexture(imageNamed: "Tile")
         let tileDef = SKTileDefinition(
             texture: texture,
             size: CGSize(width: tileWidth, height: tileWidth)

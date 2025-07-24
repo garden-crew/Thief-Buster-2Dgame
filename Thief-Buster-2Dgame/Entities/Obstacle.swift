@@ -24,9 +24,6 @@ class Obstacle: SKSpriteNode {
     var dieTextures: [SKTexture] {
         []
     }
-    var WindTextures: [SKTexture] {
-         []
-      }
 
     var walkTimePerFrame: TimeInterval { 0.2 }
 
