@@ -453,7 +453,11 @@ class GameScene: SKScene {
                 restartGame()
 
             case "menuButton":
-                print("Menu tapped")
+                gameManager.animateButtonTap(
+                    nodeName: "menuButton",
+                    tappedTexture: "MenuButtonTap",
+                    normalTexture: "MenuButton"
+                )
                 gameManager.startView()
 
             case "pauseButton":

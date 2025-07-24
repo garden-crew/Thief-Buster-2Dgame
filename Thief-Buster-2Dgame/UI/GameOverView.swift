@@ -43,10 +43,8 @@ struct GameOverView {
         restartLabel.name = "restartButton"
         overlay.addChild(restartLabel)
 
-        let menuLabel = SKLabelNode(text: "Menu")
-        menuLabel.fontName = "Arial-BoldMT"
-        menuLabel.fontSize = 36
-        menuLabel.fontColor = .yellow
+        let menuLabel = SKSpriteNode(imageNamed: "MenuButton")
+        menuLabel.size = CGSize(width: 150, height: 50)
         menuLabel.position = CGPoint(x: 0, y: -160)
         menuLabel.zPosition = 301
         menuLabel.name = "menuButton"
