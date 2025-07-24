@@ -21,31 +21,24 @@ struct PauseView {
         pauseLabel.position = CGPoint(x: 0, y: 100)
         overlay.addChild(pauseLabel)
 
-        let resumeLabel = SKLabelNode(text: "Resume")
-        resumeLabel.fontName = "Arial-BoldMT"
-        resumeLabel.fontSize = 36
-        resumeLabel.fontColor = .yellow
+        let resumeLabel = SKSpriteNode(imageNamed: "ResumeButton")
         resumeLabel.position = CGPoint(x: 0, y: 0)
+        resumeLabel.size = CGSize(width: 150, height: 50)
         resumeLabel.name = "resumeButton"
         overlay.addChild(resumeLabel)
 
-        let restartLabel = SKLabelNode(text: "Restart")
-        restartLabel.fontName = "Arial-BoldMT"
-        restartLabel.fontSize = 36
-        restartLabel.fontColor = .yellow
+        let restartLabel = SKSpriteNode(imageNamed: "RestartButton")
         restartLabel.position = CGPoint(x: 0, y: -60)
+        restartLabel.size = CGSize(width: 150, height: 50)
         restartLabel.name = "restartButton"
         overlay.addChild(restartLabel)
 
-        let quitLabel = SKLabelNode(text: "Quit")
-        quitLabel.fontName = "Arial-BoldMT"
-        quitLabel.fontSize = 36
-        quitLabel.fontColor = .yellow
-        quitLabel.position = CGPoint(x: 0, y: -100)
+        let quitLabel = SKSpriteNode(imageNamed: "QuitButton")
+        quitLabel.position = CGPoint(x: 0, y: -140)
+        quitLabel.size = CGSize(width: 150, height: 50)
         quitLabel.name = "quitButton"
         overlay.addChild(quitLabel)
 
         scene.addChild(overlay)
     }
 }
-
