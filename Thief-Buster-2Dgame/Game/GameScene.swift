@@ -167,10 +167,10 @@ class GameScene: SKScene {
 
     // Button for pause the game
     func setupPauseButton() {
-        pauseButton = SKSpriteNode(imageNamed: "attack left")
-        pauseButton.anchorPoint = CGPoint(x: 0, y: 0.5)
+        pauseButton = SKSpriteNode(imageNamed: "PauseButton")
+        pauseButton.anchorPoint = CGPoint(x: 0, y: 1.5)
         pauseButton.name = "pauseButton"
-        pauseButton.size = CGSize(width: 40, height: 40)
+        pauseButton.size = CGSize(width: 60, height: 60)
         scoreLabel.horizontalAlignmentMode = .left
         scoreLabel.verticalAlignmentMode = .top
         pauseButton.position = CGPoint(x: size.width - 24 - pauseButton.size.width, y: gameViewMaxY - 40)
@@ -248,7 +248,7 @@ class GameScene: SKScene {
         let buttonY : CGFloat = gameViewMinY + 80
 
         // Kiri
-        attackButtonLeft = SKSpriteNode(imageNamed: "attack left")
+        attackButtonLeft = SKSpriteNode(imageNamed: "FootAttack")
         attackButtonLeft.name = "attackLeft"
         attackButtonLeft.size = buttonSize
         attackButtonLeft.position = CGPoint(x: startX, y: buttonY)
@@ -256,7 +256,7 @@ class GameScene: SKScene {
         addChild(attackButtonLeft)
 
         // Tengah
-        attackButtonCenter = SKSpriteNode(imageNamed: "attack center")
+        attackButtonCenter = SKSpriteNode(imageNamed: "HandAttack")
         attackButtonCenter.name = "attackCenter"
         attackButtonCenter.size = buttonSize
         attackButtonCenter.position = CGPoint(
@@ -267,7 +267,7 @@ class GameScene: SKScene {
         addChild(attackButtonCenter)
 
         // Kanan
-        attackButtonRight = SKSpriteNode(imageNamed: "attack right")
+        attackButtonRight = SKSpriteNode(imageNamed: "HandAttack")
         attackButtonRight.name = "attackRight"
         attackButtonRight.size = buttonSize
         attackButtonRight.position = CGPoint(
@@ -379,14 +379,21 @@ class GameScene: SKScene {
     }
     func toggleBackroundMusic(){
         muteMusic.toggle()
-        
-        if muteMusic{
+
+        if muteMusic {
             SoundManager.shared.stopBackgroundMusic()
-        }
-        else{
+            // cari node bernama "musicButton" lalu ubah texture
+            if let button = self.childNode(withName: "//musicButton") as? SKSpriteNode {
+                button.texture = SKTexture(imageNamed: "NoMusicButton")
+            }
+        } else {
             SoundManager.shared.playBackgroundMusic()
+            if let button = self.childNode(withName: "//musicButton") as? SKSpriteNode {
+                button.texture = SKTexture(imageNamed: "MusicButton")
+            }
         }
     }
+
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         helper?.handleTouches(touches, with: event)
@@ -398,23 +405,41 @@ class GameScene: SKScene {
             switch node.name {
             // Serangan hanya bisa dilakukan jika belum game over dan overlay tidak ditampilkan
             case "attackLeft":
+                gameManager.animateButtonTap(
+                    nodeName: "attackLeft",
+                    tappedTexture: "FootAttackTap",
+                    normalTexture: "FootAttack"
+                )
                 guard !isGameOver && !isOverlayShown else { return }
                 player.transition(to: .attackLeft)
                 print("\(node.name ?? "") tapped")
             
             case "attackCenter":
+                gameManager.animateButtonTap(
+                    nodeName: "attackCenter",
+                    tappedTexture: "HandAttackTap",
+                    normalTexture: "HandAttack"
+                )
                 guard !isGameOver && !isOverlayShown else { return }
                 player.transition(to: .attackCenter)
                 print("\(node.name ?? "") tapped")
                 
             case "attackRight":
+                gameManager.animateButtonTap(
+                    nodeName: "attackRight",
+                    tappedTexture: "HandAttackTap",
+                    normalTexture: "HandAttack"
+                )
                 guard !isGameOver && !isOverlayShown else { return }
                 player.transition(to: .attackRight)
                 print("\(node.name ?? "") tapped")
                 
-            // Tombol-tombol lain tetap bisa digunakan saat game over
             case "restartButton":
-                print("Restart tapped")
+                gameManager.animateButtonTap(
+                    nodeName: "restartButton",
+                    tappedTexture: "RestartButtonTap",
+                    normalTexture: "RestartButton"
+                )
                 restartGame()
 
             case "menuButton":
@@ -426,14 +451,29 @@ class GameScene: SKScene {
                 isOverlayShown = true
                 
             case "resumeButton":
+                gameManager.animateButtonTap(
+                    nodeName: "resumeButton",
+                    tappedTexture: "ResumeButtonTap",
+                    normalTexture: "ResumeButton"
+                )
                 resumeGame()
                 isOverlayShown = false
                 
             case "startButton":
+                gameManager.animateButtonTap(
+                    nodeName: "startButton",
+                    tappedTexture: "StartButtonTap",
+                    normalTexture: "StartButton"
+                )
                 gameManager.animateStartAndRemoveOverlay()
                 print("Start tapped")
 
             case "quitButton":
+                gameManager.animateButtonTap(
+                    nodeName: "quitButton",
+                    tappedTexture: "QuitButtonTap",
+                    normalTexture: "QuitButton"
+                )
                 gameManager.startView()
                 isOverlayShown = true
                 hidePauseOverlay()

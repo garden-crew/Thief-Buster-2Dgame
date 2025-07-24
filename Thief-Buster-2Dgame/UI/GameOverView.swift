@@ -36,10 +36,8 @@ struct GameOverView {
         highestScoreLabel.position = CGPoint(x: 0, y: -60)
         overlay.addChild(highestScoreLabel)
 
-        let restartLabel = SKLabelNode(text: "Restart")
-        restartLabel.fontName = "Arial-BoldMT"
-        restartLabel.fontSize = 36
-        restartLabel.fontColor = .yellow
+        let restartLabel = SKSpriteNode(imageNamed: "RestartButton")
+        restartLabel.size = CGSize(width: 150, height: 50)
         restartLabel.position = CGPoint(x: 0, y: -100)
         restartLabel.zPosition = 301
         restartLabel.name = "restartButton"

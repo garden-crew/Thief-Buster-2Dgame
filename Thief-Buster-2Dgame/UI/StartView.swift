@@ -28,15 +28,11 @@ struct StartView {
         )
         overlay.addChild(highscoreLabel)
 
-        let musicButton = SKLabelNode(text: "♫")
-        musicButton.fontName = "Arial-BoldMT"
-        musicButton.fontSize = 36
-        musicButton.fontColor = .yellow
-        musicButton.horizontalAlignmentMode = .right
-        musicButton.verticalAlignmentMode = .top
+        let musicButton = SKSpriteNode(imageNamed: "MusicButton")
+        musicButton.size = CGSize(width: 60, height: 60)
         musicButton.position = CGPoint(
-            x: overlay.size.width - 16,
-            y: overlay.size.height - 80
+            x: overlay.size.width - 50,
+            y: overlay.size.height - 100
         )
         musicButton.name = "musicButton"
         overlay.addChild(musicButton)
@@ -51,19 +47,15 @@ struct StartView {
         titleLabel.position = CGPoint(x: overlay.size.width/2, y: overlay.size.height - 140)
         overlay.addChild(titleLabel)
 
-        let startLabel = SKLabelNode(text: "Start")
-        startLabel.fontName = "Arial-BoldMT"
-        startLabel.fontSize = 44
-        startLabel.fontColor = .yellow
-        startLabel.position = CGPoint(x: overlay.size.width / 2, y: scene.size.height / 2)
+        let startLabel = SKSpriteNode(imageNamed: "StartButton")
+        startLabel.position = CGPoint(x: overlay.size.width / 2, y: scene.size.height / 2 + 22)
         startLabel.name = "startButton"
+        startLabel.size = CGSize(width: 150, height: 50)
         overlay.addChild(startLabel)
 
-        let tutorialLabel = SKLabelNode(text: "Tutorial")
-        tutorialLabel.fontName = "Arial-BoldMT"
-        tutorialLabel.fontSize = 36
-        tutorialLabel.fontColor = .yellow
-        tutorialLabel.position = CGPoint(x: overlay.size.width / 2, y: scene.size.height / 2 - 44 - 16)
+        let tutorialLabel = SKSpriteNode(imageNamed: "TutorialButton")
+        tutorialLabel.position = CGPoint(x: overlay.size.width / 2, y: scene.size.height / 2 - 44)
+        tutorialLabel.size = CGSize(width: 150, height: 50)
         tutorialLabel.name = "tutorialButton"
         overlay.addChild(tutorialLabel)
 

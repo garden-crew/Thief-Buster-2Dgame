@@ -47,6 +47,22 @@ class GameManager {
         scene.loadHighscore()
         scene.highscoreLabel.text = "Highscore: \(scene.highscore)"
     }
+    
+    func animateButtonTap(nodeName: String, tappedTexture: String, normalTexture: String, duration: TimeInterval = 0.2) {
+        // Cari node dengan nama
+        if let button = scene.childNode(withName: "//\(nodeName)") as? SKSpriteNode {
+            let changeToTap = SKAction.run {
+                button.texture = SKTexture(imageNamed: tappedTexture)
+            }
+            let wait = SKAction.wait(forDuration: duration)
+            let changeBack = SKAction.run {
+                button.texture = SKTexture(imageNamed: normalTexture)
+            }
+            let sequence = SKAction.sequence([changeToTap, wait, changeBack])
+            button.run(sequence)
+        }
+    }
+
 
     func animateStartAndRemoveOverlay() {
         scene.isPaused = false
