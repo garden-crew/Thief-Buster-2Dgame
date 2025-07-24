@@ -8,6 +8,7 @@ import AVFoundation
 import GameplayKit
 import SpriteKit
 import SwiftData
+import UIKit
 import SwiftUI
 
 // Main game scene handling all rendering and gameplay updates.
@@ -480,6 +481,15 @@ class GameScene: SKScene {
                 )
                 gameManager.animateStartAndRemoveOverlay()
                 print("Start tapped")
+              
+            case "tutorialButton":
+                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                   let window = windowScene.windows.first,
+                   let rootVC = window.rootViewController {
+                    
+                    let tutorialView = UIHostingController(rootView: TutorialView())
+                    rootVC.present(tutorialView, animated: true, completion: nil)
+                }
 
             case "quitButton":
                 gameManager.animateButtonTap(
