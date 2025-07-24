@@ -29,10 +29,10 @@ class HapticManager {
                 eventType: .hapticContinuous,
                 parameters: [
                     CHHapticEventParameter(parameterID: .hapticIntensity, value: 1),
-                    CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.5)
+                    CHHapticEventParameter(parameterID: .hapticSharpness, value: 1.5)
                 ],
                 relativeTime: 0,
-                duration: 0.4
+                duration: 1
             ),
             CHHapticEvent(
                 eventType: .hapticTransient,

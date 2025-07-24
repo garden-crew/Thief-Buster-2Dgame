@@ -14,32 +14,45 @@ import SwiftUI
 // Main game scene handling all rendering and gameplay updates.
 class GameScene: SKScene {
     
-    // Setting up SwiftData for Highscore
     var modelContext: ModelContext?
     var highscoreLabel: SKLabelNode!
     var highscore: Int = 0
     
+    var muteMusic: Bool = false
+
     var pauseButton: SKSpriteNode!
     var gamePaused: Bool = false
+    
+    var backgroundNode : BackgroundNode!
     var isGameOver = false
     var isOverlayShown = false
 
     var player: Guard!
-    var background: SKSpriteNode!
+    
+    let cameraNode = SKCameraNode()
 
     // Manages spawning of obstacles (thieves, customers, power-ups).
     lazy var spawnManager: SpawnManager = SpawnManager(scene: self)
-    
     lazy var gameManager: GameManager = GameManager(scene: self)
 
     // Handles collision detection between player and obstacles.
     var helper: CollisionManager?
 
     // Visual marker for collision zone.
-    let redLine = SKSpriteNode(
+    var redLine : SKSpriteNode = SKSpriteNode(
         color: .red,
-        size: CGSize(width: 500, height: 100)
+        size: CGSize(width: 0 , height: 0)
     )
+    
+    var gameViewMaxY: CGFloat = 1000
+    
+    var gameViewMinY : CGFloat {
+        return gameViewMaxY - viewSize.height
+    }
+    
+    var gameViewCenterY : CGFloat {
+        return (gameViewMaxY + gameViewMinY) / 2
+    }
 
     // Button to attack
     var attackButtonLeft: SKSpriteNode!
@@ -66,19 +79,30 @@ class GameScene: SKScene {
             saveHigshcore(score)
         }
     }
-    
-    var obstacleEndY : CGFloat {
-        self.size.height * 0.7
-    }
 
+    var obstacleEndY: CGFloat {
+        backgroundNode.bankImageBottomY
+    }
+    
+    var viewSize = CGSize.zero
+    
+    init(viewSize: CGSize, canvasSize: CGSize) {
+        self.viewSize = viewSize
+        super.init(size: canvasSize)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // Store high score
     func saveHigshcore(_ score: Int) {
         guard let modelContext = modelContext else { return }
-        
+
         do {
             let descriptor = FetchDescriptor<Highscore>()
             let highscores = try modelContext.fetch(descriptor)
-            
+
             if let existing = highscores.first {
                 if score > existing.value {
                     existing.value = score
@@ -95,65 +119,102 @@ class GameScene: SKScene {
             print("Failed to save highscore: \(error)")
         }
     }
+
+    func hideOverlay() {
+        self.childNode(withName: "gameOverlay")?.removeFromParent()
+    }
+
+    func goToStartView() {
+        //        if let view = self.view {
+        //            let startScene = StartView(size: view.bounds.size)
+        //            view.presentScene(startScene, transition: SKTransition.fade(withDuration: 0.5))
+        //            print("Go to start view")
+        //        }
+    }
+    
     
     override func didMove(to view: SKView) {
-//        SoundManager.shared.playBackgroundMusic()
-
+        SoundManager.shared.playBackgroundMusic()
         loadHighscore()
         setUpBackground()
         setupGuard()
+        
+        gameViewMaxY = player.position.y + (player.size.height * 2)
+        
         setupAttackButtons()
+        
         setupRedLine()
         setupTargets()
         setupScoreLabel()
         setupHighscoreLabel()
         setupPauseButton()
 
-        spawnManager.generate(targetY: obstacleEndY)
         helper = CollisionManager(gamescene: self)
+
+        self.camera = cameraNode
+        cameraNode.position = CGPoint(
+            x: size.width / 2,
+            y: size.height - viewSize.height/2
+        )
+        addChild(cameraNode)
         
+//        let topLine = SKShapeNode(rect: CGRect(x: 0, y: gameViewMaxY, width: size.width, height: 4))
+//        topLine.fillColor = .red
+//        addChild(topLine)
+//        
+//        let bottomLine = SKShapeNode(rect: CGRect(x: 0, y: gameViewMinY, width: size.width, height: 4))
+//        bottomLine.fillColor = .red
+//        addChild(bottomLine)
+
         gameManager.startView()
+        
+        let moveDown = SKAction.moveTo(y: gameViewCenterY, duration: 1)
+        moveDown.timingMode = .easeOut
+
+        cameraNode.run(moveDown)
+
     }
-    
+
     // Button for pause the game
     func setupPauseButton() {
-        pauseButton = SKSpriteNode(imageNamed: "attack left")
+        pauseButton = SKSpriteNode(imageNamed: "PauseButton")
+        pauseButton.anchorPoint = CGPoint(x: 0, y: 1.5)
         pauseButton.name = "pauseButton"
-        pauseButton.size = CGSize(width: 40, height: 40)
+        pauseButton.size = CGSize(width: 60, height: 60)
         scoreLabel.horizontalAlignmentMode = .left
         scoreLabel.verticalAlignmentMode = .top
-        pauseButton.position = CGPoint(x: size.width - 30, y: size.height - 90)
-        pauseButton.zPosition = 100
+        pauseButton.position = CGPoint(x: size.width - 24 - pauseButton.size.width, y: gameViewMaxY - 40)
+        pauseButton.zPosition = ZPosition.inGameUI.rawValue
         addChild(pauseButton)
     }
-    
+
     // Show the score
     func setupScoreLabel() {
         scoreLabel = SKLabelNode(fontNamed: "AvenirNext-Bold")
         scoreLabel.fontName = "AvenirNext-Bold"
-        scoreLabel.fontSize = 36
-        scoreLabel.fontColor = .black
+        scoreLabel.fontSize = 24
+        scoreLabel.fontColor = .clear
         scoreLabel.text = "Score: \(score)"
         scoreLabel.horizontalAlignmentMode = .left
         scoreLabel.verticalAlignmentMode = .top
-        scoreLabel.position = CGPoint(x:  30, y: size.height - 40)
-        scoreLabel.zPosition = 100
+        scoreLabel.position = CGPoint(x: 24, y: gameViewMaxY - 16 - 4 - 64)
+        scoreLabel.zPosition = ZPosition.inGameUI.rawValue
         addChild(scoreLabel)
     }
-    
+
     // Show the high score
     func setupHighscoreLabel() {
         highscoreLabel = SKLabelNode(fontNamed: "AvenirNext-Bold")
-        highscoreLabel.fontSize = 36
-        highscoreLabel.fontColor = .black
+        highscoreLabel.fontSize = 14
+        highscoreLabel.fontColor = .clear
         highscoreLabel.text = "Highscore: \(highscore)"
         highscoreLabel.horizontalAlignmentMode = .left
         highscoreLabel.verticalAlignmentMode = .top
-        highscoreLabel.position = CGPoint(x: 30, y: size.height - 80)
-        highscoreLabel.zPosition = 100
+        highscoreLabel.position = CGPoint(x: 24, y: gameViewMaxY - 16 - 24 - 8 - 64)
+        highscoreLabel.zPosition = ZPosition.inGameUI.rawValue
         addChild(highscoreLabel)
     }
-    
+
     // Show new high score
     func loadHighscore() {
         guard let modelContext = modelContext else { return }
@@ -174,22 +235,16 @@ class GameScene: SKScene {
     }
 
     func setUpBackground() {
-        background = SKSpriteNode(imageNamed: "25")
-        background.size = self.size
-        background.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        background.zPosition = 0
-        let scaleX = size.width / background.size.width
-        let scaleY = size.height / background.size.height
-        let scale = max(scaleX, scaleY)
-        background.setScale(scale)
-
-        addChild(background)
+        backgroundNode = BackgroundNode(sceneSize: self.size)
+        addChild(backgroundNode)
     }
 
     func setupGuard() {
         player = Guard()
+        player.anchorPoint = CGPoint(x: 0.5, y: 0)
         player.setScale(2.0)
-        player.position = CGPoint(x: size.width / 2, y: size.height * 0.8)
+        player.position = CGPoint(x: size.width / 2, y: backgroundNode.bankImageBottomY + 12)
+        player.zPosition = ZPosition.player.rawValue
         addChild(player)
     }
 
@@ -200,41 +255,44 @@ class GameScene: SKScene {
         let spacing: CGFloat = 40
         let totalWidth = (buttonSize.width * 3) + (spacing * 2)
         let startX = (size.width - totalWidth) / 2 + buttonSize.width / 2
+        let buttonY : CGFloat = gameViewMinY + 80
 
         // Kiri
-        attackButtonLeft = SKSpriteNode(imageNamed: "attack left")
+        attackButtonLeft = SKSpriteNode(imageNamed: "FootAttack")
         attackButtonLeft.name = "attackLeft"
         attackButtonLeft.size = buttonSize
-        attackButtonLeft.position = CGPoint(x: startX, y: 80)
-        attackButtonLeft.zPosition = 100
+        attackButtonLeft.position = CGPoint(x: startX, y: buttonY)
+        attackButtonLeft.zPosition = ZPosition.inGameUI.rawValue
         addChild(attackButtonLeft)
 
         // Tengah
-        attackButtonCenter = SKSpriteNode(imageNamed: "attack center")
+        attackButtonCenter = SKSpriteNode(imageNamed: "HandAttack")
         attackButtonCenter.name = "attackCenter"
         attackButtonCenter.size = buttonSize
         attackButtonCenter.position = CGPoint(
             x: startX + buttonSize.width + spacing,
-            y: 80
+            y: buttonY
         )
-        attackButtonCenter.zPosition = 100
+        attackButtonCenter.zPosition = ZPosition.inGameUI.rawValue
         addChild(attackButtonCenter)
 
         // Kanan
-        attackButtonRight = SKSpriteNode(imageNamed: "attack right")
+        attackButtonRight = SKSpriteNode(imageNamed: "HandAttack")
         attackButtonRight.name = "attackRight"
         attackButtonRight.size = buttonSize
         attackButtonRight.position = CGPoint(
             x: startX + (buttonSize.width + spacing) * 2,
-            y: 80
+            y: buttonY
         )
-        attackButtonRight.zPosition = 100
+        attackButtonRight.zPosition = ZPosition.inGameUI.rawValue
         addChild(attackButtonRight)
     }
 
     func setupRedLine() {
-        redLine.position = CGPoint(x: size.width / 2, y: size.height / 2 + 100)
-        redLine.zPosition = 2
+        redLine = SKSpriteNode(color: .clear, size: CGSize(width: size.width, height: backgroundNode.tileSize.width * 2))
+        redLine.anchorPoint = CGPoint(x: 0, y: 1)
+        redLine.position = CGPoint(x: 0, y: backgroundNode.bankImageBottomY)
+        redLine.zPosition = ZPosition.obstacle.rawValue
         addChild(redLine)
     }
 
@@ -242,23 +300,25 @@ class GameScene: SKScene {
         target.fillColor = .blue
         target.strokeColor = .white
         target.lineWidth = 4
-        target.zPosition = -1
+        target.zPosition = -10
     }
 
     func setupTargets() {
         [targetLeft, targetMid, targetRight].forEach { styleTarget($0) }
+        
+        let y = backgroundNode.bankImageBottomY
 
         targetLeft.position = CGPoint(
             x: attackButtonLeft.position.x,
-            y: redLine.position.y
+            y: y
         )
         targetMid.position = CGPoint(
             x: attackButtonCenter.position.x,
-            y: redLine.position.y
+            y: y
         )
         targetRight.position = CGPoint(
             x: attackButtonRight.position.x,
-            y: redLine.position.y
+            y: y
         )
 
         addChild(targetLeft)
@@ -268,12 +328,14 @@ class GameScene: SKScene {
     
     func resumeGame(){
         isPaused = false
-//        attackButtonLeft.isUserInteractionEnabled = true
-//        attackButtonCenter.isUserInteractionEnabled = true
-//        attackButtonRight.isUserInteractionEnabled = true
+        attackButtonLeft.isUserInteractionEnabled = false
+        attackButtonCenter.isUserInteractionEnabled = false
+        attackButtonRight.isUserInteractionEnabled = false
+        pauseButton.isUserInteractionEnabled = false
         hidePauseOverlay()
+        spawnManager.generate(targetY: obstacleEndY)
     }
-        
+
     func togglePause() {
         gamePaused.toggle()
         isPaused = gamePaused
@@ -281,6 +343,7 @@ class GameScene: SKScene {
     
     // Restart the game
     func restartGame() {
+        SoundManager.shared.playBackgroundMusic()
         // Reset score
         score = 0
         
@@ -324,6 +387,23 @@ class GameScene: SKScene {
     func hidePauseOverlay() {
         self.childNode(withName: "pauseOverlay")?.removeFromParent()
     }
+    func toggleBackroundMusic(){
+        muteMusic.toggle()
+
+        if muteMusic {
+            SoundManager.shared.stopBackgroundMusic()
+            // cari node bernama "musicButton" lalu ubah texture
+            if let button = self.childNode(withName: "//musicButton") as? SKSpriteNode {
+                button.texture = SKTexture(imageNamed: "NoMusicButton")
+            }
+        } else {
+            SoundManager.shared.playBackgroundMusic()
+            if let button = self.childNode(withName: "//musicButton") as? SKSpriteNode {
+                button.texture = SKTexture(imageNamed: "MusicButton")
+            }
+        }
+    }
+
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         helper?.handleTouches(touches, with: event)
@@ -331,42 +411,74 @@ class GameScene: SKScene {
         touches.forEach { touch in
             let location = touch.location(in: self)
             let node = atPoint(location)
-            
+
             switch node.name {
             // Serangan hanya bisa dilakukan jika belum game over dan overlay tidak ditampilkan
             case "attackLeft":
+                gameManager.animateButtonTap(
+                    nodeName: "attackLeft",
+                    tappedTexture: "FootAttackTap",
+                    normalTexture: "FootAttack"
+                )
                 guard !isGameOver && !isOverlayShown else { return }
                 player.transition(to: .attackLeft)
                 print("\(node.name ?? "") tapped")
             
             case "attackCenter":
+                gameManager.animateButtonTap(
+                    nodeName: "attackCenter",
+                    tappedTexture: "HandAttackTap",
+                    normalTexture: "HandAttack"
+                )
                 guard !isGameOver && !isOverlayShown else { return }
                 player.transition(to: .attackCenter)
                 print("\(node.name ?? "") tapped")
                 
             case "attackRight":
+                gameManager.animateButtonTap(
+                    nodeName: "attackRight",
+                    tappedTexture: "HandAttackTap",
+                    normalTexture: "HandAttack"
+                )
                 guard !isGameOver && !isOverlayShown else { return }
                 player.transition(to: .attackRight)
                 print("\(node.name ?? "") tapped")
                 
-            // Tombol-tombol lain tetap bisa digunakan saat game over
             case "restartButton":
-                print("Restart tapped")
+                gameManager.animateButtonTap(
+                    nodeName: "restartButton",
+                    tappedTexture: "RestartButtonTap",
+                    normalTexture: "RestartButton"
+                )
                 restartGame()
-                
+
             case "menuButton":
-                print("Menu tapped")
+                gameManager.animateButtonTap(
+                    nodeName: "menuButton",
+                    tappedTexture: "MenuButtonTap",
+                    normalTexture: "MenuButton"
+                )
                 gameManager.startView()
-                
+
             case "pauseButton":
                 gameManager.pauseView()
                 isOverlayShown = true
                 
             case "resumeButton":
+                gameManager.animateButtonTap(
+                    nodeName: "resumeButton",
+                    tappedTexture: "ResumeButtonTap",
+                    normalTexture: "ResumeButton"
+                )
                 resumeGame()
                 isOverlayShown = false
                 
             case "startButton":
+                gameManager.animateButtonTap(
+                    nodeName: "startButton",
+                    tappedTexture: "StartButtonTap",
+                    normalTexture: "StartButton"
+                )
                 gameManager.animateStartAndRemoveOverlay()
                 print("Start tapped")
               
@@ -378,16 +490,23 @@ class GameScene: SKScene {
                     let tutorialView = UIHostingController(rootView: TutorialView())
                     rootVC.present(tutorialView, animated: true, completion: nil)
                 }
-                
+
             case "quitButton":
+                gameManager.animateButtonTap(
+                    nodeName: "quitButton",
+                    tappedTexture: "QuitButtonTap",
+                    normalTexture: "QuitButton"
+                )
                 gameManager.startView()
                 isOverlayShown = true
                 hidePauseOverlay()
                 
+            case "musicButton":
+                toggleBackroundMusic()
+
             default:
                 break
             }
         }
     }
-
 }

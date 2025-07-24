@@ -11,6 +11,8 @@ import SpriteKit
 
 class Thief : Obstacle {
     
+    var lane: Int = 2
+    
     // Defines the thief's walking animation textures.
     override var walkTextures: [SKTexture] {
         (1...3).map { i in
@@ -29,11 +31,10 @@ class Thief : Obstacle {
     }
     
     var attackAction: SKAction {
-        SKAction.setTexture(SKTexture(imageNamed: "ThiefNotHit"))
+        let textureName = (lane == 1) ? "ThiefNotHitFlip" : "ThiefNotHit"
+        return SKAction.setTexture(SKTexture(imageNamed: textureName))
+        
     }
-    
-  
-    
     
     @MainActor required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

@@ -28,8 +28,13 @@ class Customer : Obstacle {
     }
     
     override func die() {
-        //self.texture = SKTexture(imageNamed: "CustomerHit")
-        SoundManager.shared.play(sound: .hitCust)
+        
+        
+        if !active { return }
+        
+        self.run(SKAction.playSoundFileNamed("hitCust.mp3", waitForCompletion: false))
+        
+
         super.die()
     }
     override var dieTextures: [SKTexture] {
