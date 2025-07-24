@@ -157,7 +157,6 @@ class GameScene: SKScene {
         )
         addChild(cameraNode)
         
-        
 //        let topLine = SKShapeNode(rect: CGRect(x: 0, y: gameViewMaxY, width: size.width, height: 4))
 //        topLine.fillColor = .red
 //        addChild(topLine)
