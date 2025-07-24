@@ -17,7 +17,8 @@ class GameManager {
     }
 
     func gameOver() {
-        SoundManager.shared.play(sound: .gameOver)
+
+        scene.run(SKAction.playSoundFileNamed("GameOver.mp3", waitForCompletion: false))
         SoundManager.shared.stopBackgroundMusic()
         scene.isPaused = true
         gameOverView()
@@ -29,7 +30,7 @@ class GameManager {
     }
 
     func startView() {
-        SoundManager.shared.playBackgroundMusic()
+       SoundManager.shared.playBackgroundMusic()
         scene.childNode(withName: "gameOverlay")?.removeFromParent()
         scene.score = 0
         let overlay = StartView.build(on: scene)

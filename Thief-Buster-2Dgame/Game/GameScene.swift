@@ -134,10 +134,10 @@ class GameScene: SKScene {
         //            print("Go to start view")
         //        }
     }
-
+    
+    
     override func didMove(to view: SKView) {
         SoundManager.shared.playBackgroundMusic()
-        
         loadHighscore()
         setUpBackground()
         setupGuard()
@@ -174,7 +174,6 @@ class GameScene: SKScene {
 
         cameraNode.run(SKAction.moveTo(y: gameViewCenterY, duration: 1))
         cameraNode.run(SKAction.scale(by: 1, duration: 1))
-
     }
 
     // Button for pause the game
