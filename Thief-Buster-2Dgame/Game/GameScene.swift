@@ -119,25 +119,11 @@ class GameScene: SKScene {
         }
     }
 
-    // Restart the game
-  
-
-    
     func hideOverlay() {
         self.childNode(withName: "gameOverlay")?.removeFromParent()
     }
 
-    func goToStartView() {
-        //        if let view = self.view {
-        //            let startScene = StartView(size: view.bounds.size)
-        //            view.presentScene(startScene, transition: SKTransition.fade(withDuration: 0.5))
-        //            print("Go to start view")
-        //        }
-    }
-
     override func didMove(to view: SKView) {
-        SoundManager.shared.playBackgroundMusic()
-        
         loadHighscore()
         setUpBackground()
         setupGuard()
@@ -171,9 +157,11 @@ class GameScene: SKScene {
 //        addChild(bottomLine)
 
         gameManager.startView()
+        
+        let moveDown = SKAction.moveTo(y: gameViewCenterY, duration: 1)
+        moveDown.timingMode = .easeOut
 
-        cameraNode.run(SKAction.moveTo(y: gameViewCenterY, duration: 1))
-        cameraNode.run(SKAction.scale(by: 1, duration: 1))
+        cameraNode.run(moveDown)
 
     }
 

@@ -4,8 +4,8 @@
 //
 //  Created by Niken Larasati on 10/07/25.
 //
-// GameManager.swift – mengatur state game (berjalan, game over, restart).
-// GameManager.swift – Koordinator utama state game
+
+
 import SpriteKit
 
 class GameManager {
@@ -26,6 +26,7 @@ class GameManager {
     func pauseView() {
         PauseView.show(on: scene)
         scene.isPaused = true
+        scene.spawnManager.stop()
     }
 
     func startView() {
@@ -67,6 +68,7 @@ class GameManager {
     }
 
     private func gameOverView() {
+        scene.spawnManager.stop()
         GameOverView.show(on: scene, score: scene.score, highscore: scene.highscore)
     }
 }
