@@ -155,7 +155,6 @@ class SpawnManager {
                             self.scene.player.transition(to: .fail)
                             self.scene.run(
                                 SKAction.sequence([
-
                                     SKAction.wait(forDuration: 0.2),
                                     SKAction.run {
                                         self.scene.gameManager.gameOver()
@@ -165,7 +164,10 @@ class SpawnManager {
 
                         }
                     )
-
+                    let stopAction = SKAction.customAction(withDuration: 0) { _, _ in
+                        obstacle.removeAllActions()
+                    }
+                    actions.append(stopAction)
                     actions.append((obstacle as! Thief).attackAction)
                     actions.append(gameOverAction)
                 }
