@@ -11,7 +11,7 @@ import SpriteKit
 // Base class for all obstacle types (Thief, Customer, PowerUp).
 class Obstacle: SKSpriteNode {
 
-    var alive = true
+    var active = true
 
     var onDie: (() -> Void)?
 
@@ -60,9 +60,9 @@ class Obstacle: SKSpriteNode {
 
     func die() {
 
-        if !alive { return }
+        if !active { return }
         
-        alive = false
+        unactivate()
 
         onDie?()
         removeAllActions()
@@ -83,6 +83,10 @@ class Obstacle: SKSpriteNode {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func unactivate() {
+        active = false
     }
 
 }

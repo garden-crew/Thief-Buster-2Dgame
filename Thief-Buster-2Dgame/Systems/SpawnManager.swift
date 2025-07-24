@@ -19,7 +19,7 @@ class SpawnManager {
     var calculatedObstacleSpeed: Double {
         let score = Double(scene.score)
         let speed = baseObstacleSpeed + (score / 2)
-        return min(400, speed)
+        return min(500, speed)
     }
 
     // Returns adjusted spawn rate, clamped to max 1.0.
@@ -31,7 +31,7 @@ class SpawnManager {
             return 0.2
         }
         
-        let spawnRate: Double = baseObstacleSpawnRate + score/100
+        let spawnRate: Double = baseObstacleSpawnRate + score/300
         
         return min(0.9, spawnRate)
     }
@@ -62,7 +62,7 @@ class SpawnManager {
         
         // Repeat every 0.5 second
         timer = Timer.scheduledTimer(
-            withTimeInterval: 0.8,
+            withTimeInterval: 0.5,
             repeats: true,
             block: { _ in
                 
@@ -111,6 +111,12 @@ class SpawnManager {
                             }
                         ]))
                     }
+                    
+                    let unactivate = SKAction.customAction(withDuration: 0.0, actionBlock: { _, _ in
+                        obstacle.unactivate()
+                    })
+                    
+                    actions.append(unactivate)
                     actions.append(SKAction.fadeOut(withDuration: 0.3))
                     actions.append(SKAction.removeFromParent())
                 } else {

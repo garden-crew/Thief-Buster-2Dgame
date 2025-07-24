@@ -119,10 +119,6 @@ class GameScene: SKScene {
         }
     }
 
-    // Restart the game
-  
-
-    
     func hideOverlay() {
         self.childNode(withName: "gameOverlay")?.removeFromParent()
     }
@@ -171,9 +167,12 @@ class GameScene: SKScene {
 //        addChild(bottomLine)
 
         gameManager.startView()
+        
+        let moveDown = SKAction.moveTo(y: gameViewCenterY, duration: 1)
+        moveDown.timingMode = .easeOut
 
-        cameraNode.run(SKAction.moveTo(y: gameViewCenterY, duration: 1))
-        cameraNode.run(SKAction.scale(by: 1, duration: 1))
+        cameraNode.run(moveDown)
+
     }
 
     // Button for pause the game
