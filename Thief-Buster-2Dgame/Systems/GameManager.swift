@@ -31,7 +31,10 @@ class GameManager {
     }
 
     func startView() {
-       SoundManager.shared.playBackgroundMusic()
+        SoundManager.shared.stopBackgroundMusic()
+        SoundManager.shared.playStartMusic()
+        
+        
         scene.childNode(withName: "gameOverlay")?.removeFromParent()
         scene.score = 0
         let overlay = StartView.build(on: scene)
@@ -66,6 +69,9 @@ class GameManager {
 
 
     func animateStartAndRemoveOverlay() {
+        SoundManager.shared.stopStartMusic()
+        SoundManager.shared.playBackgroundMusic()
+        
         scene.isPaused = false
         guard let overlay = startOverlay else { return }
         
