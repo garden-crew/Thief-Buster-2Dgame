@@ -248,6 +248,19 @@ class GameScene: SKScene {
     }
 
     func setupAttackButtons() {
+        
+        let buttonDeck = SKSpriteNode(imageNamed: "BottomDeck")
+        
+        let deckWidth : CGFloat = size.width
+        let aspectRatio = buttonDeck.size.width / buttonDeck.size.height
+        
+        let deckheight : CGFloat = deckWidth / aspectRatio
+        
+        buttonDeck.size = CGSize(width: size.width, height: deckheight)
+        buttonDeck.anchorPoint = CGPoint(x: 0.5, y: 0)
+        buttonDeck.position = CGPoint(x: size.width / 2, y: gameViewMinY)
+        buttonDeck.zPosition = ZPosition.inGameUI.rawValue
+        addChild(buttonDeck)
   
         // Ukuran dan jarak antar tombol
         let buttonSize = CGSize(width: 80, height: 80)
