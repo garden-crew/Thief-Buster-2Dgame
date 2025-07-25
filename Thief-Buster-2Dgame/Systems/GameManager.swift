@@ -43,7 +43,7 @@ class GameManager {
         
         scene.cameraNode.position = CGPoint(x: scene.size.width/2, y: scene.size.height - scene.viewSize.height/2)
         
-        scene.borderScore.alpha = 0
+        self.scene.borderScore.alpha = 0
         
         scene.childNode(withName: "gameOverlay")?.removeFromParent()
         scene.score = 0
@@ -65,7 +65,6 @@ class GameManager {
         scene.pauseButton.isHidden = true
         scene.musicButton.isHidden = true
     }
-        scene.musicButton.isHidden = true
     func animateButtonTap(
         nodeName: String,
         tappedTexture: String,
@@ -88,38 +87,42 @@ class GameManager {
         }
     }
 
+    
     func animateStartAndRemoveOverlay() {
         
         scene.isInGame = true
-
+        
         
         if scene.muteMusic == false {
             scene.playMusicAccordingToScene()
         }
-       
+        
+        scene.isPaused = false
         guard let overlay = startOverlay else { return }
         
         let moveDown = SKAction.moveTo(y: scene.gameViewCenterY, duration: 1)
         moveDown.timingMode = .easeOut
-
+        
         scene.cameraNode.run(moveDown)
-
+        
         scene.spawnManager.generate(targetY: scene.obstacleEndY)
-
+        
         scene.isOverlayShown = false
-
+        
         let fadeOut = SKAction.fadeOut(withDuration: 1)
         fadeOut.timingMode = .easeIn
-
+        
         let showGameUI = SKAction.customAction(withDuration: 0) { _, _ in
             self.scene.scoreLabel.fontColor = .white
             self.scene.highscoreLabel.fontColor = UIColor(named: "bright yellow")
             self.scene.borderScore.alpha = 1
         }
         
+        overlay.run(.sequence([fadeOut, showGameUI, .removeFromParent()]))
         scene.pauseButton.isHidden = false
         scene.musicButton.isHidden = false
     }
+
 
     private func gameOverView() {
         scene.spawnManager.stop()
