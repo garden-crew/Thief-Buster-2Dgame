@@ -17,17 +17,25 @@ struct StartView {
         overlay.color = .clear
         overlay.name = "startOverlay"
 
-        let highscoreLabel = SKLabelNode(text: "Highscore: \(UserDefaults.standard.integer(forKey: "highscore"))")
-        highscoreLabel.fontName = "Pixellari"
-        highscoreLabel.fontSize = 28
-        highscoreLabel.fontColor = .white
-        highscoreLabel.horizontalAlignmentMode = .left
-        highscoreLabel.verticalAlignmentMode = .top
-        highscoreLabel.position = CGPoint(
-            x: 20,
-            y: overlay.size.height - 80
-        )
-        overlay.addChild(highscoreLabel)
+//        let borderScore = SKSpriteNode(imageNamed: "BorderScore")
+//        borderScore.anchorPoint = CGPoint(x: 0, y: 0.5)
+//        borderScore.size = CGSize(width: 170, height: 70)
+//        borderScore.position = CGPoint(x: 20, y: overlay.size.height - 80)
+//        borderScore.zPosition = 1
+//        overlay.addChild(borderScore)
+//        
+//        let highscoreLabel = SKLabelNode(text: "Highscore: \(UserDefaults.standard.integer(forKey: "highscore"))")
+//        highscoreLabel.fontName = "Pixellari"
+//        highscoreLabel.fontSize = 28
+//        highscoreLabel.fontColor = .black
+//        highscoreLabel.horizontalAlignmentMode = .left
+//        highscoreLabel.verticalAlignmentMode = .top
+//        highscoreLabel.zPosition = 2
+//        highscoreLabel.position = CGPoint(
+//            x: 20,
+//            y: overlay.size.height - 80
+//        )
+//        overlay.addChild(highscoreLabel)
 
         var musicImage = "MusicButton"
         if let gameScene = scene as? GameScene {
@@ -45,14 +53,9 @@ struct StartView {
         musicButton.name = "musicButtonStart"
         overlay.addChild(musicButton)
 
-        let titleLabel = SKLabelNode(text: "Thief\nBuster")
-        titleLabel.fontName = "Pixellari"
-        titleLabel.fontSize = 60
-        titleLabel.numberOfLines = 2
-        titleLabel.horizontalAlignmentMode = .center
-        titleLabel.verticalAlignmentMode = .top
-        titleLabel.fontColor = .white
-        titleLabel.position = CGPoint(x: overlay.size.width/2, y: overlay.size.height - 140)
+        let titleLabel = SKSpriteNode(imageNamed: "GameLogo")
+        titleLabel.size = CGSize(width: 350, height: 150)
+        titleLabel.position = CGPoint(x: overlay.size.width/2, y: overlay.size.height - 220)
         overlay.addChild(titleLabel)
 
         let startLabel = SKSpriteNode(imageNamed: "StartButton")

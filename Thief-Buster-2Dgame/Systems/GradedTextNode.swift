@@ -32,8 +32,8 @@ class GradedTextNode: SKNode {
         addChild(cropNode)
         
       
-        self.alpha = 0
-        self.run(SKAction.fadeIn(withDuration: 0.2))
+//        self.alpha = 0
+//        self.run(SKAction.fadeIn(withDuration: 0.2))
     }
     
     required init?(coder aDecoder: NSCoder) {
