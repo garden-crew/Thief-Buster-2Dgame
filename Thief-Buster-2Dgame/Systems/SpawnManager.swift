@@ -152,6 +152,7 @@ class SpawnManager {
                     let gameOverAction = SKAction.customAction(
                         withDuration: 0.0,
                         actionBlock: { _, _ in
+                            obstacle.unactivate()
                             self.scene.player.transition(to: .fail)
                             self.scene.run(
                                 SKAction.sequence([

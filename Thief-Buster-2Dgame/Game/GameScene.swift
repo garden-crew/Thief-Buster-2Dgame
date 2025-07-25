@@ -271,18 +271,18 @@ class GameScene: SKScene {
         
         let deckheight : CGFloat = deckWidth / aspectRatio
         
-        buttonDeck.size = CGSize(width: size.width, height: deckheight)
+        buttonDeck.size = CGSize(width: size.width, height: deckheight + 40)
         buttonDeck.anchorPoint = CGPoint(x: 0.5, y: 0)
         buttonDeck.position = CGPoint(x: size.width / 2, y: gameViewMinY)
         buttonDeck.zPosition = ZPosition.inGameUI.rawValue
         addChild(buttonDeck)
   
         // Ukuran dan jarak antar tombol
-        let buttonSize = CGSize(width: 80, height: 80)
+        let buttonSize = CGSize(width: 100, height: 100)
         let spacing: CGFloat = 40
         let totalWidth = (buttonSize.width * 3) + (spacing * 2)
         let startX = (size.width - totalWidth) / 2 + buttonSize.width / 2
-        let buttonY : CGFloat = gameViewMinY + 80
+        let buttonY : CGFloat = gameViewMinY + 110
 
         // Kiri
         attackButtonLeft = SKSpriteNode(imageNamed: "FootAttack")

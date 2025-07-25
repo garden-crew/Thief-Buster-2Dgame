@@ -43,6 +43,7 @@ class PowerUp: Obstacle {
         super.die()
 
         showSuperPunchEffect()
+        triggerJuicyEffects()
 
         Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false) { _ in
             print("DELAYEDD")
@@ -59,6 +60,61 @@ class PowerUp: Obstacle {
     override var dieTextures: [SKTexture] {
         return [SKTexture(imageNamed: "PowerHit")]
     }
+    
+    func triggerJuicyEffects() {
+        guard let scene = self.scene as? GameScene else { return }
+
+        // ⚡ Flash
+        let flash = SKSpriteNode(color: .white, size: scene.size)
+        flash.position = CGPoint(x: scene.size.width/2, y: scene.size.height/2)
+        flash.zPosition = ZPosition.inGameUI.rawValue
+        scene.addChild(flash)
+
+        flash.run(.sequence([
+            SKAction.fadeAlpha(to: 0.8, duration: 0.05),
+            SKAction.fadeOut(withDuration: 0.2),
+            .removeFromParent()
+        ]))
+
+        // 🎥 Camera shake
+        let amplitudeX: CGFloat = 10
+        let amplitudeY: CGFloat = 6
+        let numberOfShakes = 5
+        var actionsArray: [SKAction] = []
+        for _ in 1...numberOfShakes {
+            let moveX = CGFloat.random(in: -amplitudeX...amplitudeX)
+            let moveY = CGFloat.random(in: -amplitudeY...amplitudeY)
+            let shake = SKAction.moveBy(x: moveX, y: moveY, duration: 0.03)
+            shake.timingMode = .easeOut
+            actionsArray.append(shake)
+            actionsArray.append(shake.reversed())
+        }
+        let shakeSequence = SKAction.sequence(actionsArray)
+        scene.cameraNode.run(shakeSequence)
+
+        // 🐢 Slow motion singkat
+        scene.speed = 0.3
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            scene.speed = 1.0
+        }
+
+        // 🏆 Label dramatis
+//        let label = SKLabelNode(text: "WIND BLAST!")
+//        label.fontName = "Pixellari"
+//        label.fontSize = 40
+//        label.fontColor = .cyan
+//        label.position = CGPoint(x: scene.size.width/2, y: scene.size.height/2)
+//        label.zPosition = ZPosition.inGameUI.rawValue
+//        scene.addChild(label)
+
+//        label.run(.sequence([
+//            SKAction.scale(to: 1.2, duration: 0.1),
+//            SKAction.wait(forDuration: 0.4),
+//            SKAction.fadeOut(withDuration: 0.3),
+//            .removeFromParent()
+//        ]))
+    }
+
 
     func showSuperPunchEffect() {
         let windAnimation = SKAction.animate(

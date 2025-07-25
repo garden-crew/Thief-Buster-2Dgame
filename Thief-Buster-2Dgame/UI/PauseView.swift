@@ -21,15 +21,23 @@ struct PauseView {
         borderMenu.name = "borderMenu"
         overlay.addChild(borderMenu)
         
-        let pauseLabel = GradedTextNode(
-                    text: "PAUSED",
-                    fontName: "Pixellari",
-                    fontSize: 45,
-                    gradientColors: [.red, .orange, .yellow]
-                )
-        pauseLabel.position = CGPoint(x: borderMenu.position.x, y: borderMenu.position.y + (borderMenu.size.height / 2) - 100)
-        pauseLabel.zPosition = 302
-                overlay.addChild(pauseLabel)
+//        let pauseLabel = GradedTextNode(
+//                    text: "PAUSED",
+//                    fontName: "Pixellari",
+//                    fontSize: 45,
+//                    gradientColors: [.red, .orange, .yellow]
+//                )
+//        pauseLabel.position = CGPoint(x: borderMenu.position.x, y: borderMenu.position.y + (borderMenu.size.height / 2) - 100)
+//        pauseLabel.zPosition = 302
+//                overlay.addChild(pauseLabel)
+        
+        let pauseLabel = SKLabelNode(text: "PAUSED")
+        pauseLabel.fontName = "Pixellari"
+        pauseLabel.position = CGPoint(x: borderMenu.position.x, y: borderMenu.position.y + (borderMenu.size.height / 2) - 110)
+        pauseLabel.fontSize =  50
+        pauseLabel.name = "pauseButton"
+        pauseLabel.zPosition = 2
+        overlay.addChild(pauseLabel)
 
         let resumeLabel = SKSpriteNode(imageNamed: "ResumeButton")
         resumeLabel.position = CGPoint(x: 0, y: -40)

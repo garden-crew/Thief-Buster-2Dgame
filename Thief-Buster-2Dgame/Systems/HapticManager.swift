@@ -54,4 +54,25 @@ class HapticManager {
             print("⚠️ Failed to play powerUp haptic: \(error.localizedDescription)")
         }
     }
+    func vibrateLight() {
+        guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
+
+        let event = CHHapticEvent(
+            eventType: .hapticTransient,
+            parameters: [
+                CHHapticEventParameter(parameterID: .hapticIntensity, value: 1),
+                CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.5)
+            ],
+            relativeTime: 0
+        )
+
+        do {
+            let pattern = try CHHapticPattern(events: [event], parameters: [])
+            let player = try engine?.makePlayer(with: pattern)
+            try player?.start(atTime: 0)
+        } catch {
+            print("⚠️ Failed to play light haptic: \(error.localizedDescription)")
+        }
+    }
+
 }
