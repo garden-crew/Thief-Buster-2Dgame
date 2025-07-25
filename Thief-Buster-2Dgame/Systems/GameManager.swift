@@ -39,6 +39,7 @@ class GameManager {
         SoundManager.shared.stopBackgroundMusic()
         SoundManager.shared.playStartMusic()
         
+        scene.borderScore.alpha = 0
         
         scene.childNode(withName: "gameOverlay")?.removeFromParent()
         scene.score = 0
@@ -103,7 +104,7 @@ class GameManager {
 
         let showGameUI = SKAction.customAction(withDuration: 0) { _, _ in
             self.scene.scoreLabel.fontColor = .white
-            self.scene.highscoreLabel.fontColor = .white
+            self.scene.highscoreLabel.fontColor = UIColor(named: "bright yellow")
             self.scene.borderScore.alpha = 1
         }
 
