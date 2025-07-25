@@ -183,7 +183,8 @@ class GameScene: SKScene {
         scoreLabel.text = "Score: \(score)"
         scoreLabel.horizontalAlignmentMode = .left
         scoreLabel.verticalAlignmentMode = .top
-        scoreLabel.position = CGPoint(x: 10, y: gameViewMaxY - 56)
+        let paddingTop: CGFloat = 55
+        scoreLabel.position = CGPoint(x: 8, y: gameViewMaxY - paddingTop)
         scoreLabel.zPosition = ZPosition.inGameUI.rawValue
         addChild(scoreLabel)
     }
@@ -196,7 +197,8 @@ class GameScene: SKScene {
         highscoreLabel.text = "Highscore: \(highscore)"
         highscoreLabel.horizontalAlignmentMode = .left
         highscoreLabel.verticalAlignmentMode = .top
-        highscoreLabel.position = CGPoint(x: 10, y: gameViewMaxY - 24 - 64)
+        let paddingTop: CGFloat = 80
+        highscoreLabel.position = CGPoint(x: 8, y: gameViewMaxY - paddingTop)
         highscoreLabel.zPosition = ZPosition.inGameUI.rawValue
         addChild(highscoreLabel)
     }
@@ -223,9 +225,13 @@ class GameScene: SKScene {
     func setupBorderScore() {
         borderScore = SKSpriteNode(imageNamed: "BorderScore")
         borderScore.anchorPoint = CGPoint(x: 0, y: 0.5)
-        borderScore.position = CGPoint(x: 0, y: gameViewMaxY - 16 - 24 - 80)
+        borderScore.size = CGSize(width: 150, height: 70)
+        
+        let paddingTop: CGFloat = 135
+        let yPosition = gameViewMaxY - paddingTop
+            
+        borderScore.position = CGPoint(x: 0, y: yPosition)
         borderScore.zPosition = ZPosition.inGameUI.rawValue - 1
-        borderScore.size = CGSize(width: 170, height: 80)
         borderScore.alpha = 0
         addChild(borderScore)
     }
