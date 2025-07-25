@@ -24,6 +24,7 @@ class GameScene: SKScene {
     var gamePaused: Bool = false
     
     var backgroundNode : BackgroundNode!
+    var borderScore: SKSpriteNode!
     var isGameOver = false
     var isOverlayShown = false
 
@@ -137,6 +138,7 @@ class GameScene: SKScene {
         loadHighscore()
         setUpBackground()
         setupGuard()
+        setupBorderScore()
         
         gameViewMaxY = player.position.y + (player.size.height * 2)
         
@@ -189,27 +191,26 @@ class GameScene: SKScene {
 
     // Show the score
     func setupScoreLabel() {
-        scoreLabel = SKLabelNode(fontNamed: "AvenirNext-Bold")
-        scoreLabel.fontName = "AvenirNext-Bold"
+        scoreLabel = SKLabelNode(fontNamed: "Pixellari")
         scoreLabel.fontSize = 24
         scoreLabel.fontColor = .clear
         scoreLabel.text = "Score: \(score)"
         scoreLabel.horizontalAlignmentMode = .left
         scoreLabel.verticalAlignmentMode = .top
-        scoreLabel.position = CGPoint(x: 24, y: gameViewMaxY - 16 - 4 - 64)
+        scoreLabel.position = CGPoint(x: 10, y: gameViewMaxY - 56)
         scoreLabel.zPosition = ZPosition.inGameUI.rawValue
         addChild(scoreLabel)
     }
 
     // Show the high score
     func setupHighscoreLabel() {
-        highscoreLabel = SKLabelNode(fontNamed: "AvenirNext-Bold")
+        highscoreLabel = SKLabelNode(fontNamed: "Pixellari")
         highscoreLabel.fontSize = 14
         highscoreLabel.fontColor = .clear
         highscoreLabel.text = "Highscore: \(highscore)"
         highscoreLabel.horizontalAlignmentMode = .left
         highscoreLabel.verticalAlignmentMode = .top
-        highscoreLabel.position = CGPoint(x: 24, y: gameViewMaxY - 16 - 24 - 8 - 64)
+        highscoreLabel.position = CGPoint(x: 10, y: gameViewMaxY - 24 - 64)
         highscoreLabel.zPosition = ZPosition.inGameUI.rawValue
         addChild(highscoreLabel)
     }
@@ -231,6 +232,16 @@ class GameScene: SKScene {
         } catch {
             print("Failed to load highscore: \(error)")
         }
+    }
+    
+    func setupBorderScore() {
+        borderScore = SKSpriteNode(imageNamed: "BorderScore")
+        borderScore.anchorPoint = CGPoint(x: 0, y: 0.5)
+        borderScore.position = CGPoint(x: 0, y: gameViewMaxY - 16 - 24 - 80)
+        borderScore.zPosition = ZPosition.inGameUI.rawValue - 1
+        borderScore.size = CGSize(width: 170, height: 80)
+        borderScore.alpha = 0
+        addChild(borderScore)
     }
 
     func setUpBackground() {

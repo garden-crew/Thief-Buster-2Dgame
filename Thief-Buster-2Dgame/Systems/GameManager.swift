@@ -85,6 +85,7 @@ class GameManager {
         let showGameUI = SKAction.customAction(withDuration: 0) { _, _ in
             self.scene.scoreLabel.fontColor = .white
             self.scene.highscoreLabel.fontColor = .white
+            self.scene.borderScore.alpha = 1
         }
         
         overlay.run(.sequence([fadeOut, showGameUI, .removeFromParent()]))
