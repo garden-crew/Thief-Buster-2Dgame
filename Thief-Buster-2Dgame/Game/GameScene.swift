@@ -72,6 +72,7 @@ class GameScene: SKScene {
     )
 
     var scoreLabel: SKLabelNode!
+    
     var score: Int = 0 {
         didSet {
             scoreLabel.text = "Score: \(score)"
@@ -122,15 +123,6 @@ class GameScene: SKScene {
     func hideOverlay() {
         self.childNode(withName: "gameOverlay")?.removeFromParent()
     }
-
-    func goToStartView() {
-        //        if let view = self.view {
-        //            let startScene = StartView(size: view.bounds.size)
-        //            view.presentScene(startScene, transition: SKTransition.fade(withDuration: 0.5))
-        //            print("Go to start view")
-        //        }
-    }
-    
     
     override func didMove(to view: SKView) {
         SoundManager.shared.playBackgroundMusic()
@@ -166,12 +158,6 @@ class GameScene: SKScene {
 //        addChild(bottomLine)
 
         gameManager.startView()
-        
-        let moveDown = SKAction.moveTo(y: gameViewCenterY, duration: 1)
-        moveDown.timingMode = .easeOut
-
-        cameraNode.run(moveDown)
-
     }
 
     // Button for pause the game
