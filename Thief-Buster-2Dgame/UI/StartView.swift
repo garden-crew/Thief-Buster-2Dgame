@@ -45,14 +45,11 @@ struct StartView {
         musicButton.name = "musicButtonStart"
         overlay.addChild(musicButton)
 
-        let titleLabel = SKLabelNode(text: "Thief\nBuster")
-        titleLabel.fontName = "Pixellari"
-        titleLabel.fontSize = 60
-        titleLabel.numberOfLines = 2
-        titleLabel.horizontalAlignmentMode = .center
-        titleLabel.verticalAlignmentMode = .top
-        titleLabel.fontColor = .white
-        titleLabel.position = CGPoint(x: overlay.size.width/2, y: overlay.size.height - 140)
+        let titleLabel = SKSpriteNode(imageNamed: "GameLogo")
+        let titleWidth = scene.size.width - 32
+        let aspectRatio: CGFloat = titleLabel.size.width / titleLabel.size.height
+        titleLabel.size = CGSize(width: titleWidth, height: titleWidth / aspectRatio)
+        titleLabel.position = CGPoint(x: overlay.size.width/2, y: overlay.size.height * 4/5 + 24)
         overlay.addChild(titleLabel)
 
         let startLabel = SKSpriteNode(imageNamed: "StartButton")
