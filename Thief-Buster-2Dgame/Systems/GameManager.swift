@@ -36,7 +36,10 @@ class GameManager {
 
     func startView() {
         scene.cameraNode.position = CGPoint(x: scene.size.width/2, y: scene.size.height - scene.viewSize.height/2)
-       SoundManager.shared.playBackgroundMusic()
+        SoundManager.shared.stopBackgroundMusic()
+        SoundManager.shared.playStartMusic()
+        
+        
         scene.childNode(withName: "gameOverlay")?.removeFromParent()
         scene.score = 0
         let overlay = StartView.build(on: scene)
@@ -80,6 +83,9 @@ class GameManager {
     }
 
     func animateStartAndRemoveOverlay() {
+        SoundManager.shared.stopStartMusic()
+        SoundManager.shared.playBackgroundMusic()
+        
         scene.isPaused = false
         guard let overlay = startOverlay else { return }
         

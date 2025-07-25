@@ -8,6 +8,7 @@ import AVFoundation
 import GameplayKit
 import SpriteKit
 import SwiftData
+import UIKit
 import SwiftUI
 
 // Main game scene handling all rendering and gameplay updates.
@@ -125,7 +126,6 @@ class GameScene: SKScene {
     }
     
     override func didMove(to view: SKView) {
-        SoundManager.shared.playBackgroundMusic()
         loadHighscore()
         setUpBackground()
         setupGuard()
@@ -385,17 +385,28 @@ class GameScene: SKScene {
     func hidePauseOverlay() {
         self.childNode(withName: "pauseOverlay")?.removeFromParent()
     }
-    func toggleBackroundMusic(){
+    
+    func toggleBackroundMusic() {
         muteMusic.toggle()
 
         if muteMusic {
-            SoundManager.shared.stopBackgroundMusic()
-            // cari node bernama "musicButton" lalu ubah texture
+            // Mute: stop yang mana saja yang sedang main
+            if SoundManager.shared.backgroundPlayer?.isPlaying == true {
+                SoundManager.shared.stopBackgroundMusic()
+            }
+            if SoundManager.shared.startPlayer?.isPlaying == true {
+                SoundManager.shared.stopStartMusic()
+            }
             if let button = self.childNode(withName: "//musicButton") as? SKSpriteNode {
                 button.texture = SKTexture(imageNamed: "NoMusicButton")
             }
         } else {
-            SoundManager.shared.playBackgroundMusic()
+            // Unmute: play kembali yang terakhir aktif (atau default ke backgroundMusic)
+            if SoundManager.shared.backgroundPlayer != nil {
+                SoundManager.shared.playBackgroundMusic()
+            } else {
+                SoundManager.shared.playStartMusic()
+            }
             if let button = self.childNode(withName: "//musicButton") as? SKSpriteNode {
                 button.texture = SKTexture(imageNamed: "MusicButton")
             }
@@ -479,6 +490,17 @@ class GameScene: SKScene {
                 )
                 gameManager.animateStartAndRemoveOverlay()
                 print("Start tapped")
+              
+            case "tutorialButton":
+                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                   let window = windowScene.windows.first,
+                   let rootVC = window.rootViewController {
+                    
+                    let tutorialView = UIHostingController(rootView: TutorialView())
+                    tutorialView.modalPresentationStyle = .fullScreen
+                    
+                    rootVC.present(tutorialView, animated: true, completion: nil)
+                }
 
             case "quitButton":
                 gameManager.animateButtonTap(
