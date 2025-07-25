@@ -64,6 +64,7 @@ struct TutorialView: View {
                                     .fontWeight(.medium)
                                     .multilineTextAlignment(.center)
                                     .padding(.top, 20)
+                                    .foregroundColor(.white)
                             }
                             .tag(index)
                         }
@@ -80,7 +81,7 @@ struct TutorialView: View {
                 HStack(spacing: 8) {
                     ForEach(0..<images.count, id: \.self) { index in
                         Circle()
-                            .fill(index == currentPage ? Color.blue : Color.gray.opacity(0.4))
+                            .fill(index == currentPage ? Color.white : Color.gray.opacity(0.4))
                             .frame(width: 10, height: 10)
                     }
                 }
