@@ -14,6 +14,7 @@ struct StartView {
         overlay.position = CGPoint(x: 0, y: 0)
         overlay.zPosition = ZPosition.overlay.rawValue
         overlay.anchorPoint = .zero
+        overlay.color = .clear
         overlay.name = "startOverlay"
 
         let highscoreLabel = SKLabelNode(text: "Highscore: \(UserDefaults.standard.integer(forKey: "highscore"))")
@@ -28,13 +29,20 @@ struct StartView {
         )
         overlay.addChild(highscoreLabel)
 
-        let musicButton = SKSpriteNode(imageNamed: "MusicButton")
+        var musicImage = "MusicButton"
+        if let gameScene = scene as? GameScene {
+            if gameScene.muteMusic {
+                musicImage = "NoMusicButton"
+            }
+        }
+
+        let musicButton = SKSpriteNode(imageNamed: musicImage)
         musicButton.size = CGSize(width: 60, height: 60)
         musicButton.position = CGPoint(
             x: overlay.size.width - 50,
             y: overlay.size.height - 100
         )
-        musicButton.name = "musicButton"
+        musicButton.name = "musicButtonStart"
         overlay.addChild(musicButton)
 
         let titleLabel = SKLabelNode(text: "Thief\nBuster")
@@ -48,14 +56,14 @@ struct StartView {
         overlay.addChild(titleLabel)
 
         let startLabel = SKSpriteNode(imageNamed: "StartButton")
-        startLabel.position = CGPoint(x: overlay.size.width / 2, y: scene.size.height / 2 + 22)
+        startLabel.position = CGPoint(x: overlay.size.width / 2, y: scene.size.height / 2 - 40)
         startLabel.name = "startButton"
-        startLabel.size = CGSize(width: 150, height: 50)
+        startLabel.size = CGSize(width: 250, height: 60)
         overlay.addChild(startLabel)
 
         let tutorialLabel = SKSpriteNode(imageNamed: "TutorialButton")
-        tutorialLabel.position = CGPoint(x: overlay.size.width / 2, y: scene.size.height / 2 - 44)
-        tutorialLabel.size = CGSize(width: 150, height: 50)
+        tutorialLabel.position = CGPoint(x: overlay.size.width / 2, y: scene.size.height / 2 - 120)
+        tutorialLabel.size = CGSize(width: 250, height: 60)
         tutorialLabel.name = "tutorialButton"
         overlay.addChild(tutorialLabel)
 

@@ -17,6 +17,7 @@ struct TutorialView: View {
     var body: some View {
         ZStack {
             Color("custom gray")
+                .ignoresSafeArea(edges: .all)
             
             VStack(spacing: 0) {
                 // Header
@@ -46,24 +47,32 @@ struct TutorialView: View {
                 // Tutorial images carousel
                 TabView(selection: $currentPage) {
                     ForEach(0..<images.count, id: \.self) { index in
+                        ZStack {
+                            Image("BorderTutorial")
+                                .resizable()
+                                .frame(width: 290, height:380)
+                                .padding(.bottom, 50)
+                            
                             VStack {
                                 Image(images[index])
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(maxHeight: 400)
+                                    .frame(width: 260, height:380)
 
                                 Text(caption[index])
                                     .font(.custom("Pixellari", size: 28))
                                     .fontWeight(.medium)
                                     .multilineTextAlignment(.center)
-
-                                    .padding(.top, 8)
+                                    .padding(.top, 20)
                             }
                             .tag(index)
                         }
+                    }
+                        
+                            
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                .frame(height: 400)
+                .frame(height: 450)
                 
                 Spacer()
 
@@ -89,7 +98,7 @@ struct TutorialView: View {
                    Image("TapLeft")
                        .resizable()
                        .frame(width: 40, height: 40)
-                       .padding(10)
+                       .padding(.horizontal, 8)
                }
                .disabled(currentPage == 0)
                .opacity(currentPage == 0 ? 0.0 : 1)
@@ -106,12 +115,12 @@ struct TutorialView: View {
                    Image("TapRight")
                        .resizable()
                        .frame(width: 40, height: 40)
-                       .padding(10)
+                       .padding(.horizontal, 8)
                }
                .disabled(currentPage == images.count - 1)
                .opacity(currentPage == images.count - 1 ? 0.0 : 1)
            }
-           .padding(.top, 24)
+//           .padding(.top, 24)
         }
     }
 }

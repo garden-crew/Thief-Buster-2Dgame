@@ -18,12 +18,17 @@ class GameScene: SKScene {
     var highscoreLabel: SKLabelNode!
     var highscore: Int = 0
     
+    var isInGame = false
+    
     var muteMusic: Bool = false
 
+    var musicButton: SKSpriteNode!
+    
     var pauseButton: SKSpriteNode!
     var gamePaused: Bool = false
     
     var backgroundNode : BackgroundNode!
+    var borderScore: SKSpriteNode!
     var isGameOver = false
     var isOverlayShown = false
 
@@ -73,6 +78,7 @@ class GameScene: SKScene {
     )
 
     var scoreLabel: SKLabelNode!
+    
     var score: Int = 0 {
         didSet {
             scoreLabel.text = "Score: \(score)"
@@ -123,20 +129,12 @@ class GameScene: SKScene {
     func hideOverlay() {
         self.childNode(withName: "gameOverlay")?.removeFromParent()
     }
-
-    func goToStartView() {
-        //        if let view = self.view {
-        //            let startScene = StartView(size: view.bounds.size)
-        //            view.presentScene(startScene, transition: SKTransition.fade(withDuration: 0.5))
-        //            print("Go to start view")
-        //        }
-    }
-    
     
     override func didMove(to view: SKView) {
         loadHighscore()
         setUpBackground()
         setupGuard()
+        setupBorderScore()
         
         gameViewMaxY = player.position.y + (player.size.height * 2)
         
@@ -147,6 +145,7 @@ class GameScene: SKScene {
         setupScoreLabel()
         setupHighscoreLabel()
         setupPauseButton()
+        setupMusicButton()
 
         helper = CollisionManager(gamescene: self)
 
@@ -166,12 +165,6 @@ class GameScene: SKScene {
 //        addChild(bottomLine)
 
         gameManager.startView()
-        
-        let moveDown = SKAction.moveTo(y: gameViewCenterY, duration: 1)
-        moveDown.timingMode = .easeOut
-
-        cameraNode.run(moveDown)
-
     }
 
     // Button for pause the game
@@ -180,36 +173,45 @@ class GameScene: SKScene {
         pauseButton.anchorPoint = CGPoint(x: 0, y: 1.5)
         pauseButton.name = "pauseButton"
         pauseButton.size = CGSize(width: 60, height: 60)
-        scoreLabel.horizontalAlignmentMode = .left
-        scoreLabel.verticalAlignmentMode = .top
         pauseButton.position = CGPoint(x: size.width - 24 - pauseButton.size.width, y: gameViewMaxY - 40)
         pauseButton.zPosition = ZPosition.inGameUI.rawValue
         addChild(pauseButton)
     }
+    
+    func setupMusicButton() {
+        musicButton = SKSpriteNode(imageNamed: "MusicButton")
+        musicButton.anchorPoint = CGPoint(x: 0, y: 1.5)
+        musicButton.name = "musicButton"
+        musicButton.size = CGSize(width: 60, height: 60)
+        musicButton.position = CGPoint(x: size.width - 24 - musicButton.size.width, y: gameViewMaxY - 120)
+        musicButton.zPosition = ZPosition.inGameUI.rawValue
+        addChild(musicButton)
+    }
 
     // Show the score
     func setupScoreLabel() {
-        scoreLabel = SKLabelNode(fontNamed: "AvenirNext-Bold")
-        scoreLabel.fontName = "AvenirNext-Bold"
+        scoreLabel = SKLabelNode(fontNamed: "Pixellari")
         scoreLabel.fontSize = 24
         scoreLabel.fontColor = .clear
         scoreLabel.text = "Score: \(score)"
         scoreLabel.horizontalAlignmentMode = .left
         scoreLabel.verticalAlignmentMode = .top
-        scoreLabel.position = CGPoint(x: 24, y: gameViewMaxY - 16 - 4 - 64)
+        let paddingTop: CGFloat = 55
+        scoreLabel.position = CGPoint(x: 8, y: gameViewMaxY - paddingTop)
         scoreLabel.zPosition = ZPosition.inGameUI.rawValue
         addChild(scoreLabel)
     }
 
     // Show the high score
     func setupHighscoreLabel() {
-        highscoreLabel = SKLabelNode(fontNamed: "AvenirNext-Bold")
+        highscoreLabel = SKLabelNode(fontNamed: "Pixellari")
         highscoreLabel.fontSize = 14
         highscoreLabel.fontColor = .clear
         highscoreLabel.text = "Highscore: \(highscore)"
         highscoreLabel.horizontalAlignmentMode = .left
         highscoreLabel.verticalAlignmentMode = .top
-        highscoreLabel.position = CGPoint(x: 24, y: gameViewMaxY - 16 - 24 - 8 - 64)
+        let paddingTop: CGFloat = 80
+        highscoreLabel.position = CGPoint(x: 8, y: gameViewMaxY - paddingTop)
         highscoreLabel.zPosition = ZPosition.inGameUI.rawValue
         addChild(highscoreLabel)
     }
@@ -232,6 +234,20 @@ class GameScene: SKScene {
             print("Failed to load highscore: \(error)")
         }
     }
+    
+    func setupBorderScore() {
+        borderScore = SKSpriteNode(imageNamed: "BorderScore")
+        borderScore.anchorPoint = CGPoint(x: 0, y: 0.5)
+        borderScore.size = CGSize(width: 150, height: 70)
+        
+        let paddingTop: CGFloat = 135
+        let yPosition = gameViewMaxY - paddingTop
+            
+        borderScore.position = CGPoint(x: 0, y: yPosition)
+        borderScore.zPosition = ZPosition.inGameUI.rawValue - 1
+        borderScore.alpha = 0
+        addChild(borderScore)
+    }
 
     func setUpBackground() {
         backgroundNode = BackgroundNode(sceneSize: self.size)
@@ -248,6 +264,19 @@ class GameScene: SKScene {
     }
 
     func setupAttackButtons() {
+        
+        let buttonDeck = SKSpriteNode(imageNamed: "BottomDeck")
+        
+        let deckWidth : CGFloat = size.width
+        let aspectRatio = buttonDeck.size.width / buttonDeck.size.height
+        
+        let deckheight : CGFloat = deckWidth / aspectRatio
+        
+        buttonDeck.size = CGSize(width: size.width, height: deckheight)
+        buttonDeck.anchorPoint = CGPoint(x: 0.5, y: 0)
+        buttonDeck.position = CGPoint(x: size.width / 2, y: gameViewMinY)
+        buttonDeck.zPosition = ZPosition.inGameUI.rawValue
+        addChild(buttonDeck)
   
         // Ukuran dan jarak antar tombol
         let buttonSize = CGSize(width: 80, height: 80)
@@ -342,7 +371,6 @@ class GameScene: SKScene {
     
     // Restart the game
     func restartGame() {
-        SoundManager.shared.playBackgroundMusic()
         // Reset score
         score = 0
         
@@ -376,6 +404,11 @@ class GameScene: SKScene {
         score = 0
         
         print("Game restarted")
+        
+        
+        if self.muteMusic == false {
+            self.playMusicAccordingToScene()
+        }
     }
 
     
@@ -387,34 +420,52 @@ class GameScene: SKScene {
         self.childNode(withName: "pauseOverlay")?.removeFromParent()
     }
     
-    func toggleBackroundMusic() {
-        muteMusic.toggle()
-
+    func updateMusicButtonsTexture(to imageName: String) {
+        if let startButton = self.childNode(withName: "//musicButtonStart") as? SKSpriteNode {
+            startButton.texture = SKTexture(imageNamed: imageName)
+        }
+        if let gameButton = self.childNode(withName: "//musicButton") as? SKSpriteNode {
+            gameButton.texture = SKTexture(imageNamed: imageName)
+        }
+    }
+    
+    func playMusicAccordingToScene() {
         if muteMusic {
-            // Mute: stop yang mana saja yang sedang main
-            if SoundManager.shared.backgroundPlayer?.isPlaying == true {
-                SoundManager.shared.stopBackgroundMusic()
-            }
-            if SoundManager.shared.startPlayer?.isPlaying == true {
-                SoundManager.shared.stopStartMusic()
-            }
-            if let button = self.childNode(withName: "//musicButton") as? SKSpriteNode {
-                button.texture = SKTexture(imageNamed: "NoMusicButton")
-            }
+            updateMusicButtonsTexture(to: "NoMusicButton")
+            return
+        }
+        
+        if isInGame {
+            SoundManager.shared.stopStartMusic()
+            SoundManager.shared.playBackgroundMusic()
         } else {
-            // Unmute: play kembali yang terakhir aktif (atau default ke backgroundMusic)
-            if SoundManager.shared.backgroundPlayer != nil {
-                SoundManager.shared.playBackgroundMusic()
-            } else {
-                SoundManager.shared.playStartMusic()
-            }
-            if let button = self.childNode(withName: "//musicButton") as? SKSpriteNode {
-                button.texture = SKTexture(imageNamed: "MusicButton")
-            }
+            SoundManager.shared.stopBackgroundMusic()
+            SoundManager.shared.playStartMusic()
         }
     }
 
+    
+    func stopAllMusic() {
+        if SoundManager.shared.backgroundPlayer?.isPlaying == true {
+            SoundManager.shared.stopBackgroundMusic()
+        }
+        if SoundManager.shared.startPlayer?.isPlaying == true {
+            SoundManager.shared.stopStartMusic()
+        }
+    }
+    
+    func toggleBackgroundMusic() {
+        muteMusic.toggle()
 
+        if muteMusic {
+            stopAllMusic()
+            updateMusicButtonsTexture(to: "NoMusicButton")
+        } else {
+            playMusicAccordingToScene()
+            updateMusicButtonsTexture(to: "MusicButton")
+        }
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         helper?.handleTouches(touches, with: event)
         
@@ -514,7 +565,10 @@ class GameScene: SKScene {
                 hidePauseOverlay()
                 
             case "musicButton":
-                toggleBackroundMusic()
+                toggleBackgroundMusic()
+                
+            case "musicButtonStart":
+                toggleBackgroundMusic()
 
             default:
                 break
