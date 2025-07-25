@@ -63,7 +63,7 @@ class CollisionManager {
                                     SKAction.run {
                                         let perfectNode = GradedTextNode(
                                             text: "PERFECT",
-                                            fontName: "Pixeled",
+                                            fontName: "Pixellari",
                                             fontSize: 16,
                                             gradientColors: [
                                                 .yellow, .orange, .red,
@@ -112,7 +112,7 @@ class CollisionManager {
                                     SKAction.run {
                                         let goodNode = GradedTextNode(
                                             text: "GOOD",
-                                            fontName: "Pixeled",
+                                            fontName: "Pixellari",
                                             fontSize: 16,
                                             gradientColors: [
                                                 .blue, .cyan, .white,

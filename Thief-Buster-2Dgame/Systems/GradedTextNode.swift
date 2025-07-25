@@ -3,7 +3,7 @@ import UIKit
 
 class GradedTextNode: SKNode {
     
-    init(text: String, fontName: String = "Pixeled", fontSize: CGFloat, gradientColors: [UIColor]) {
+    init(text: String, fontName: String = "Pixellari", fontSize: CGFloat, gradientColors: [UIColor]) {
         super.init()
         
        
