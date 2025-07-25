@@ -156,12 +156,15 @@ class CollisionManager {
         // Determine which attack button was touched and check corresponding lane
         if gamescene.attackButtonLeft.contains(location) {
             self.gamescene.run(SKAction.playSoundFileNamed("Whoosh.mp3", waitForCompletion: false))
+            HapticManager.shared.vibrateLight()
             checkAlignment(with: gamescene.targetLeft)
         } else if gamescene.attackButtonCenter.contains(location) {
             self.gamescene.run(SKAction.playSoundFileNamed("Whoosh.mp3", waitForCompletion: false))
+            HapticManager.shared.vibrateLight()
             checkAlignment(with: gamescene.targetMid)
         } else if gamescene.attackButtonRight.contains(location) {
             self.gamescene.run(SKAction.playSoundFileNamed("Whoosh.mp3", waitForCompletion: false))
+            HapticManager.shared.vibrateLight()
             checkAlignment(with: gamescene.targetRight)
         }
     }

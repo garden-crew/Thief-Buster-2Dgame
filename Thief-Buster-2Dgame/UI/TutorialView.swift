@@ -12,7 +12,7 @@ struct TutorialView: View {
 
     let images = ["Tutorial1", "Tutorial2", "Tutorial3"]
     
-    let caption = ["Hit the thief!", "Don't hit customer!", "Hit star to clear lane!"]
+    let caption = ["Attack the thief at the stairs using the button to earn points!", "Avoid hitting customers. One wrong hit and it's over!", "Strike the power up to blast away everything in the path!"]
 
     var body: some View {
         ZStack {
@@ -51,19 +51,24 @@ struct TutorialView: View {
                             Image("BorderTutorial")
                                 .resizable()
                                 .frame(width: 290, height:380)
-                                .padding(.bottom, 50)
+                                .padding(.bottom, 100)
                             
                             VStack {
                                 Image(images[index])
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 260, height:380)
+                                    .padding(.bottom, 20)
+                                
+                                Spacer()
+                                Spacer()
 
                                 Text(caption[index])
-                                    .font(.custom("Pixellari", size: 28))
+                                    .font(.custom("Pixellari", size: 24))
                                     .fontWeight(.medium)
                                     .multilineTextAlignment(.center)
                                     .padding(.top, 20)
+                                    .padding(.horizontal, 10)
                                     .foregroundColor(.white)
                             }
                             .tag(index)
@@ -73,7 +78,7 @@ struct TutorialView: View {
                             
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                .frame(height: 450)
+                .frame(height: 500)
                 
                 Spacer()
 
@@ -100,6 +105,7 @@ struct TutorialView: View {
                        .resizable()
                        .frame(width: 40, height: 40)
                        .padding(.horizontal, 8)
+                       .padding(.bottom, 28)
                }
                .disabled(currentPage == 0)
                .opacity(currentPage == 0 ? 0.0 : 1)
@@ -117,6 +123,7 @@ struct TutorialView: View {
                        .resizable()
                        .frame(width: 40, height: 40)
                        .padding(.horizontal, 8)
+                       .padding(.bottom, 28)
                }
                .disabled(currentPage == images.count - 1)
                .opacity(currentPage == images.count - 1 ? 0.0 : 1)
