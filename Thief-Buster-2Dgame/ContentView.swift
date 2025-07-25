@@ -5,30 +5,39 @@
 //  Created by Edward Suwandi on 10/07/25.
 //
 
-import SwiftUI
 import SpriteKit
 import SwiftData
+import SwiftUI
 
 struct ContentView: View {
-    
+
     @Environment(\.modelContext) private var modelContext
     @Query var highscores: [Highscore]
-    
+
     var scene: SKScene {
-        let scene = GameScene()
-        scene.size = UIScreen.main.bounds.size
-        scene.scaleMode = .resizeFill
+        let screenSize = UIScreen.main.bounds.size
+
+        let canvasSize: CGSize = .init(
+            width: screenSize.width,
+            height: screenSize.height * 1.5
+        )
+
+        let scene = GameScene(
+            viewSize: screenSize,
+            canvasSize: canvasSize
+        )
+
+        scene.scaleMode = .aspectFill
         scene.modelContext = modelContext
-        
+
         return scene
     }
 
     var body: some View {
         SpriteView(scene: scene)
-            .ignoresSafeArea() // Fullscreen
+            .ignoresSafeArea(.all)  // Fullscreen
     }
 }
-
 
 #Preview {
     ContentView()

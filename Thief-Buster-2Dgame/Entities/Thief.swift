@@ -11,16 +11,29 @@ import SpriteKit
 
 class Thief : Obstacle {
     
+    var lane: Int = 2
+    
     // Defines the thief's walking animation textures.
     override var walkTextures: [SKTexture] {
         (1...3).map { i in
-            SKTexture(imageNamed: "EnemyWalk\(i)")
+            SKTexture(imageNamed: "ThiefWalk\(i)")
         }
+    }
+    override var dieTextures: [SKTexture] {
+        return [SKTexture(imageNamed: "ThiefCanHit")]
     }
     
     // Initializes the thief with specific width and default texture.
     init(width: CGFloat) {
-        super.init(initialTexture: "EnemyWalk1", width: width)
+        super.init(initialTexture: "ThiefWalk1", width: width)
+        self.setScale(1.1)
+        
+    }
+    
+    var attackAction: SKAction {
+        let textureName = (lane == 1) ? "ThiefNotHitFlip" : "ThiefNotHit"
+        return SKAction.setTexture(SKTexture(imageNamed: textureName))
+        
     }
     
     @MainActor required init?(coder aDecoder: NSCoder) {

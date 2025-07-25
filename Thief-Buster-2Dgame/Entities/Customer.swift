@@ -10,17 +10,17 @@ import Foundation
 import SpriteKit
 
 class Customer : Obstacle {
-    
     // Defines the customer's walking animation textures.
     override var walkTextures: [SKTexture] {
         (1...3).map { i in
-            SKTexture(imageNamed: "ObstacleWalk3")
+            SKTexture(imageNamed: "CustomerWalk\(i)")
         }
     }
     
     // Initializes the customer with specific width and default texture.
     init(width: CGFloat) {
-        super.init(initialTexture: "ObstacleWalk3", width: width)
+        super.init(initialTexture: "CustomerWalk1", width: width)
+        self.setScale(0.6)
     }
     
     @MainActor required init?(coder aDecoder: NSCoder) {
@@ -28,8 +28,17 @@ class Customer : Obstacle {
     }
     
     override func die() {
+        
+        
+        if !active { return }
+        
+        self.run(SKAction.playSoundFileNamed("hitCust.mp3", waitForCompletion: false))
+        
+
         super.die()
-        self.parent?.isPaused = true
     }
-    
+    override var dieTextures: [SKTexture] {
+        return [SKTexture(imageNamed: "CustomerHit")]
+        
+    }
 }
