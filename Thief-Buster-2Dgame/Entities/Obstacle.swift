@@ -58,7 +58,6 @@ class Obstacle: SKSpriteNode {
     func die() {
 
         if !active { return }
-        
         unactivate()
 
         onDie?()

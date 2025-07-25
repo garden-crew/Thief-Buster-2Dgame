@@ -3,7 +3,7 @@ import UIKit
 
 class GradedTextNode: SKNode {
     
-    init(text: String, fontName: String = "Pixeled", fontSize: CGFloat, gradientColors: [UIColor]) {
+    init(text: String, fontName: String = "Pixellari", fontSize: CGFloat, gradientColors: [UIColor]) {
         super.init()
         
        
@@ -32,8 +32,8 @@ class GradedTextNode: SKNode {
         addChild(cropNode)
         
       
-        self.alpha = 0
-        self.run(SKAction.fadeIn(withDuration: 0.2))
+//        self.alpha = 0
+//        self.run(SKAction.fadeIn(withDuration: 0.2))
     }
     
     required init?(coder aDecoder: NSCoder) {

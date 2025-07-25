@@ -35,6 +35,7 @@ struct TutorialView: View {
                     Text("HOW TO PLAY")
                         .font(.custom("Pixellari", size: 36))
                         .fontWeight(.semibold)
+                        .foregroundColor(.white)
 
                     Spacer()
                     Spacer()
