@@ -14,37 +14,50 @@ struct PauseView {
         overlay.zPosition = ZPosition.overlay.rawValue
         overlay.name = "pauseOverlay"
 
-        let pauseLabel = SKLabelNode(text: "Paused")
+        let borderMenu = SKSpriteNode(imageNamed: "BorderMenu")
+        borderMenu.size = CGSize(width: 350, height: 500)
+        borderMenu.position = CGPoint(x: 0, y: -100)
+        borderMenu.zPosition = 1
+        borderMenu.name = "borderMenu"
+        overlay.addChild(borderMenu)
+        
+        let pauseLabel = SKLabelNode(text: "PAUSED")
         pauseLabel.fontName = "Pixellari"
         pauseLabel.fontSize = 50
         pauseLabel.fontColor = .white
-        pauseLabel.position = CGPoint(x: 0, y: 100)
+        pauseLabel.zPosition = 2
+        pauseLabel.position = CGPoint(x: borderMenu.position.x, y: borderMenu.position.y + (borderMenu.size.height / 2) - 100)
         overlay.addChild(pauseLabel)
 
         let resumeLabel = SKSpriteNode(imageNamed: "ResumeButton")
-        resumeLabel.position = CGPoint(x: 0, y: 0)
-        resumeLabel.size = CGSize(width: 150, height: 50)
+        resumeLabel.position = CGPoint(x: 0, y: -40)
+        resumeLabel.size = CGSize(width: 220, height: 60)
+        resumeLabel.zPosition = 2
         resumeLabel.name = "resumeButton"
         overlay.addChild(resumeLabel)
 
         let restartLabel = SKSpriteNode(imageNamed: "RestartButton")
-        restartLabel.position = CGPoint(x: 0, y: -60)
-        restartLabel.size = CGSize(width: 150, height: 50)
+        restartLabel.position = CGPoint(x: 0, y: -120)
+        restartLabel.size = CGSize(width: 220, height: 60)
         restartLabel.name = "restartButton"
+        restartLabel.zPosition = 2
         overlay.addChild(restartLabel)
         
-        let musicButton = SKSpriteNode(imageNamed: "MusicButton")
-        musicButton.size = CGSize(width: 60, height: 60)
-        musicButton.position = CGPoint(x: 150, y: 110)
-        musicButton.name = "musicButton"
-        overlay.addChild(musicButton)
+//        let musicButton = SKSpriteNode(imageNamed: "MusicButton")
+//        musicButton.size = CGSize(width: 60, height: 60)
+//        musicButton.position = CGPoint(x: 150, y: 110)
+//        musicButton.name = "musicButton"
+//        musicButton.zPosition = 2
+//        overlay.addChild(musicButton)
 
         let quitLabel = SKSpriteNode(imageNamed: "QuitButton")
-        quitLabel.position = CGPoint(x: 0, y: -170)
-        quitLabel.size = CGSize(width: 150, height: 50)
+        quitLabel.position = CGPoint(x: 0, y: -200)
+        quitLabel.size = CGSize(width: 220, height: 60)
         quitLabel.name = "quitButton"
+        quitLabel.zPosition = 2
         overlay.addChild(quitLabel)
 
         scene.addChild(overlay)
     }
 }
+

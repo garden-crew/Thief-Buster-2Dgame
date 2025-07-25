@@ -18,8 +18,12 @@ class GameScene: SKScene {
     var highscoreLabel: SKLabelNode!
     var highscore: Int = 0
     
+    var isInGame = false
+    
     var muteMusic: Bool = false
 
+    var musicButton: SKSpriteNode!
+    
     var pauseButton: SKSpriteNode!
     var gamePaused: Bool = false
     
@@ -139,6 +143,7 @@ class GameScene: SKScene {
         setupScoreLabel()
         setupHighscoreLabel()
         setupPauseButton()
+        setupMusicButton()
 
         helper = CollisionManager(gamescene: self)
 
@@ -166,11 +171,19 @@ class GameScene: SKScene {
         pauseButton.anchorPoint = CGPoint(x: 0, y: 1.5)
         pauseButton.name = "pauseButton"
         pauseButton.size = CGSize(width: 60, height: 60)
-        scoreLabel.horizontalAlignmentMode = .left
-        scoreLabel.verticalAlignmentMode = .top
         pauseButton.position = CGPoint(x: size.width - 24 - pauseButton.size.width, y: gameViewMaxY - 40)
         pauseButton.zPosition = ZPosition.inGameUI.rawValue
         addChild(pauseButton)
+    }
+    
+    func setupMusicButton() {
+        musicButton = SKSpriteNode(imageNamed: "MusicButton")
+        musicButton.anchorPoint = CGPoint(x: 0, y: 1.5)
+        musicButton.name = "musicButton"
+        musicButton.size = CGSize(width: 60, height: 60)
+        musicButton.position = CGPoint(x: size.width - 24 - musicButton.size.width, y: gameViewMaxY - 120)
+        musicButton.zPosition = ZPosition.inGameUI.rawValue
+        addChild(musicButton)
     }
 
     // Show the score
@@ -341,7 +354,6 @@ class GameScene: SKScene {
     
     // Restart the game
     func restartGame() {
-        SoundManager.shared.playBackgroundMusic()
         // Reset score
         score = 0
         
@@ -375,6 +387,11 @@ class GameScene: SKScene {
         score = 0
         
         print("Game restarted")
+        
+        
+        if self.muteMusic == false {
+            self.playMusicAccordingToScene()
+        }
     }
 
     
@@ -386,34 +403,52 @@ class GameScene: SKScene {
         self.childNode(withName: "pauseOverlay")?.removeFromParent()
     }
     
-    func toggleBackroundMusic() {
-        muteMusic.toggle()
-
+    func updateMusicButtonsTexture(to imageName: String) {
+        if let startButton = self.childNode(withName: "//musicButtonStart") as? SKSpriteNode {
+            startButton.texture = SKTexture(imageNamed: imageName)
+        }
+        if let gameButton = self.childNode(withName: "//musicButton") as? SKSpriteNode {
+            gameButton.texture = SKTexture(imageNamed: imageName)
+        }
+    }
+    
+    func playMusicAccordingToScene() {
         if muteMusic {
-            // Mute: stop yang mana saja yang sedang main
-            if SoundManager.shared.backgroundPlayer?.isPlaying == true {
-                SoundManager.shared.stopBackgroundMusic()
-            }
-            if SoundManager.shared.startPlayer?.isPlaying == true {
-                SoundManager.shared.stopStartMusic()
-            }
-            if let button = self.childNode(withName: "//musicButton") as? SKSpriteNode {
-                button.texture = SKTexture(imageNamed: "NoMusicButton")
-            }
+            updateMusicButtonsTexture(to: "NoMusicButton")
+            return
+        }
+        
+        if isInGame {
+            SoundManager.shared.stopStartMusic()
+            SoundManager.shared.playBackgroundMusic()
         } else {
-            // Unmute: play kembali yang terakhir aktif (atau default ke backgroundMusic)
-            if SoundManager.shared.backgroundPlayer != nil {
-                SoundManager.shared.playBackgroundMusic()
-            } else {
-                SoundManager.shared.playStartMusic()
-            }
-            if let button = self.childNode(withName: "//musicButton") as? SKSpriteNode {
-                button.texture = SKTexture(imageNamed: "MusicButton")
-            }
+            SoundManager.shared.stopBackgroundMusic()
+            SoundManager.shared.playStartMusic()
         }
     }
 
+    
+    func stopAllMusic() {
+        if SoundManager.shared.backgroundPlayer?.isPlaying == true {
+            SoundManager.shared.stopBackgroundMusic()
+        }
+        if SoundManager.shared.startPlayer?.isPlaying == true {
+            SoundManager.shared.stopStartMusic()
+        }
+    }
+    
+    func toggleBackgroundMusic() {
+        muteMusic.toggle()
 
+        if muteMusic {
+            stopAllMusic()
+            updateMusicButtonsTexture(to: "NoMusicButton")
+        } else {
+            playMusicAccordingToScene()
+            updateMusicButtonsTexture(to: "MusicButton")
+        }
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         helper?.handleTouches(touches, with: event)
         
@@ -513,7 +548,10 @@ class GameScene: SKScene {
                 hidePauseOverlay()
                 
             case "musicButton":
-                toggleBackroundMusic()
+                toggleBackgroundMusic()
+                
+            case "musicButtonStart":
+                toggleBackgroundMusic()
 
             default:
                 break
