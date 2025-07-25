@@ -74,6 +74,7 @@ class GameScene: SKScene {
     )
 
     var scoreLabel: SKLabelNode!
+    
     var score: Int = 0 {
         didSet {
             scoreLabel.text = "Score: \(score)"
@@ -124,15 +125,6 @@ class GameScene: SKScene {
     func hideOverlay() {
         self.childNode(withName: "gameOverlay")?.removeFromParent()
     }
-
-    func goToStartView() {
-        //        if let view = self.view {
-        //            let startScene = StartView(size: view.bounds.size)
-        //            view.presentScene(startScene, transition: SKTransition.fade(withDuration: 0.5))
-        //            print("Go to start view")
-        //        }
-    }
-    
     
     override func didMove(to view: SKView) {
         loadHighscore()
@@ -168,12 +160,6 @@ class GameScene: SKScene {
 //        addChild(bottomLine)
 
         gameManager.startView()
-        
-        let moveDown = SKAction.moveTo(y: gameViewCenterY, duration: 1)
-        moveDown.timingMode = .easeOut
-
-        cameraNode.run(moveDown)
-
     }
 
     // Button for pause the game
@@ -259,6 +245,19 @@ class GameScene: SKScene {
     }
 
     func setupAttackButtons() {
+        
+        let buttonDeck = SKSpriteNode(imageNamed: "BottomDeck")
+        
+        let deckWidth : CGFloat = size.width
+        let aspectRatio = buttonDeck.size.width / buttonDeck.size.height
+        
+        let deckheight : CGFloat = deckWidth / aspectRatio
+        
+        buttonDeck.size = CGSize(width: size.width, height: deckheight)
+        buttonDeck.anchorPoint = CGPoint(x: 0.5, y: 0)
+        buttonDeck.position = CGPoint(x: size.width / 2, y: gameViewMinY)
+        buttonDeck.zPosition = ZPosition.inGameUI.rawValue
+        addChild(buttonDeck)
   
         // Ukuran dan jarak antar tombol
         let buttonSize = CGSize(width: 80, height: 80)
