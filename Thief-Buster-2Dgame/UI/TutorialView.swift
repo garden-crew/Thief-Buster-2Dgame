@@ -4,6 +4,7 @@
 //
 //  Created by Niken Larasati on 23/07/25.
 //
+
 import SwiftUI
 
 struct TutorialView: View {
@@ -12,15 +13,27 @@ struct TutorialView: View {
 
     let images = ["Tutorial1", "Tutorial2", "Tutorial3"]
     
-    let caption = ["Attack the thief at the stairs using the button to earn points!", "Avoid hitting customers. One wrong hit and it's over!", "Strike the power up to blast away everything in the path!"]
+   
 
     var body: some View {
         ZStack {
-            Color("custom gray")
-                .ignoresSafeArea(edges: .all)
-            
-            VStack(spacing: 0) {
-                // Header
+            // Background: fullscreen image
+            TabView(selection: $currentPage) {
+                ForEach(0..<images.count, id: \.self) { index in
+                    Image(images[index])
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: UIScreen.main.bounds.width,
+                               height: UIScreen.main.bounds.height)
+                        .ignoresSafeArea()
+                        .tag(index)
+                }
+            }
+            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+
+            // Foreground overlay
+            VStack {
+                // Top bar
                 HStack {
                     Button(action: {
                         dismiss()
@@ -34,103 +47,72 @@ struct TutorialView: View {
                     Spacer()
 
                     Text("HOW TO PLAY")
-                        .font(.custom("Pixellari", size: 36))
+                        .font(.custom("Pixellari", size: 25))
                         .fontWeight(.semibold)
                         .foregroundColor(.white)
 
                     Spacer()
                     Spacer()
                 }
+                .padding(.top, 50) // Tambahkan padding agar tidak tertutup notch
+                .padding(.horizontal)
+                .padding(.bottom, 10)
 
                 Spacer()
 
-                // Tutorial images carousel
-                TabView(selection: $currentPage) {
-                    ForEach(0..<images.count, id: \.self) { index in
-                        ZStack {
-                            Image("BorderTutorial")
-                                .resizable()
-                                .frame(width: 290, height:380)
-                                .padding(.bottom, 100)
-                            
-                            VStack {
-                                Image(images[index])
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 260, height:380)
-                                    .padding(.bottom, 20)
-                                
-                                Spacer()
-                                Spacer()
+                // Caption
+             
 
-                                Text(caption[index])
-                                    .font(.custom("Pixellari", size: 24))
-                                    .fontWeight(.medium)
-                                    .multilineTextAlignment(.center)
-                                    .padding(.top, 20)
-                                    .padding(.horizontal, 10)
-                                    .foregroundColor(.white)
-                            }
-                            .tag(index)
-                        }
-                    }
-                        
-                            
-                }
-                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                .frame(height: 500)
-                
-                Spacer()
-
-                // Page indicator
+                // Page Indicator
                 HStack(spacing: 8) {
                     ForEach(0..<images.count, id: \.self) { index in
                         Circle()
-                            .fill(index == currentPage ? Color.white : Color.gray.opacity(0.4))
+                            .fill(index == currentPage ? Color.white : Color.white.opacity(0.4))
                             .frame(width: 10, height: 10)
                     }
                 }
-                
+                .padding(.bottom, 30)
             }
-            
+
+            // Navigation Arrows
             HStack {
-               Button(action: {
-                   if currentPage > 0 {
-                       withAnimation {
-                           currentPage -= 1
-                       }
-                   }
-               }) {
-                   Image("TapLeft")
-                       .resizable()
-                       .frame(width: 40, height: 40)
-                       .padding(.horizontal, 8)
-                       .padding(.bottom, 28)
-               }
-               .disabled(currentPage == 0)
-               .opacity(currentPage == 0 ? 0.0 : 1)
+                Button(action: {
+                    if currentPage > 0 {
+                        withAnimation {
+                            currentPage -= 1
+                        }
+                    }
+                }) {
+                    Image("TapLeft")
+                        .resizable()
+                        .frame(width: 50, height: 50)
+                        .padding()
+                }
+                .disabled(currentPage == 0)
+                .opacity(currentPage == 0 ? 0.0 : 1)
 
-               Spacer()
+                Spacer()
 
-               Button(action: {
-                   if currentPage < images.count - 1 {
-                       withAnimation {
-                           currentPage += 1
-                       }
-                   }
-               }) {
-                   Image("TapRight")
-                       .resizable()
-                       .frame(width: 40, height: 40)
-                       .padding(.horizontal, 8)
-                       .padding(.bottom, 28)
-               }
-               .disabled(currentPage == images.count - 1)
-               .opacity(currentPage == images.count - 1 ? 0.0 : 1)
-           }
-//           .padding(.top, 24)
-        }
+                Button(action: {
+                    if currentPage < images.count - 1 {
+                        withAnimation {
+                            currentPage += 1
+                        }
+                    }
+                }) {
+                    Image("TapRight")
+                        .resizable()
+                        .frame(width: 50, height: 50)
+                        .padding()
+                }
+                .disabled(currentPage == images.count - 1)
+                .opacity(currentPage == images.count - 1 ? 0.0 : 1)
+            }
+            .padding(.horizontal)
+            .padding(.bottom, 40)
+        }.ignoresSafeArea(.all)
     }
+        
 }
 
 #Preview {
