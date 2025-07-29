@@ -256,9 +256,15 @@ class GameScene: SKScene {
     func setupGuard() {
         player = Guard()
         player.anchorPoint = CGPoint(x: 0.5, y: 0)
-        player.setScale(2.0)
         player.position = CGPoint(x: size.width / 2, y: backgroundNode.bankImageBottomY + 12)
         player.zPosition = ZPosition.player.rawValue
+        
+        let width = size.width / 2.5
+        let aspectRatio: CGFloat = player.size.width / player.size.height
+        let height = width / aspectRatio
+        
+        player.size = CGSize(width: width, height: height)
+        
         addChild(player)
     }
 
