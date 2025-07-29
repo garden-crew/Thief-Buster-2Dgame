@@ -196,7 +196,7 @@ class GameScene: SKScene {
         scoreLabel.text = "Score: \(score)"
         scoreLabel.horizontalAlignmentMode = .left
         scoreLabel.verticalAlignmentMode = .top
-        let paddingTop: CGFloat = 90
+        let paddingTop: CGFloat = 85
         scoreLabel.position = CGPoint(x: 8, y: gameViewMaxY - paddingTop)
         scoreLabel.zPosition = ZPosition.inGameUI.rawValue
         addChild(scoreLabel)
@@ -210,7 +210,7 @@ class GameScene: SKScene {
         highscoreLabel.text = "Highscore: \(highscore)"
         highscoreLabel.horizontalAlignmentMode = .left
         highscoreLabel.verticalAlignmentMode = .top
-        let paddingTop: CGFloat = 120
+        let paddingTop: CGFloat = 115
         highscoreLabel.position = CGPoint(x: 8, y: gameViewMaxY - paddingTop)
         highscoreLabel.zPosition = ZPosition.inGameUI.rawValue
         addChild(highscoreLabel)
