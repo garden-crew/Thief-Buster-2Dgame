@@ -8,16 +8,16 @@
 
 /* Begin PBXFileReference section */
 		23C482952E28D4A200A5CB41 /* Thief-Buster-2Dgame.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = "Thief-Buster-2Dgame.xcodeproj"; sourceTree = "<group>"; };
-		23E378EB2E1FB11C00E4A124 /* Thief-Buster-2Dgame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Thief-Buster-2Dgame.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		23E378EB2E1FB11C00E4A124 /* Thief Buster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Thief Buster.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		36BB9FBC2E28D8E70053FE9D /* Exceptions for "Thief-Buster-2Dgame" folder in "Thief-Buster-2Dgame" target */ = {
+		36BB9FBC2E28D8E70053FE9D /* Exceptions for "Thief-Buster-2Dgame" folder in "Thief Buster" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 23E378EA2E1FB11C00E4A124 /* Thief-Buster-2Dgame */;
+			target = 23E378EA2E1FB11C00E4A124 /* Thief Buster */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -25,7 +25,7 @@
 		23E378ED2E1FB11C00E4A124 /* Thief-Buster-2Dgame */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				36BB9FBC2E28D8E70053FE9D /* Exceptions for "Thief-Buster-2Dgame" folder in "Thief-Buster-2Dgame" target */,
+				36BB9FBC2E28D8E70053FE9D /* Exceptions for "Thief-Buster-2Dgame" folder in "Thief Buster" target */,
 			);
 			path = "Thief-Buster-2Dgame";
 			sourceTree = "<group>";
@@ -61,7 +61,7 @@
 		23E378EC2E1FB11C00E4A124 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				23E378EB2E1FB11C00E4A124 /* Thief-Buster-2Dgame.app */,
+				23E378EB2E1FB11C00E4A124 /* Thief Buster.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -69,9 +69,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		23E378EA2E1FB11C00E4A124 /* Thief-Buster-2Dgame */ = {
+		23E378EA2E1FB11C00E4A124 /* Thief Buster */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 23E378F62E1FB11D00E4A124 /* Build configuration list for PBXNativeTarget "Thief-Buster-2Dgame" */;
+			buildConfigurationList = 23E378F62E1FB11D00E4A124 /* Build configuration list for PBXNativeTarget "Thief Buster" */;
 			buildPhases = (
 				23E378E72E1FB11C00E4A124 /* Sources */,
 				23E378E82E1FB11C00E4A124 /* Frameworks */,
@@ -84,11 +84,11 @@
 			fileSystemSynchronizedGroups = (
 				23E378ED2E1FB11C00E4A124 /* Thief-Buster-2Dgame */,
 			);
-			name = "Thief-Buster-2Dgame";
+			name = "Thief Buster";
 			packageProductDependencies = (
 			);
 			productName = "Thief-Buster-2Dgame";
-			productReference = 23E378EB2E1FB11C00E4A124 /* Thief-Buster-2Dgame.app */;
+			productReference = 23E378EB2E1FB11C00E4A124 /* Thief Buster.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -126,7 +126,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				23E378EA2E1FB11C00E4A124 /* Thief-Buster-2Dgame */,
+				23E378EA2E1FB11C00E4A124 /* Thief Buster */,
 			);
 		};
 /* End PBXProject section */
@@ -280,7 +280,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = D65356M48A;
+				DEVELOPMENT_TEAM = YVXC2627Z7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Thief-Buster-2Dgame/Info.plist";
@@ -310,7 +310,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = D65356M48A;
+				DEVELOPMENT_TEAM = YVXC2627Z7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Thief-Buster-2Dgame/Info.plist";
@@ -345,7 +345,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		23E378F62E1FB11D00E4A124 /* Build configuration list for PBXNativeTarget "Thief-Buster-2Dgame" */ = {
+		23E378F62E1FB11D00E4A124 /* Build configuration list for PBXNativeTarget "Thief Buster" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				23E378F72E1FB11D00E4A124 /* Debug */,
