@@ -13,6 +13,7 @@ struct ContentView: View {
 
     @Environment(\.modelContext) private var modelContext
     @Query var highscores: [Highscore]
+    @State private var showDeveloperModal = false
 
     var scene: SKScene {
         let screenSize = UIScreen.main.bounds.size
@@ -36,6 +37,13 @@ struct ContentView: View {
     var body: some View {
         SpriteView(scene: scene)
             .ignoresSafeArea(.all)  // Fullscreen
+            .statusBarHidden()
+            .onLongPressGesture(minimumDuration: 3) {  // 3 second long press to show developer modal
+                showDeveloperModal = true
+            }
+            .sheet(isPresented: $showDeveloperModal) {
+                DeveloperModalView(scene: scene)
+            }
     }
 }
 
