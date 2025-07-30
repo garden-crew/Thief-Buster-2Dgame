@@ -92,7 +92,6 @@ class GameManager {
         
         scene.isInGame = true
         
-        
         if scene.muteMusic == false {
             scene.playMusicAccordingToScene()
         }
@@ -121,6 +120,8 @@ class GameManager {
         overlay.run(.sequence([fadeOut, showGameUI, .removeFromParent()]))
         scene.pauseButton.isHidden = false
         scene.musicButton.isHidden = false
+        
+        scene.setupHighlight()
     }
 
 
