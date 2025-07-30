@@ -206,7 +206,7 @@ class GameScene: SKScene {
         highscoreLabel.text = "Highscore: \(highscore)"
         highscoreLabel.horizontalAlignmentMode = .left
         highscoreLabel.verticalAlignmentMode = .top
-        let paddingTop: CGFloat = 115
+        let paddingTop: CGFloat = 112
         highscoreLabel.position = CGPoint(x: 8, y: gameViewMaxY - paddingTop)
         highscoreLabel.zPosition = ZPosition.inGameUI.rawValue
         addChild(highscoreLabel)
@@ -321,12 +321,16 @@ class GameScene: SKScene {
     }
 
     func setupHighlight() {
-        
-        func fadeInOutAnimation(duration: TimeInterval = 2.0) -> SKAction {
-            let fadeOut = SKAction.fadeAlpha(to: 0.2, duration: duration / 2)
-            let fadeIn = SKAction.fadeAlpha(to: 1.0, duration: duration / 2)
+
+        func fadeInOutAnimation(
+            duration: TimeInterval = 1.5,
+            opacity: Double = 0.5,
+            loopCount: Int? = nil
+        ) -> SKAction {
+            let fadeOut = SKAction.fadeAlpha(to: 0.1, duration: duration / 2)
+            let fadeIn = SKAction.fadeAlpha(to: opacity, duration: duration / 2)
             let fade = SKAction.sequence([fadeOut, fadeIn])
-            let fadeLoop = SKAction.repeat(fade, count: 4)
+            let fadeLoop = SKAction.repeat(fade, count: loopCount ?? 2)
             let sequenceAction = SKAction.sequence([
                 fadeLoop, SKAction.fadeOut(withDuration: 0.3),
                 .removeFromParent(),
@@ -350,18 +354,27 @@ class GameScene: SKScene {
         hitBoxHighlight.zPosition = ZPosition.obstacle.rawValue
         addChild(hitBoxHighlight)
 
-        hitBoxHighlight.run(fadeInOutAnimation())
+        let hitBoxAnimation = SKAction.sequence([
+            SKAction.fadeAlpha(to: 0, duration: 0),
+            SKAction.wait(forDuration: 2),
+            fadeInOutAnimation(opacity: 0.9, loopCount: 4),
+        ])
+
+        hitBoxHighlight.run(hitBoxAnimation)
 
         let attackButtons = [
-            attackButtonLeft, attackButtonCenter, attackButtonRight,
+            attackButtonLeft,
+            attackButtonCenter,
+            attackButtonRight,
         ]
 
         attackButtons.forEach { button in
             let buttonHighlight = SKSpriteNode(
-                color: .white.withAlphaComponent(0.4),
-                size: button!.size
+                imageNamed: "ButtonAttackWhite"
             )
-            buttonHighlight.setScale(1.1)
+            
+            buttonHighlight.name = button?.name
+            buttonHighlight.size = button!.size
             buttonHighlight.zPosition = ZPosition.inGameUI.rawValue
             buttonHighlight.position = button!.position
 
@@ -378,7 +391,7 @@ class GameScene: SKScene {
             )
 
             let laneHighlight = SKSpriteNode(
-                color: .white.withAlphaComponent(0.4),
+                color: UIColor(named: "bright yellow")!.withAlphaComponent(0.3),
                 size: CGSize(
                     width: laneWidth - 8,
                     height: backgroundNode.stairBottomY
