@@ -98,11 +98,7 @@ class Guard: SKSpriteNode {
             ])
             self.run(sequence)
         case .fail:
-            self.texture = failTexture
-            self.run(SKAction.sequence([
-                SKAction.wait(forDuration: 0.5),
-                SKAction.run { [weak self] in self?.transition(to: .idle) }
-            ]))
+            run(SKAction.animate(with: [failTexture], timePerFrame: 2))
         }
     }
 }
